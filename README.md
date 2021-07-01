@@ -15,7 +15,7 @@ Original App Design Project
 Open Sorcerer is a social network dedicated to connecting developers with Open Source projects by allowing the user to browse a growing catalogue of projects they can participate in or upload their own ideas in order to find developers willing to help. The main browsing experience is shaped by the user's set of preferences and technical skills, and the recommendation algorithm gradually understands their interests and brings the most relevant projects to their attention.
 
 ### App Evaluation
-[Evaluation of your app across the following attributes]
+
 - **Category:** Social network / Browser
 - **Mobile:** Incorporates swiping and double tapping mechanisms for liking and discarding projects
 - **Story:** The app creates a link between developers looking to work in open source projects and project leaders looking to find members of their team. It uses recommendation algorithms to present developers with interesting projects that adjust to their abilities. 
