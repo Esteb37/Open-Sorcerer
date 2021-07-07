@@ -172,7 +172,12 @@ Open Sorcerer is a social network dedicated to connecting developers with Open S
 
 
 ## Wireframes
-<img src="https://github.com/Esteb37/Open-Sorcerer/blob/main/Mobile%20Wireframe%20UI%20Kit%20(Community)%20(1)-1.png" width=600> <img src="https://github.com/Esteb37/Open-Sorcerer/blob/main/Mobile%20Wireframe%20UI%20Kit%20(Community)%20(2)-1.png" width=600>
+
+### Developer view
+<img src="https://github.com/Esteb37/Open-Sorcerer/blob/main/Mobile%20Wireframe%20UI%20Kit%20(Community)%20(1)-1.png" width=600>
+
+### Project Leader View
+<img src="https://github.com/Esteb37/Open-Sorcerer/blob/main/Mobile%20Wireframe%20UI%20Kit%20(Community)%20(2)-1.png" width=600>
 
 
 ### [BONUS] Digital Wireframes & Mockups
