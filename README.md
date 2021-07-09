@@ -187,7 +187,10 @@ Open Sorcerer is a social network dedicated to connecting developers with Open S
 ## Schema 
 [This section will be completed in Unit 9]
 ### Models
-[Add table of models]
+
+<img src="https://github.com/Esteb37/Open-Sorcerer/blob/main/Screen%20Shot%202021-07-09%20at%2012.22.09.png" width=600>
+
+
 ### Networking
 - [Add list of network requests by screen ]
 - [Create basic snippets for each Parse network request]
