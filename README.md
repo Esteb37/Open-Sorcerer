@@ -180,18 +180,64 @@ Open Sorcerer is a social network dedicated to connecting developers with Open S
 <img src="https://github.com/Esteb37/Open-Sorcerer/blob/main/Mobile%20Wireframe%20UI%20Kit%20(Community)%20(2)-1.png" width=600>
 
 
-### [BONUS] Digital Wireframes & Mockups
-
-### [BONUS] Interactive Prototype
-
 ## Schema 
-[This section will be completed in Unit 9]
+
 ### Models
 
-<img src="https://github.com/Esteb37/Open-Sorcerer/blob/main/Screen%20Shot%202021-07-09%20at%2012.22.09.png" width=600>
+<img src="https://github.com/Esteb37/Open-Sorcerer/blob/main/Screen%20Shot%202021-07-09%20at%2012.22.09.png" width=800>
 
 
 ### Networking
-- [Add list of network requests by screen ]
+
+* Login
+    * (READ/GET) User information
+    
+* Signup
+    * (CREATE/POST) Create user
+    
+* Home - Project card browser
+    * (READ/GET) List of projects
+    * (CREATE/POST) Add like to project
+    * (DELETE/POST) Remove like from project
+    * (WRITE/POST) Update view count
+    
+* Project information
+    * (READ/GET) Project information
+    * (READ/GET) Project Leader information
+    * (CREATE/POST) Add like to project
+    * (DELETE/POST) Remove like from project
+    * (WRITE/POST) Update click count
+    
+* Profile view
+    * (READ/GET) User information
+    * (WRITE/POST) Update user information
+
+* Chats
+    * (READ/GET) List of conversations
+    * (CREATE/POST) New conversation
+    * (READ/GET) User information for each conversation
+    * (READ/GET) Last message of each conversation
+    
+* Conversation
+    * (READ/GET) List of messages
+    * (READ/GET) Other user's information
+    * (CREATE/POST) New message
+    * (READ/GET) Information of each message
+    
+    
+* Home - My projects
+    * (READ/GET) List of created projects
+    
+* Project information
+    * (READ/GET) Project information
+    * (WRITE/POST) Edit project information
+    * (DELETE) Delete project
+    * (READ/GET) List of interested developers
+
+* Create Project
+    * (CREATE/POST) New project
+
+
+
 - [Create basic snippets for each Parse network request]
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
