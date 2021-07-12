@@ -4,22 +4,30 @@ import android.app.Application;
 
 import com.example.opensorcerer.R;
 
+import com.example.opensorcerer.models.Conversation;
+import com.example.opensorcerer.models.Project;
+import com.example.opensorcerer.models.users.UserHandler;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
-/*
+/**
     Class for handling the Database
  */
 public class ParseApplication extends Application {
 
-    /*
+    /**
         Sets up the Parse Application
      */
     @Override
     public void onCreate() {
         super.onCreate();
 
+        Parse.enableLocalDatastore(this);
+
         //Register custom objects into the database
+        ParseObject.registerSubclass(Conversation.class);
+        ParseObject.registerSubclass(UserHandler.class);
+        ParseObject.registerSubclass(Project.class);
 
 
         //Initialize the Parse database application
