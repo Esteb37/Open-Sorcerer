@@ -26,6 +26,10 @@ public class Manager extends User {
         return manager;
     }
 
+    public static Manager getCurrentUser(){
+        return fromParseUser(ParseUser.getCurrentUser());
+    }
+
     public ParseRelation<Project> getFavorites(){
         return mUser.getRelation(KEY_PROJECTS);
     }

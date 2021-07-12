@@ -27,6 +27,9 @@ public class Developer extends User {
         return developer;
     }
 
+    public static Developer getCurrentUser(){
+        return fromParseUser(ParseUser.getCurrentUser());
+    }
     public void setUser(UserHandler user) {
         mUser = user;
     }

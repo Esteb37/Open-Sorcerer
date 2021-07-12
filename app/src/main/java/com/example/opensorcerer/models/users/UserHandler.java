@@ -44,27 +44,55 @@ public class UserHandler extends ParseUser implements Parcelable {
         return getParseFile(KEY_PROFILE_PICTURE);
     }
 
+    public void setProfilePicture(ParseFile profilePicture) {
+        put(KEY_PROFILE_PICTURE,profilePicture);
+    }
+
     public String getExperience() {
         return getString(KEY_EXPERIENCE);
+    }
+
+    public void setExperience(String experience) {
+        put(KEY_EXPERIENCE,experience);
     }
 
     public String getGithub() {
         return getString(KEY_GITHUB);
     }
 
-    public ParseRole getRole() {
-        return (ParseRole) getParseObject(KEY_ROLE);
+    public void setGithub(String github) {
+        put(KEY_GITHUB,github);
+    }
+
+    public String getRole() {
+        return ((ParseRole) getParseObject(KEY_ROLE)).getName();
+    }
+
+    public void setRole(String role) {
+        put(KEY_ROLE,new ParseRole(role));
     }
 
     public String getName() {
         return getString(KEY_NAME);
     }
 
+    public void setName(String name) {
+        put(KEY_NAME,name);
+    }
+
     public String getBio() {
         return getString(KEY_BIO);
     }
 
+    public void setBio(String bio) {
+        put(KEY_BIO,bio);
+    }
+
     public ParseRelation<Conversation> getConversations(){
         return getRelation(KEY_CONVERSATIONS);
+    }
+
+    public void setConversations(ParseRelation<Conversation> conversation) {
+        put(KEY_CONVERSATIONS,conversation);
     }
 }
