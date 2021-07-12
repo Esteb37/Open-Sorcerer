@@ -1,11 +1,9 @@
-package com.example.instagram.parse;
+package com.example.opensorcerer.parse;
 
 import android.app.Application;
 
-import com.example.instagram.R;
-import com.example.instagram.models.Comment;
-import com.example.instagram.models.Post;
-import com.example.instagram.models.User;
+import com.example.opensorcerer.R;
+
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -22,9 +20,7 @@ public class ParseApplication extends Application {
         super.onCreate();
 
         //Register custom objects into the database
-        ParseObject.registerSubclass(Post.class);
-        ParseObject.registerSubclass(Comment.class);
-        ParseObject.registerSubclass(User.class);
+
 
         //Initialize the Parse database application
         Parse.initialize(new Parse.Configuration.Builder(this)
