@@ -3,7 +3,6 @@ package com.example.opensorcerer.models.users.roles;
 
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.User;
-import com.example.opensorcerer.models.users.UserHandler;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
@@ -23,15 +22,12 @@ public class Developer extends User {
      */
     public static Developer fromParseUser(ParseUser user){
         Developer developer = new Developer();
-        developer.setUser(UserHandler.fromParseUser(user));
+        developer.setUser(user);
         return developer;
     }
 
     public static Developer getCurrentUser(){
         return fromParseUser(ParseUser.getCurrentUser());
-    }
-    public void setUser(UserHandler user) {
-        mUser = user;
     }
 
     public ParseRelation<Project> getFavorites(){

@@ -6,7 +6,6 @@ import com.example.opensorcerer.R;
 
 import com.example.opensorcerer.models.Conversation;
 import com.example.opensorcerer.models.Project;
-import com.example.opensorcerer.models.users.UserHandler;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -26,7 +25,6 @@ public class ParseApplication extends Application {
 
         //Register custom objects into the database
         ParseObject.registerSubclass(Conversation.class);
-        ParseObject.registerSubclass(UserHandler.class);
         ParseObject.registerSubclass(Project.class);
 
 

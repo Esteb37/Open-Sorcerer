@@ -2,7 +2,6 @@ package com.example.opensorcerer.models.users.roles;
 
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.User;
-import com.example.opensorcerer.models.users.UserHandler;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
@@ -22,7 +21,7 @@ public class Manager extends User {
      */
     public static Manager fromParseUser(ParseUser user){
         Manager manager = new Manager();
-        manager.setUser(UserHandler.fromParseUser(user));
+        manager.setUser(user);
         return manager;
     }
 
