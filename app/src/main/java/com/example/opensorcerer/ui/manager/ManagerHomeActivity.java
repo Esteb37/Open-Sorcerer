@@ -2,6 +2,8 @@ package com.example.opensorcerer.ui.manager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -49,8 +51,57 @@ public class ManagerHomeActivity extends AppCompatActivity {
 
         mUser = Manager.fromParseUser(ParseUser.getCurrentUser());
 
-        new BuildGitHubTask().execute();
+        new Thread(new GitHubLoginTask()).start();
 
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+
+        //Ensure that the id's of the navigation items are final for the switch
+        final int actionHome = R.id.actionHome;
+        final int actionProfile = R.id.actionProfile;
+        final int actionNew = R.id.actionNew;
+        final int actionChats = R.id.actionChats;
+
+        app.bottomNav.setOnNavigationItemSelectedListener(item -> {
+            Fragment fragment;
+
+            //Navigate to a different fragment depending on the item selected
+            //and update the item's icons to highlight the one selected
+            switch(item.getItemId()){
+
+                //Home Item selected
+                case actionHome:
+                    fragment = new MyProjectsFragment();
+                    break;
+
+                //Post item selected
+                case actionNew:
+                    fragment = new CreateProjectFragment();
+                    break;
+
+                //Profile item selected
+                case actionProfile:
+
+                    //Put the current user into the arguments of the fragment
+                    fragment = new ProfileFragment();
+                    break;
+
+                //Profile item selected
+                case actionChats:
+
+                    //Put the current user into the arguments of the fragment
+                    fragment = new ConversationsFragment();
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + item.getItemId());
+            }
+
+            //Open the selected fragment
+            fragmentManager.beginTransaction().replace(app.flContainer.getId(),fragment).commit();
+            return true;
+        });
+
+        //Set the default window to be the Home
+        app.bottomNav.setSelectedItemId(R.id.actionHome);
     }
 
 
@@ -80,16 +131,14 @@ public class ManagerHomeActivity extends AppCompatActivity {
     }
 
 
-    class BuildGitHubTask extends AsyncTask<Void,Void,Void>{
-
+    public class GitHubLoginTask implements Runnable{
         @Override
-        protected Void doInBackground(Void... voids) {
+        public void run() {
             try {
-                mGitHub = ((OSApplication) getApplication()).buildGitHub(mUser.getGithubToken());
+                ((OSApplication) getApplication()).buildGitHub(mUser.getGithubToken());
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return null;
         }
     }
 
