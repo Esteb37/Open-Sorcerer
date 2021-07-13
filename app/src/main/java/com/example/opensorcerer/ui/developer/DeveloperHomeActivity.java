@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -21,6 +23,9 @@ import com.parse.ParseUser;
 
 
 import java.io.IOException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 public class DeveloperHomeActivity extends AppCompatActivity {
@@ -43,12 +48,12 @@ public class DeveloperHomeActivity extends AppCompatActivity {
 
         mUser = Developer.fromParseUser(ParseUser.getCurrentUser());
 
-        new BuildGitHubTask().execute();
-
         app.btnDeveloper.setOnClickListener(v -> {
             Intent i = new Intent(this, ManagerHomeActivity.class);
             startActivity(i);
         });
+
+        new Thread(new GitHubLoginTask()).start();
     }
 
 
@@ -61,9 +66,9 @@ public class DeveloperHomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.btnLogout){
+        if (item.getItemId() == R.id.btnLogout) {
             ParseUser.logOutInBackground(e -> {
-                if(e == null){
+                if (e == null) {
                     Intent i = new Intent(mContext, LoginActivity.class);
                     startActivity(i);
                     finish();
@@ -76,23 +81,14 @@ public class DeveloperHomeActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    class BuildGitHubTask extends AsyncTask<Void,Void,Void>{
-
+    public class GitHubLoginTask implements Runnable{
         @Override
-        protected Void doInBackground(Void... voids) {
+        public void run() {
             try {
                 ((OSApplication) getApplication()).buildGitHub(mUser.getGithubToken());
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return null;
         }
     }
-
-
-
-
-
-
 }
