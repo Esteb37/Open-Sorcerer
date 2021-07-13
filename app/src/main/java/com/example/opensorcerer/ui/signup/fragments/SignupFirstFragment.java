@@ -1,5 +1,6 @@
 package com.example.opensorcerer.ui.signup.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.FragmentSignupFirstBinding;
+import com.example.opensorcerer.databinding.FragmentSignupRoleBinding;
 import com.example.opensorcerer.models.users.User;
 import com.example.opensorcerer.models.users.roles.Developer;
 
@@ -22,8 +24,9 @@ import org.parceler.Parcels;
 
 public class SignupFirstFragment extends Fragment {
 
-
+    private static final String TAG = "SignupRoleFragment";
     private FragmentSignupFirstBinding app;
+    private Context mContext;
 
     private User newUser;
 
@@ -40,6 +43,8 @@ public class SignupFirstFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mContext = getContext();
 
         newUser = Parcels.unwrap(getArguments().getParcelable("user"));
 

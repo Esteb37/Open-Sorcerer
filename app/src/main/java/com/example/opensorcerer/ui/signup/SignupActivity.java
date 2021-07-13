@@ -1,5 +1,6 @@
 package com.example.opensorcerer.ui.signup;
 
+import android.content.Context;
 import android.os.Bundle;
 
 
@@ -19,21 +20,21 @@ import com.parse.ParseUser;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private AppBarConfiguration appBarConfiguration;
+    private static final String TAG = "SignupActivity";
     private ActivitySignupBinding app;
+    private Context mContext;
 
-    public static Manager mNewManager;
-    public static Developer mNewDeveloper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ParseUser.logOut();
         app = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(app.getRoot());
 
-        setSupportActionBar(app.toolbar);
+        mContext = this;
+
+        ParseUser.logOut();
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = new SignupRoleFragment();
