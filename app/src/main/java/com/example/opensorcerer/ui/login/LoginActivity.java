@@ -10,7 +10,9 @@ import android.widget.Toast;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.ActivityLoginBinding;
-import com.example.opensorcerer.ui.MainActivity;
+import com.example.opensorcerer.models.users.User;
+import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
+import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
 import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
@@ -28,7 +30,8 @@ public class LoginActivity extends AppCompatActivity {
         mContext = this;
 
         if(ParseUser.getCurrentUser()!=null){
-            navigateToMain();
+            String role = User.fromParseUser(ParseUser.getCurrentUser()).getRole();
+            navigateToMain(role);
         }
 
         app = ActivityLoginBinding.inflate(getLayoutInflater());
@@ -41,7 +44,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 //If the login is successful
                 if(e==null){
-                    navigateToMain();
+                    String role = User.fromParseUser(ParseUser.getCurrentUser()).getRole();
+                    navigateToMain(role);
                 } else{
                     Log.d(TAG,"Issue with login",e);
 
@@ -53,9 +57,15 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void navigateToMain() {
-        Intent i = new Intent(this, MainActivity.class);
+    private void navigateToMain(String role) {
+        Intent i = null;
+        if(role.equals("developer")){
+            i = new Intent(this, DeveloperHomeActivity.class);
+        } else if (role.equals("manager")) {
+            i = new Intent(this, ManagerHomeActivity.class);
+        }
         startActivity(i);
         finish();
     }
+
 }

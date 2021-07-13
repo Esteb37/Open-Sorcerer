@@ -11,7 +11,7 @@ import com.parse.ParseUser;
 import org.parceler.Parcel;
 
 
-public abstract class User {
+public class User {
 
     //Database keys
     private static final String KEY_PROFILE_PICTURE = "profilePicture";
@@ -26,6 +26,11 @@ public abstract class User {
 
     protected ParseUser mUser;
 
+    public static User fromParseUser(ParseUser parseUser){
+        User user = new User();
+        user.setHandler(parseUser);
+        return user;
+    }
     public User(){
         mUser = new ParseUser();
     }

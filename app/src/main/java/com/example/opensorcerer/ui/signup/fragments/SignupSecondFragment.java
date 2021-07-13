@@ -13,11 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.databinding.ActivitySignupBinding;
 import com.example.opensorcerer.databinding.FragmentSignupSecondBinding;
 import com.example.opensorcerer.models.users.User;
-import com.example.opensorcerer.models.users.roles.Developer;
-import com.example.opensorcerer.ui.MainActivity;
+import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
 import com.parse.ParseException;
 import com.parse.SignUpCallback;
 
@@ -68,7 +66,7 @@ public class SignupSecondFragment extends Fragment {
                 public void done(ParseException e) {
                     if(e==null){
                         Log.d("Signup","User created successfully");
-                        Intent i = new Intent(getContext(), MainActivity.class);
+                        Intent i = new Intent(getContext(), DeveloperHomeActivity.class);
                         startActivity(i);
                     }
                     else{
