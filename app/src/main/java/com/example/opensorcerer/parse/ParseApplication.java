@@ -9,6 +9,8 @@ import com.example.opensorcerer.models.Project;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+import okhttp3.OkHttpClient;
+
 /**
     Class for handling the Database
  */
