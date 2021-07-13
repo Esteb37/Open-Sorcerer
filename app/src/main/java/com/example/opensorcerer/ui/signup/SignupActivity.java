@@ -4,44 +4,40 @@ import android.os.Bundle;
 
 
 import com.example.opensorcerer.databinding.ActivitySignupBinding;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.opensorcerer.models.users.roles.Developer;
+import com.example.opensorcerer.models.users.roles.Manager;
+import com.example.opensorcerer.ui.signup.fragments.SignupRoleFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.opensorcerer.R;
+import com.parse.ParseUser;
 
 public class SignupActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivitySignupBinding app;
 
+    public static Manager mNewManager;
+    public static Developer mNewDeveloper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ParseUser.logOut();
         app = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(app.getRoot());
 
         setSupportActionBar(app.toolbar);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_login);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = new SignupRoleFragment();
+        fragmentManager.beginTransaction().replace(R.id.flContainer,fragment).commit();
 
-
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_login);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
     }
 }

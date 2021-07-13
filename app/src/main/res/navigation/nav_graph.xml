@@ -3,23 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/RoleFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.opensorcerer.ui.signup.SignupFirst"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/signup_first">
+        android:id="@+id/RoleFragment"
+        android:name="com.example.opensorcerer.ui.signup.fragments.SignupRoleFragment"
+        android:label="Role"
+        tools:layout="@layout/fragment_signup_role">
 
+        <action
+            android:id="@+id/action_RoleFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/FirstFragment"
+        android:name="com.example.opensorcerer.ui.signup.fragments.SignupFirstFragment"
+        android:label="@string/first_fragment_label"
+        tools:layout="@layout/fragment_signup_first">
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_RoleFragment"
+            app:destination="@id/RoleFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.opensorcerer.ui.signup.SignupSecond"
+        android:name="com.example.opensorcerer.ui.signup.fragments.SignupSecondFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/signup_second">
+        tools:layout="@layout/fragment_signup_second">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"

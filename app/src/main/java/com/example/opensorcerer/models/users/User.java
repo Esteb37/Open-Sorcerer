@@ -1,10 +1,15 @@
 package com.example.opensorcerer.models.users;
 
+import android.os.Parcelable;
+
 import com.example.opensorcerer.models.Conversation;
 import com.parse.ParseFile;
 import com.parse.ParseRelation;
 import com.parse.ParseRole;
 import com.parse.ParseUser;
+
+import org.parceler.Parcel;
+
 
 public abstract class User {
 
@@ -12,6 +17,8 @@ public abstract class User {
     private static final String KEY_PROFILE_PICTURE = "profilePicture";
     private static final String KEY_CONVERSATIONS = "conversations";
     private static final String KEY_EXPERIENCE = "experience";
+    private static final String KEY_GITHUB_TOKEN = "ghToken";
+    private static final String KEY_PASSWORD = "password";
     private static final String KEY_GITHUB = "github";
     private static final String KEY_ROLE = "role";
     private static final String KEY_NAME = "name";
@@ -19,9 +26,15 @@ public abstract class User {
 
     protected ParseUser mUser;
 
-    public void setUser(ParseUser user) {
+    public User(){
+        mUser = new ParseUser();
+    }
+
+    public void setHandler(ParseUser user) {
         mUser = user;
     }
+
+    public ParseUser getHandler() { return mUser; }
 
     public String getObjectId(){
         return mUser.getObjectId();
@@ -39,6 +52,10 @@ public abstract class User {
 
     public void setEmail(String email) {
         mUser.setEmail(email);
+    }
+
+    public void setPassword(String password) {
+        mUser.setPassword(password);
     }
 
     public ParseFile getProfilePicture() {
@@ -65,12 +82,20 @@ public abstract class User {
         mUser.put(KEY_GITHUB,github);
     }
 
+    public String getGithubToken() {
+        return mUser.getString(KEY_GITHUB_TOKEN);
+    }
+
+    public void setGithubToken(String token) {
+        mUser.put(KEY_GITHUB_TOKEN,token);
+    }
+
     public String getRole() {
-        return ((ParseRole) mUser.getParseObject(KEY_ROLE)).getName();
+        return mUser.getString(KEY_ROLE);
     }
 
     public void setRole(String role) {
-        mUser.put(KEY_ROLE,new ParseRole(role));
+        mUser.put(KEY_ROLE,role);
     }
 
     public String getName() {

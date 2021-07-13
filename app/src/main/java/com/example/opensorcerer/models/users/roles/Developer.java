@@ -6,14 +6,20 @@ import com.example.opensorcerer.models.users.User;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import org.parceler.Parcel;
+
 /**
  * Class for handling User objects with the Developer Role
  */
+@Parcel
 public class Developer extends User {
 
     //Database keys.
     private static final String KEY_FAVORITES = "favorites";
 
+    public Developer(){
+        setRole("developer");
+    }
     /**
      * Creates a custom Developer Object from a ParseUser object
      *
@@ -22,7 +28,7 @@ public class Developer extends User {
      */
     public static Developer fromParseUser(ParseUser user){
         Developer developer = new Developer();
-        developer.setUser(user);
+        developer.setHandler(user);
         return developer;
     }
 

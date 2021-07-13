@@ -5,14 +5,20 @@ import com.example.opensorcerer.models.users.User;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import org.parceler.Parcel;
+
 /**
  * Class for handling User objects with the Manager role
  */
+@Parcel
 public class Manager extends User {
 
     //Database keys.
     private static final String KEY_PROJECTS = "projects";
 
+    public Manager(){
+        setRole("manager");
+    }
     /**
      * Creates a custom Manager Object from a ParseUser object
      *
@@ -21,7 +27,7 @@ public class Manager extends User {
      */
     public static Manager fromParseUser(ParseUser user){
         Manager manager = new Manager();
-        manager.setUser(user);
+        manager.setHandler(user);
         return manager;
     }
 

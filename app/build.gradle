@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -60,4 +61,5 @@ dependencies {
     implementation "androidx.percentlayout:percentlayout:1.0.0"
     // https://mvnrepository.com/artifact/org.kohsuke/github-api
     implementation group: 'org.kohsuke', name: 'github-api', version: '1.131'
+
 }
