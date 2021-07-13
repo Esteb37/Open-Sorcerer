@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.opensorcerer.R;
+import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.ActivityManagerHomeBinding;
 import com.example.opensorcerer.models.users.User;
 import com.example.opensorcerer.models.users.roles.Manager;
@@ -32,6 +33,7 @@ public class ManagerHomeActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private ActivityManagerHomeBinding app;
     private Context mContext;
+    private GitHub mGitHub;
 
     private User mUser;
     @Override
@@ -47,7 +49,8 @@ public class ManagerHomeActivity extends AppCompatActivity {
 
         mUser = Manager.fromParseUser(ParseUser.getCurrentUser());
 
-        new LoginTask().execute();
+        new BuildGitHubTask().execute();
+
     }
 
 
@@ -77,24 +80,19 @@ public class ManagerHomeActivity extends AppCompatActivity {
     }
 
 
-    class LoginTask extends AsyncTask<Void,Void,Void> {
+    class BuildGitHubTask extends AsyncTask<Void,Void,Void>{
 
-        GitHub github;
         @Override
         protected Void doInBackground(Void... voids) {
-            GitHubBuilder builder = new GitHubBuilder();
             try {
-
-                github = new GitHubBuilder().withJwtToken(mUser.getGithubToken()).build();
-                GHMyself ghUser = github.getMyself();
+                mGitHub = ((OSApplication) getApplication()).buildGitHub(mUser.getGithubToken());
             } catch (IOException e) {
-                runOnUiThread(() -> Toast.makeText(mContext, "Invalid GitHub token", Toast.LENGTH_SHORT).show());
                 e.printStackTrace();
             }
-
             return null;
         }
-
     }
+
+
 
 }

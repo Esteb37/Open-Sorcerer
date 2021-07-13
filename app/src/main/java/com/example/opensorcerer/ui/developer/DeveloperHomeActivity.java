@@ -4,26 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.opensorcerer.R;
+import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.ActivityDeveloperHomeBinding;
 import com.example.opensorcerer.models.users.roles.Developer;
 import com.example.opensorcerer.ui.login.LoginActivity;
+import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
 import com.parse.ParseUser;
 
-import org.kohsuke.github.GitHub;
-import org.kohsuke.github.GitHubBuilder;
 
 import java.io.IOException;
-import java.util.Objects;
 
 
 public class DeveloperHomeActivity extends AppCompatActivity {
@@ -46,7 +43,12 @@ public class DeveloperHomeActivity extends AppCompatActivity {
 
         mUser = Developer.fromParseUser(ParseUser.getCurrentUser());
 
-        new LoginTask().execute();
+        new BuildGitHubTask().execute();
+
+        app.btnDeveloper.setOnClickListener(v -> {
+            Intent i = new Intent(this, ManagerHomeActivity.class);
+            startActivity(i);
+        });
     }
 
 
@@ -75,25 +77,20 @@ public class DeveloperHomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    class LoginTask extends AsyncTask<Void,Void,Void> {
+    class BuildGitHubTask extends AsyncTask<Void,Void,Void>{
 
-        GitHub github;
         @Override
         protected Void doInBackground(Void... voids) {
-            GitHubBuilder builder = new GitHubBuilder();
             try {
-
-                github = new GitHubBuilder().withJwtToken(mUser.getGithubToken()).build();
-                Log.d("Test",github.getMyself().getCompany());
+                ((OSApplication) getApplication()).buildGitHub(mUser.getGithubToken());
             } catch (IOException e) {
-                runOnUiThread(() -> Toast.makeText(mContext, "Invalid GitHub token", Toast.LENGTH_SHORT).show());
                 e.printStackTrace();
             }
-
             return null;
         }
-
     }
+
+
 
 
 
