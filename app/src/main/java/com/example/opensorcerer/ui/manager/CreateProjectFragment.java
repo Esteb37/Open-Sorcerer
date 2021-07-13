@@ -6,22 +6,35 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.opensorcerer.R;
+import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreateProjectBinding;
+import com.example.opensorcerer.models.Project;
+import com.example.opensorcerer.models.users.roles.Manager;
+import com.parse.ParseException;
+import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
+import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
+
+import java.io.IOException;
 
 
 public class CreateProjectFragment extends Fragment {
 
     private static final String TAG = "CreateProject";
     private FragmentCreateProjectBinding app;
+    private Manager mUser;
     private Context mContext;
     private GitHub mGitHub;
 
@@ -46,5 +59,49 @@ public class CreateProjectFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mContext = getContext();
+        mGitHub = ((OSApplication) getActivity().getApplication()).getGitHub();
+        mUser = Manager.getCurrentUser();
+
+        app.btnQuick.setOnClickListener(v -> {
+            new Thread(new GetRepoTask()).start();
+        });
+
+        app.btnCreate.setOnClickListener(v -> {
+            Project project = new Project();
+            project.setTitle(app.etTitle.getText().toString());
+            project.setDescription(app.etShortDescription.getText().toString());
+            project.setReadme(app.etReadme.getText().toString());
+            project.setManager(mUser);
+            project.setRepository(app.etRepo.getText().toString());
+            project.saveInBackground(e -> {
+                if(e==null){
+                    final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.flContainer,new MyProjectsFragment()).commit();
+                    Log.d("Test","Project saved successfully");
+                } else {
+                    e.printStackTrace();
+                }
+            });
+        });
     }
+
+    private class GetRepoTask implements Runnable {
+
+        @Override
+        public void run() {
+            String repoLink = app.etRepo.getText().toString().split("github.com/")[1];
+            try {
+                Looper.prepare();
+                GHRepository ghRepo = mGitHub.getRepository(repoLink);
+                app.etTitle.setText(ghRepo.getName());
+                app.etReadme.setText(ghRepo.getReadme().getHtmlUrl());
+                app.etShortDescription.setText(ghRepo.getDescription());
+            } catch (IOException e) {
+                Toast.makeText(mContext, "Invalid Repo Link", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

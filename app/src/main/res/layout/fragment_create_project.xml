@@ -1,14 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.manager.CreateProjectFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Create project" />
+    <EditText
+        android:id="@+id/etReadme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Project README"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/btnQuick"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/etRepo"
+        app:layout_constraintTop_toBottomOf="@+id/etShortDescription" />
 
-</FrameLayout>
+    <EditText
+        android:id="@+id/etRepo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="30dp"
+        android:ems="10"
+        android:hint="GitHub Repo link"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/btnQuick"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnQuick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:text="Quick Setup"
+        app:layout_constraintBottom_toBottomOf="@+id/etRepo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/etRepo" />
+
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="Project Title"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/btnQuick"
+        app:layout_constraintStart_toStartOf="@+id/etRepo"
+        app:layout_constraintTop_toBottomOf="@+id/etRepo" />
+
+    <EditText
+        android:id="@+id/etShortDescription"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Briefly describe your project."
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="@+id/etTitle"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="@+id/etTitle"
+        app:layout_constraintTop_toBottomOf="@+id/etTitle" />
+
+    <Button
+        android:id="@+id/btnCreate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Create"
+        app:layout_constraintEnd_toEndOf="@+id/etReadme"
+        app:layout_constraintStart_toStartOf="@+id/etReadme"
+        app:layout_constraintTop_toBottomOf="@+id/etReadme" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
