@@ -60,5 +60,4 @@ dependencies {
     implementation "androidx.percentlayout:percentlayout:1.0.0"
     // https://mvnrepository.com/artifact/org.kohsuke/github-api
     implementation group: 'org.kohsuke', name: 'github-api', version: '1.131'
-
 }
