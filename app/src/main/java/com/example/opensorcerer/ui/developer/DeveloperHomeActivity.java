@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -14,11 +15,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.ActivityDeveloperHomeBinding;
+import com.example.opensorcerer.models.users.roles.Developer;
 import com.example.opensorcerer.ui.login.LoginActivity;
 import com.parse.ParseUser;
 
+import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
+import java.io.IOException;
 import java.util.Objects;
 
 
@@ -28,18 +32,19 @@ public class DeveloperHomeActivity extends AppCompatActivity {
     private ActivityDeveloperHomeBinding app;
     private Context mContext;
 
+    private Developer mUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_developer_home);
 
-
-
         app = ActivityDeveloperHomeBinding.inflate(getLayoutInflater());
         setContentView(app.getRoot());
 
-
         mContext = this;
+
+        mUser = Developer.fromParseUser(ParseUser.getCurrentUser());
 
         new LoginTask().execute();
     }
@@ -72,11 +77,22 @@ public class DeveloperHomeActivity extends AppCompatActivity {
 
     class LoginTask extends AsyncTask<Void,Void,Void> {
 
+        GitHub github;
         @Override
         protected Void doInBackground(Void... voids) {
             GitHubBuilder builder = new GitHubBuilder();
+            try {
+
+                github = new GitHubBuilder().withJwtToken(mUser.getGithubToken()).build();
+                Log.d("Test",github.getMyself().getCompany());
+            } catch (IOException e) {
+                runOnUiThread(() -> Toast.makeText(mContext, "Invalid GitHub token", Toast.LENGTH_SHORT).show());
+                e.printStackTrace();
+            }
+
             return null;
         }
+
     }
 
 

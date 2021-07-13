@@ -1,17 +1,30 @@
 package com.example.opensorcerer.ui.manager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.ActivityManagerHomeBinding;
+import com.example.opensorcerer.models.users.User;
+import com.example.opensorcerer.models.users.roles.Manager;
 import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
+import com.example.opensorcerer.ui.login.LoginActivity;
+import com.parse.ParseUser;
 
+import org.kohsuke.github.GHMyself;
+import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
+
+import java.io.IOException;
 
 public class ManagerHomeActivity extends AppCompatActivity {
 
@@ -20,6 +33,7 @@ public class ManagerHomeActivity extends AppCompatActivity {
     private ActivityManagerHomeBinding app;
     private Context mContext;
 
+    private User mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,9 +43,11 @@ public class ManagerHomeActivity extends AppCompatActivity {
         app = ActivityManagerHomeBinding.inflate(getLayoutInflater());
         setContentView(app.getRoot());
 
-
         mContext = this;
 
+        mUser = Manager.fromParseUser(ParseUser.getCurrentUser());
+
+        new LoginTask().execute();
     }
 
 
@@ -42,14 +58,43 @@ public class ManagerHomeActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.btnLogout){
+            ParseUser.logOutInBackground(e -> {
+                if(e == null){
+                    Intent i = new Intent(mContext, LoginActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    Toast.makeText(mContext, "Unable to log out.", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            });
 
-    class LoginTask extends AsyncTask<Void, Void, Void> {
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+
+    class LoginTask extends AsyncTask<Void,Void,Void> {
+
+        GitHub github;
         @Override
         protected Void doInBackground(Void... voids) {
             GitHubBuilder builder = new GitHubBuilder();
+            try {
+
+                github = new GitHubBuilder().withJwtToken(mUser.getGithubToken()).build();
+                GHMyself ghUser = github.getMyself();
+            } catch (IOException e) {
+                runOnUiThread(() -> Toast.makeText(mContext, "Invalid GitHub token", Toast.LENGTH_SHORT).show());
+                e.printStackTrace();
+            }
+
             return null;
         }
+
     }
 
 }
