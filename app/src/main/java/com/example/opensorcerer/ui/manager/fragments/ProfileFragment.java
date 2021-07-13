@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.manager;
+package com.example.opensorcerer.ui.manager.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.FragmentProfileBinding;
 
 import org.jetbrains.annotations.NotNull;

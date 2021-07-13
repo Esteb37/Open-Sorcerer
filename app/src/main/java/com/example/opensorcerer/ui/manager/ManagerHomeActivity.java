@@ -7,9 +7,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -19,13 +17,14 @@ import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.ActivityManagerHomeBinding;
 import com.example.opensorcerer.models.users.User;
 import com.example.opensorcerer.models.users.roles.Manager;
-import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
 import com.example.opensorcerer.ui.login.LoginActivity;
+import com.example.opensorcerer.ui.manager.fragments.ConversationsFragment;
+import com.example.opensorcerer.ui.manager.fragments.CreateProjectFragment;
+import com.example.opensorcerer.ui.manager.fragments.MyProjectsFragment;
+import com.example.opensorcerer.ui.manager.fragments.ProfileFragment;
 import com.parse.ParseUser;
 
-import org.kohsuke.github.GHMyself;
 import org.kohsuke.github.GitHub;
-import org.kohsuke.github.GitHubBuilder;
 
 import java.io.IOException;
 

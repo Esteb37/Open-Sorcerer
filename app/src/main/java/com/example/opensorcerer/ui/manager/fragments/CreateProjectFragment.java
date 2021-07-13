@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.manager;
+package com.example.opensorcerer.ui.manager.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -20,8 +20,6 @@ import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreateProjectBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.roles.Manager;
-import com.parse.ParseException;
-import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GHRepository;
