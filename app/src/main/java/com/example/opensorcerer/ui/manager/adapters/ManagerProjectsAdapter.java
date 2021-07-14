@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ManagerProjectsAdapter extends RecyclerView.Adapter<ManagerProjectHolder>{
 
     List<Project> mProjects;

@@ -10,6 +10,7 @@ import com.parse.ParseObject;
 /**
  * Class for handling Project objects from the Parse database
  */
+@SuppressWarnings("unused")
 @ParseClassName("Project")
 public class Project extends ParseObject implements Parcelable {
 

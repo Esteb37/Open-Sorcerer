@@ -8,18 +8,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.FragmentSignupRoleBinding;
-import com.example.opensorcerer.databinding.FragmentSignupSecondBinding;
 import com.example.opensorcerer.models.users.User;
 import com.example.opensorcerer.models.users.roles.Developer;
 import com.example.opensorcerer.models.users.roles.Manager;
 
-import org.parceler.Parcels;
+import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupRoleFragment extends Fragment {
 
     private static final String TAG = "SignupRoleFragment";
@@ -30,7 +28,7 @@ public class SignupRoleFragment extends Fragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
+            @NotNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
 

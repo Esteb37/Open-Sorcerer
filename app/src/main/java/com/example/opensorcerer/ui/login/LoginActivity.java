@@ -15,6 +15,7 @@ import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
 import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
 import com.parse.ParseUser;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class LoginActivity extends AppCompatActivity {
 
 

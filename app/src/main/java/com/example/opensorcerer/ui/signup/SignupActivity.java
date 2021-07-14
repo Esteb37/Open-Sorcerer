@@ -5,8 +5,6 @@ import android.os.Bundle;
 
 
 import com.example.opensorcerer.databinding.ActivitySignupBinding;
-import com.example.opensorcerer.models.users.roles.Developer;
-import com.example.opensorcerer.models.users.roles.Manager;
 import com.example.opensorcerer.ui.signup.fragments.SignupRoleFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +19,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.opensorcerer.R;
 import com.parse.ParseUser;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupActivity extends AppCompatActivity {
 
     private static final String TAG = "SignupActivity";

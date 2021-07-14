@@ -6,11 +6,10 @@ import com.example.opensorcerer.models.users.User;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
-import org.parceler.Parcel;
-
 /**
  * Class for handling User objects with the Developer Role
  */
+@SuppressWarnings("unused")
 public class Developer extends User {
 
     //Database keys.

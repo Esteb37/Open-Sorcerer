@@ -17,6 +17,7 @@ import java.io.IOException;
 /**
     Class for handling the Database
  */
+@SuppressWarnings("unused")
 public class OSApplication extends Application {
 
     /**
@@ -49,11 +50,11 @@ public class OSApplication extends Application {
         return mGitHub;
     }
 
-    public GitHub buildGitHub(String token) throws IOException{
+    public void buildGitHub(String token) throws IOException{
         mGitHub = new GitHubBuilder().withJwtToken(token).build();
         mGHMyself = mGitHub.getMyself();
-        return getGitHub();
     }
+
 
     public GHMyself getGHMyself(){
         return mGHMyself;

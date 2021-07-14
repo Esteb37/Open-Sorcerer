@@ -28,6 +28,7 @@ import org.kohsuke.github.GitHub;
 
 import java.io.IOException;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ManagerHomeActivity extends AppCompatActivity {
 
 
@@ -60,7 +61,7 @@ public class ManagerHomeActivity extends AppCompatActivity {
         final int actionNew = R.id.actionNew;
         final int actionChats = R.id.actionChats;
 
-        app.bottomNav.setOnNavigationItemSelectedListener(item -> {
+        app.bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment;
 
             //Navigate to a different fragment depending on the item selected

@@ -2,10 +2,7 @@ package com.example.opensorcerer.ui.developer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -23,11 +20,9 @@ import com.parse.ParseUser;
 
 
 import java.io.IOException;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class DeveloperHomeActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -48,10 +43,6 @@ public class DeveloperHomeActivity extends AppCompatActivity {
 
         mUser = Developer.fromParseUser(ParseUser.getCurrentUser());
 
-        app.btnDeveloper.setOnClickListener(v -> {
-            Intent i = new Intent(this, ManagerHomeActivity.class);
-            startActivity(i);
-        });
 
         new Thread(new GitHubLoginTask()).start();
     }

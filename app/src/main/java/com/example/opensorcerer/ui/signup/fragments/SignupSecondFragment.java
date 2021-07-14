@@ -11,19 +11,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.FragmentSignupSecondBinding;
 import com.example.opensorcerer.models.users.User;
 import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
-import com.parse.ParseException;
-import com.parse.SignUpCallback;
 
 import org.jetbrains.annotations.NotNull;
-import org.parceler.Parcels;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupSecondFragment extends Fragment {
 
     private static final String TAG = "SignupSecondFragment";
@@ -54,26 +50,21 @@ public class SignupSecondFragment extends Fragment {
 
         newUser = SignupSecondFragmentArgs.fromBundle(getArguments()).getUser();
 
-        app.btnBack.setOnClickListener(v -> {
-            navigateBack();
-        });
+        app.btnBack.setOnClickListener(v -> navigateBack());
 
         app.btnFinish.setOnClickListener(v -> {
 
             newUser.setUsername(app.etUsername.getText().toString());
             newUser.setGithubToken(app.etToken.getText().toString());
 
-            newUser.getHandler().signUpInBackground(new SignUpCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if(e==null){
-                        Log.d("Signup","User created successfully");
-                        Intent i = new Intent(getContext(), DeveloperHomeActivity.class);
-                        startActivity(i);
-                    }
-                    else{
-                        e.printStackTrace();
-                    }
+            newUser.getHandler().signUpInBackground(e -> {
+                if(e==null){
+                    Log.d("Signup","User created successfully");
+                    Intent i = new Intent(getContext(), DeveloperHomeActivity.class);
+                    startActivity(i);
+                }
+                else{
+                    e.printStackTrace();
                 }
             });
         });

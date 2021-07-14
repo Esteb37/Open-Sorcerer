@@ -12,18 +12,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.FragmentSignupFirstBinding;
-import com.example.opensorcerer.databinding.FragmentSignupRoleBinding;
 import com.example.opensorcerer.models.users.User;
-import com.example.opensorcerer.models.users.roles.Developer;
 
-import org.parceler.Parcels;
+import org.jetbrains.annotations.NotNull;
 
+
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupFirstFragment extends Fragment {
 
     private static final String TAG = "SignupRoleFragment";
@@ -34,7 +32,7 @@ public class SignupFirstFragment extends Fragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
+            @NotNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
 
@@ -58,9 +56,7 @@ public class SignupFirstFragment extends Fragment {
             }
         });
 
-        app.btnBack.setOnClickListener(v -> {
-            navigateBackward();
-        });
+        app.btnBack.setOnClickListener(v -> navigateBackward());
     }
 
     private void navigateBackward() {
@@ -73,25 +69,16 @@ public class SignupFirstFragment extends Fragment {
         SignupFirstFragmentDirections.FirstToSecondAction firstToSecondAction = SignupFirstFragmentDirections.firstToSecondAction(newUser);
         NavHostFragment.findNavController(this)
                 .navigate(firstToSecondAction);
-        /*final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("user",Parcels.wrap(newUser));
-
-
-        Fragment fragment = new SignupSecondFragment();
-        fragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContainer,fragment).commit();*/
     }
 
     private boolean inputsAreValid() {
         if(!isValidEmail(app.etEmail.getText())){
-            Toast.makeText(getContext(),"Email is invalid",Toast.LENGTH_SHORT);
+            Toast.makeText(getContext(),"Email is invalid",Toast.LENGTH_SHORT).show();
             return false;
         }
         if(app.etPassword.getText() == app.etConfirm.getText()){
             Log.d("SignupFirst", String.format("%s %s %s", app.etPassword.getText(), app.etConfirm.getText(),app.etPassword.getText().equals(app.etConfirm.getText())));
-            Toast.makeText(getContext(),"Passwords do not match",Toast.LENGTH_SHORT);
+            Toast.makeText(getContext(),"Passwords do not match",Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

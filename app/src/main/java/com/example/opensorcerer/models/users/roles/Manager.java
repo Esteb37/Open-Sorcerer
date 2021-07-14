@@ -5,11 +5,11 @@ import com.example.opensorcerer.models.users.User;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
-import org.parceler.Parcel;
 
 /**
  * Class for handling User objects with the Manager role
  */
+@SuppressWarnings("unused")
 public class Manager extends User {
 
     //Database keys.

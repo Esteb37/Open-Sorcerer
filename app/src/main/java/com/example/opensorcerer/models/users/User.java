@@ -6,10 +6,9 @@ import android.os.Parcelable;
 import com.example.opensorcerer.models.Conversation;
 import com.parse.ParseFile;
 import com.parse.ParseRelation;
-import com.parse.ParseRole;
 import com.parse.ParseUser;
 
-
+@SuppressWarnings("unused")
 public class User implements Parcelable{
 
     //Database keys
