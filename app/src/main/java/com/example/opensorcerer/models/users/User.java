@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.example.opensorcerer.models.Conversation;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -149,5 +150,9 @@ public class User implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(mUser, flags);
+    }
+
+    public ParseUser fetchIfNeeded() throws ParseException {
+        return mUser.fetchIfNeeded();
     }
 }
