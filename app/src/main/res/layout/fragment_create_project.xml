@@ -7,19 +7,6 @@
     tools:context=".ui.manager.fragments.CreateProjectFragment">
 
     <EditText
-        android:id="@+id/etReadme"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="Project README"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/btnQuick"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/etRepo"
-        app:layout_constraintTop_toBottomOf="@+id/etShortDescription" />
-
-    <EditText
         android:id="@+id/etRepo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -78,5 +65,46 @@
         app:layout_constraintEnd_toEndOf="@+id/etReadme"
         app:layout_constraintStart_toStartOf="@+id/etReadme"
         app:layout_constraintTop_toBottomOf="@+id/etReadme" />
+
+    <EditText
+        android:id="@+id/etTags"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Add tags to your project"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="@+id/etShortDescription"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/etShortDescription"
+        app:layout_constraintTop_toBottomOf="@+id/etShortDescription" />
+
+    <EditText
+        android:id="@+id/etLanguages"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Select the languages used"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="@+id/etShortDescription"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/etShortDescription"
+        app:layout_constraintTop_toBottomOf="@+id/etTags" />
+
+    <EditText
+        android:id="@+id/etReadme"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Project README"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/btnQuick"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/etRepo"
+        app:layout_constraintTop_toBottomOf="@+id/etLanguages" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
