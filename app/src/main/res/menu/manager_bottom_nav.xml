@@ -9,7 +9,7 @@
         android:title="Home"
         app:showAsAction="always" />
     <item
-        android:id="@+id/actionFavorites"
+        android:id="@+id/actionNew"
         android:enabled="true"
         android:icon="@android:drawable/ic_input_add"
         android:iconTint="#FFFFFF"

@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
+import com.example.opensorcerer.databinding.ActivityDeveloperHomeBinding;
 import com.example.opensorcerer.databinding.ActivityManagerHomeBinding;
 import com.example.opensorcerer.models.users.roles.Developer;
 import com.example.opensorcerer.ui.developer.fragments.ConversationsFragment;
@@ -32,7 +33,7 @@ public class DeveloperHomeActivity extends AppCompatActivity {
 
 
     private static final String TAG = "MainActivity";
-    private ActivityManagerHomeBinding app;
+    private ActivityDeveloperHomeBinding app;
     private Context mContext;
     private GitHub mGitHub;
 
@@ -43,7 +44,7 @@ public class DeveloperHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_developer_home);
 
 
-        app = ActivityManagerHomeBinding.inflate(getLayoutInflater());
+        app = ActivityDeveloperHomeBinding.inflate(getLayoutInflater());
         setContentView(app.getRoot());
 
         mContext = this;

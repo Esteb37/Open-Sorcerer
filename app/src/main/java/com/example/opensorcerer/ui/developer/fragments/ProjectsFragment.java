@@ -9,16 +9,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import com.example.opensorcerer.databinding.FragmentMyProjectsBinding;
 import com.example.opensorcerer.databinding.FragmentProjectsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.roles.Manager;
-import com.example.opensorcerer.ui.developer.adapters.ProjectsHolder;
+import com.example.opensorcerer.ui.developer.adapters.ProjectsAdapter;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +34,7 @@ public class ProjectsFragment extends Fragment {
     private GitHub mGitHub;
     private Manager mUser;
 
-    private ProjectsHolder mAdapter;
+    private ProjectsAdapter mAdapter;
 
     private List<Project> mProjects;
 
@@ -66,14 +65,14 @@ public class ProjectsFragment extends Fragment {
 
         mProjects = new ArrayList<>();
 
-        mAdapter = new ProjectsHolder(mProjects,mContext);
+        mAdapter = new ProjectsAdapter(mProjects,mContext);
 
 
 
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(app.rvProjects);
         app.rvProjects.setAdapter(mAdapter);
-        app.rvProjects.setLayoutManager(new LinearLayoutManager(mContext));
+        app.rvProjects.setLayoutManager(new LinearLayoutManager(mContext,RecyclerView.HORIZONTAL,false));
 
         queryProjects();
     }

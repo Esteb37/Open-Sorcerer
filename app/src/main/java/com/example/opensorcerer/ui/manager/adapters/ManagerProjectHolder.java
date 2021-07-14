@@ -33,6 +33,7 @@ public class ManagerProjectHolder extends RecyclerView.ViewHolder{
         app.tvTitle.setText(project.getTitle());
         app.tvDescription.setText(project.getDescription());
 
+        app.tvTitle.setMaxLines(project.getTitle().split(" ").length);
 
         ParseFile image = project.getLogoImage();
         if(image != null){

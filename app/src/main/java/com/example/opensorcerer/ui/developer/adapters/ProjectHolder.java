@@ -15,6 +15,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 
 import java.util.List;
+import java.util.StringTokenizer;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ProjectHolder extends RecyclerView.ViewHolder{
@@ -36,6 +37,9 @@ public class ProjectHolder extends RecyclerView.ViewHolder{
 
         app.tvTitle.setText(project.getTitle());
         app.tvDescription.setText(project.getDescription());
+
+        app.tvTitle.setMaxLines(project.getTitle().split(" ").length);
+
         try {
             app.tvAuthor.setText(String.format("by %s", project.getManager().fetchIfNeeded().getUsername()));
         } catch (ParseException e) {

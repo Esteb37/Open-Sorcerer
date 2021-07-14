@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.opensorcerer.databinding.ItemManagerProjectBinding;
+
 import com.example.opensorcerer.databinding.ItemProjectBinding;
 import com.example.opensorcerer.models.Project;
 
@@ -17,14 +17,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class ProjectsHolder extends RecyclerView.Adapter<ProjectHolder>{
+public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
 
     List<Project> mProjects;
     Context mContext;
 
     ItemProjectBinding app;
 
-    public ProjectsHolder(List<Project> projects, Context context) {
+    public ProjectsAdapter(List<Project> projects, Context context) {
         mProjects = projects;
         mContext = context;
     }
