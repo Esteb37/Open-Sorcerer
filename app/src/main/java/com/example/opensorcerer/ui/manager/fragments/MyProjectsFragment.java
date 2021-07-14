@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.example.opensorcerer.databinding.FragmentMyProjectsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.roles.Manager;
 import com.example.opensorcerer.ui.manager.adapters.ManagerProjectsAdapter;
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 
@@ -62,6 +65,8 @@ public class MyProjectsFragment extends Fragment {
 
         mProjects = new ArrayList<>();
 
+        mContext = getContext();
+
         mAdapter = new ManagerProjectsAdapter(mProjects,mContext);
 
         app.rvProjects.setAdapter(mAdapter);
@@ -75,6 +80,12 @@ public class MyProjectsFragment extends Fragment {
     public void queryProjects(){
         ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContains("manager",mUser.getObjectId());
         query.addDescendingOrder("createdAt");
-        query.findInBackground((projects, e) -> mAdapter.addAll(projects));
+        query.findInBackground((projects, e) -> {
+            if(e==null){
+                mAdapter.addAll(projects);
+            } else {
+                Log.d(TAG,"Unable to load projects.");
+            }
+        });
     }
 }

@@ -7,6 +7,8 @@ import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 
+import java.util.List;
+
 /**
  * Class for handling Project objects from the Parse database
  */
@@ -22,9 +24,12 @@ public class Project extends ParseObject implements Parcelable {
     private static final String KEY_LOGO_IMAGE = "logoImage";
     private static final String KEY_LIKE_COUNT = "likeCount";
     private static final String KEY_VIEW_COUNT = "viewCount";
+    private static final String KEY_LANGUAGES = "languages";
     private static final String KEY_MANAGER = "manager";
     private static final String KEY_README = "readme";
     private static final String KEY_TITLE = "title";
+    private static final String KEY_TAGS = "tags";
+
 
     public String getDescription() {
         return getString(KEY_DESCRIPTION);
@@ -94,6 +99,19 @@ public class Project extends ParseObject implements Parcelable {
         return getLong(KEY_VIEW_COUNT);
     }
 
+    public void setLanguages(List<String> languages) {
+        put(KEY_LANGUAGES,languages);
+    }
 
+    public List<String> getLanguages(){
+        return getList(KEY_LANGUAGES);
+    }
 
+    public void setTags(List<String> tags) {
+        put(KEY_TAGS,tags);
+    }
+
+    public List<String> getTags(){
+        return getList(KEY_TAGS);
+    }
 }

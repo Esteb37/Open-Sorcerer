@@ -62,9 +62,13 @@ public class ProjectsFragment extends Fragment {
 
         mUser = Manager.getCurrentUser();
 
+        mContext = getContext();
+
         mProjects = new ArrayList<>();
 
         mAdapter = new ProjectsHolder(mProjects,mContext);
+
+
 
         SnapHelper helper = new LinearSnapHelper();
         helper.attachToRecyclerView(app.rvProjects);

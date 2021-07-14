@@ -26,11 +26,10 @@
                 android:id="@+id/ivImage"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/placeholder2"
                 tools:srcCompat="@drawable/placeholder2" />
 
             <TextView
