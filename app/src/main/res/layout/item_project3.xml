@@ -42,45 +42,13 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/image_border"
                 android:padding="20dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@drawable/placeholder2" />
-
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="150dp"
-                android:layout_marginEnd="20dp"
-                android:autoSizeMaxTextSize="40sp"
-                android:autoSizeMinTextSize="12sp"
-                android:autoSizeStepGranularity="2sp"
-                android:autoSizeTextType="uniform"
-                android:gravity="center"
-                android:maxLines="1"
-                android:textAlignment="textStart"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton4"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Open Sorcerer" />
-
-            <ImageButton
-                android:id="@+id/imageButton4"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                android:background="#00FFFFFF"
-                android:scaleType="fitCenter"
-                app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvTitle"
-                app:srcCompat="@android:drawable/btn_star" />
 
             <LinearLayout
                 android:id="@+id/linearLayout3"
@@ -90,11 +58,26 @@
                 android:layout_marginEnd="20dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/ivImage"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ivImage"
                 app:layout_constraintStart_toStartOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="@+id/ivImage">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="10dp"
+                    android:autoSizeMaxTextSize="34sp"
+                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textStyle="bold"
+                    tools:text="Open Sorcerer" />
 
                 <TextView
                     android:id="@+id/tvAuthor"
@@ -102,7 +85,6 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textSize="16sp"
-                    android:visibility="gone"
                     tools:text="by Esteb37" />
             </LinearLayout>
 
@@ -112,7 +94,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView">
@@ -124,6 +105,14 @@
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
                     app:srcCompat="@android:drawable/ic_menu_info_details" />
+
+                <ImageButton
+                    android:id="@+id/imageButton4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#00FFFFFF"
+                    app:srcCompat="@android:drawable/btn_star" />
 
                 <ImageButton
                     android:id="@+id/imageButton5"
@@ -139,15 +128,16 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
                 android:justificationMode="inter_word"
                 android:text="Mobile app dedicated to matching developers with open source projects through a browsing system with recommendations based on skills and interests."
                 android:textAlignment="textStart"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/divider"
-                app:layout_constraintEnd_toEndOf="@+id/imageButton4"
-                app:layout_constraintStart_toStartOf="@+id/tvTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+                app:layout_constraintEnd_toEndOf="@+id/linearLayout5"
+                app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
             <View
                 android:id="@+id/divider"
