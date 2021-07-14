@@ -20,6 +20,10 @@ import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreateProjectBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.roles.Manager;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GHRepository;
@@ -74,10 +78,21 @@ public class CreateProjectFragment extends Fragment {
             project.setRepository(app.etRepo.getText().toString());
             project.saveInBackground(e -> {
                 if(e==null){
-                    final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.flContainer,new MyProjectsFragment()).commit();
-                    Log.d("Test","Project saved successfully");
+                    ParseRelation<Project> projects = mUser.getProjects();
+                    projects.add(project);
+                    mUser.setProjects(projects);
+                    mUser.getHandler().saveInBackground(e1 -> {
+                        if(e1==null){
+                            final FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.flContainer,new MyProjectsFragment()).commit();
+                        } else {
+                            Log.d(TAG,"Error saving project in user's project list.");
+                            e1.printStackTrace();
+                        }
+                    });
+
                 } else {
+                    Log.d(TAG,"Error saving project.");
                     e.printStackTrace();
                 }
             });

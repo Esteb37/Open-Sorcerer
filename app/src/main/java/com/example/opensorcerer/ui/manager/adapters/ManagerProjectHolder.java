@@ -34,11 +34,11 @@ public class ManagerProjectHolder extends RecyclerView.ViewHolder{
         app.tvTitle.setText(project.getTitle());
         app.tvDescription.setText(project.getDescription());
 
-        ParseFile image = project.getBannerImage();
+        /*ParseFile image = project.getBannerImage();
         if(image != null){
             Glide.with(mContext)
                     .load(image.getUrl())
                     .into(app.ivImage);
-        }
+        }*/
     }
 }
