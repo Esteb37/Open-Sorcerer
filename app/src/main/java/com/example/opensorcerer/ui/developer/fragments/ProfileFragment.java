@@ -1,26 +1,24 @@
-package com.example.opensorcerer.ui.manager.fragments;
+package com.example.opensorcerer.ui.developer.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-
-import com.example.opensorcerer.databinding.FragmentManagerProfileBinding;
+import com.example.opensorcerer.databinding.FragmentDeveloperProfileBinding;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
 
 public class ProfileFragment extends Fragment {
 
-    private static final String TAG = "CreateProject";
-    private FragmentManagerProfileBinding app;
+    private static final String TAG = "ProfileFragment";
+    private FragmentDeveloperProfileBinding app;
     private Context mContext;
     private GitHub mGitHub;
 
@@ -37,7 +35,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentManagerProfileBinding.inflate(inflater,container,false);
+        app = FragmentDeveloperProfileBinding.inflate(inflater,container,false);
         return app.getRoot();
     }
 

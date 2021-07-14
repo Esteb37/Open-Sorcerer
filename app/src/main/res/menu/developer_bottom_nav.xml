@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/actionHome"
+        android:enabled="true"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:iconTint="#FFFFFF"
+        android:title="Home"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionFavorites"
+        android:enabled="true"
+        android:icon="@android:drawable/btn_star"
+        android:iconTint="#FFFFFF"
+        android:title="Favorites"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionChats"
+        android:icon="@android:drawable/ic_dialog_email"
+        android:title="Conversations"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionProfile"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:iconTint="#FFFFFF"
+        android:title="Profile"
+        app:showAsAction="always" />
+</menu>

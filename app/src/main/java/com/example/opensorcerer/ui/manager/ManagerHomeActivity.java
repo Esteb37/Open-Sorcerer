@@ -58,7 +58,7 @@ public class ManagerHomeActivity extends AppCompatActivity {
         //Ensure that the id's of the navigation items are final for the switch
         final int actionHome = R.id.actionHome;
         final int actionProfile = R.id.actionProfile;
-        final int actionNew = R.id.actionNew;
+        final int actionNew = R.id.actionFavorites;
         final int actionChats = R.id.actionChats;
 
         app.bottomNav.setOnItemSelectedListener(item -> {
