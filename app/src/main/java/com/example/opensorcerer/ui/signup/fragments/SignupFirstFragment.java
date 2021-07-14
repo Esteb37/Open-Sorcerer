@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.FragmentSignupFirstBinding;
@@ -46,9 +48,9 @@ public class SignupFirstFragment extends Fragment {
 
         mContext = getContext();
 
-        newUser = Parcels.unwrap(getArguments().getParcelable("user"));
+        newUser = SignupFirstFragmentArgs.fromBundle(getArguments()).getUser();
 
-        app.btnNext.setOnClickListener(view1 -> {
+        app.btnNext.setOnClickListener(v -> {
             if(inputsAreValid()){
                 newUser.setEmail(app.etEmail.getText().toString());
                 newUser.setPassword(app.etPassword.getText().toString());
@@ -57,15 +59,21 @@ public class SignupFirstFragment extends Fragment {
         });
 
         app.btnBack.setOnClickListener(v -> {
-            final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            Fragment fragment = new SignupRoleFragment();
-            fragmentManager.beginTransaction().replace(R.id.flContainer,fragment).commit();
+            navigateBackward();
         });
     }
 
-    private void navigateForward() {
+    private void navigateBackward() {
+        NavDirections firstToRoleAction = SignupFirstFragmentDirections.firstToRoleAction();
+        NavHostFragment.findNavController(this)
+                .navigate(firstToRoleAction);
+    }
 
-        final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+    private void navigateForward() {
+        SignupFirstFragmentDirections.FirstToSecondAction firstToSecondAction = SignupFirstFragmentDirections.firstToSecondAction(newUser);
+        NavHostFragment.findNavController(this)
+                .navigate(firstToSecondAction);
+        /*final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("user",Parcels.wrap(newUser));
@@ -73,7 +81,7 @@ public class SignupFirstFragment extends Fragment {
 
         Fragment fragment = new SignupSecondFragment();
         fragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContainer,fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContainer,fragment).commit();*/
     }
 
     private boolean inputsAreValid() {

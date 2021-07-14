@@ -10,7 +10,6 @@ import org.parceler.Parcel;
 /**
  * Class for handling User objects with the Manager role
  */
-@Parcel
 public class Manager extends User {
 
     //Database keys.

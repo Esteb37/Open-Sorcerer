@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.FragmentSignupRoleBinding;
@@ -43,6 +44,7 @@ public class SignupRoleFragment extends Fragment {
 
         mContext = getContext();
 
+
         app.btnDeveloper.setOnClickListener(v-> {
             newUser = new Developer();
             navigateToSignup();
@@ -55,12 +57,15 @@ public class SignupRoleFragment extends Fragment {
     }
 
     private void navigateToSignup() {
-        final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        SignupRoleFragmentDirections.RoleToFirstAction roleToFirstAction = SignupRoleFragmentDirections.roleToFirstAction(newUser);
+        NavHostFragment.findNavController(this)
+                .navigate(roleToFirstAction);
+        /*final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         Bundle bundle = new Bundle();
         bundle.putParcelable("user",Parcels.wrap(newUser));
         Fragment fragment = new SignupFirstFragment();
         fragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContainer,fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContainer,fragment).commit();*/
     }
 
     @Override

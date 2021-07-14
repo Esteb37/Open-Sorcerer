@@ -1,5 +1,6 @@
 package com.example.opensorcerer.models.users;
 
+import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.example.opensorcerer.models.Conversation;
@@ -8,10 +9,8 @@ import com.parse.ParseRelation;
 import com.parse.ParseRole;
 import com.parse.ParseUser;
 
-import org.parceler.Parcel;
 
-
-public class User {
+public class User implements Parcelable{
 
     //Database keys
     private static final String KEY_PROFILE_PICTURE = "profilePicture";
@@ -25,6 +24,22 @@ public class User {
     private static final String KEY_BIO = "bio";
 
     protected ParseUser mUser;
+
+    protected User(Parcel in) {
+        mUser = in.readParcelable(ParseUser.class.getClassLoader());
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public static User fromParseUser(ParseUser parseUser){
         User user = new User();
@@ -125,5 +140,15 @@ public class User {
 
     public void setConversations(ParseRelation<Conversation> conversation) {
         mUser.put(KEY_CONVERSATIONS,conversation);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(mUser, flags);
     }
 }

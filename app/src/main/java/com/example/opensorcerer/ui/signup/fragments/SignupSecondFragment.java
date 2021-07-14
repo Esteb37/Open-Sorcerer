@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavDirections;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.FragmentSignupSecondBinding;
@@ -19,6 +21,7 @@ import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
 import com.parse.ParseException;
 import com.parse.SignUpCallback;
 
+import org.jetbrains.annotations.NotNull;
 import org.parceler.Parcels;
 
 public class SignupSecondFragment extends Fragment {
@@ -33,7 +36,7 @@ public class SignupSecondFragment extends Fragment {
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
+            @NotNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
 
@@ -49,11 +52,10 @@ public class SignupSecondFragment extends Fragment {
 
         mContext = getContext();
 
-        newUser = Parcels.unwrap(getArguments().getParcelable("user"));
+        newUser = SignupSecondFragmentArgs.fromBundle(getArguments()).getUser();
 
         app.btnBack.setOnClickListener(v -> {
-            Fragment fragment = new SignupFirstFragment();
-            fragmentManager.beginTransaction().replace(R.id.flContainer,fragment).commit();
+            navigateBack();
         });
 
         app.btnFinish.setOnClickListener(v -> {
@@ -75,6 +77,12 @@ public class SignupSecondFragment extends Fragment {
                 }
             });
         });
+    }
+
+    private void navigateBack() {
+        SignupSecondFragmentDirections.SecondToFirstAction secondToFirstAction = SignupSecondFragmentDirections.secondToFirstAction(newUser);
+        NavHostFragment.findNavController(this)
+                .navigate(secondToFirstAction);
     }
 
     @Override

@@ -11,7 +11,6 @@ import org.parceler.Parcel;
 /**
  * Class for handling User objects with the Developer Role
  */
-@Parcel
 public class Developer extends User {
 
     //Database keys.
