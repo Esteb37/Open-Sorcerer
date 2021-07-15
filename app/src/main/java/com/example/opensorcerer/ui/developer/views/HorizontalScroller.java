@@ -1,7 +1,9 @@
 package com.example.opensorcerer.ui.developer.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -68,7 +70,6 @@ public class HorizontalScroller extends HorizontalScrollView {
         FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
         mDetailsFragment = new DetailsFragment();
         Bundle bundle = new Bundle();
-
         bundle.putParcelable("project", Parcels.wrap(mProjectsFragment.getCurrentProject()));
         mDetailsFragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.flContainerDetails,mDetailsFragment,"details").commit();
@@ -88,6 +89,10 @@ public class HorizontalScroller extends HorizontalScrollView {
                 mActiveFeature = ((scrollX + (featureWidth/2))/featureWidth);
                 int scrollTo = mActiveFeature*featureWidth;
                 smoothScrollTo(scrollTo, 0);
+                Log.d("Scrolling",""+scrollTo);
+                if(scrollTo>500){
+                    DetailsFragment.getInstance().loadReadme();
+                }
                 return true;
             }
             else{

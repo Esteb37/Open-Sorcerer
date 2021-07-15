@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,11 +40,13 @@ public class DetailsFragment extends Fragment{
     private GitHub mGitHub;
     private Project mProject;
     private Context mContext;
+    private static DetailsFragment instance = null;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
     }
 
     @Override
@@ -89,13 +92,18 @@ public class DetailsFragment extends Fragment{
                 app.progressBar.setVisibility(View.GONE);
             }
 
-            new Thread(new GetReadmeTask()).start();
+            loadReadme();
+
         }
 
 
 
     }
 
+    public void loadReadme(){
+        new Thread(new GetReadmeTask()).start();
+
+    }
 
     private class GetReadmeTask implements Runnable {
 
@@ -107,13 +115,10 @@ public class DetailsFragment extends Fragment{
                 String repoLink = mProject.getRepository().split("github.com/")[1];
                 GHRepository ghRepo = mGitHub.getRepository(repoLink);
                 GHContent readme = ghRepo.getReadme();
+                String content = readme.getContent();
                 ((Activity) mContext).runOnUiThread(() -> {
-                    try {
-                        app.markdownView.setMarkDownText(readme.getContent());
-                        app.progressBarReadme.setVisibility(View.GONE);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    app.markdownView.setMarkDownText(content);
+                    app.progressBarReadme.setVisibility(View.GONE);
                 });
 
 
@@ -121,6 +126,10 @@ public class DetailsFragment extends Fragment{
                 e.printStackTrace();
             }
         }
+    }
+
+    public static DetailsFragment getInstance() {
+        return instance;
     }
 
 }
