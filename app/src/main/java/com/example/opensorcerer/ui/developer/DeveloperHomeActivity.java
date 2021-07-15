@@ -3,8 +3,11 @@ package com.example.opensorcerer.ui.developer;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +24,7 @@ import com.example.opensorcerer.ui.developer.fragments.ConversationsFragment;
 import com.example.opensorcerer.ui.developer.fragments.FavoritesFragment;
 import com.example.opensorcerer.ui.developer.fragments.ProfileFragment;
 import com.example.opensorcerer.ui.developer.fragments.ProjectsFragment;
+import com.example.opensorcerer.ui.developer.views.HorizontalScroller;
 import com.example.opensorcerer.ui.login.LoginActivity;
 import com.parse.ParseUser;
 
@@ -29,7 +33,7 @@ import org.kohsuke.github.GitHub;
 import java.io.IOException;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class DeveloperHomeActivity extends AppCompatActivity {
+public class DeveloperHomeActivity extends AppCompatActivity{
 
 
     private static final String TAG = "MainActivity";
@@ -46,6 +50,8 @@ public class DeveloperHomeActivity extends AppCompatActivity {
 
         app = ActivityDeveloperHomeBinding.inflate(getLayoutInflater());
         setContentView(app.getRoot());
+
+        app.horizontalScroller.setFeatureItems();;
 
         mContext = this;
 
@@ -141,7 +147,6 @@ public class DeveloperHomeActivity extends AppCompatActivity {
             }
         }
     }
-
 
 
 }
