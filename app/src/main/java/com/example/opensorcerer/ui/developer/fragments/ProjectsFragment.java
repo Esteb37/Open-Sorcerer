@@ -9,19 +9,23 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.FragmentProjectsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.roles.Manager;
+import com.example.opensorcerer.ui.developer.DetailsFragment;
 import com.example.opensorcerer.ui.developer.adapters.ProjectsAdapter;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +69,17 @@ public class ProjectsFragment extends Fragment {
 
         mProjects = new ArrayList<>();
 
-        mAdapter = new ProjectsAdapter(mProjects,mContext);
+        ProjectsAdapter.OnClickListener clickListener = position -> {
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("project",Parcels.wrap(mProjects.get(position)));
+            Fragment fragment = new DetailsFragment();
+            fragment.setArguments(bundle);
+            fragmentManager.beginTransaction().replace(R.id.flContainer,fragment).commit();
+        };
+
+
+        mAdapter = new ProjectsAdapter(mProjects,mContext,clickListener);
 
 
 

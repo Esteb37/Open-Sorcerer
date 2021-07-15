@@ -24,9 +24,16 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
 
     ItemProjectBinding app;
 
-    public ProjectsAdapter(List<Project> projects, Context context) {
+    public interface OnClickListener{
+        void onItemClicked(int position);
+    }
+
+    private final OnClickListener mClickListener;
+
+    public ProjectsAdapter(List<Project> projects, Context context, OnClickListener clickListener) {
         mProjects = projects;
         mContext = context;
+        mClickListener = clickListener;
     }
 
     @NonNull
@@ -35,7 +42,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
     public ProjectHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         app = ItemProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = app.getRoot();
-        return new ProjectHolder(view,mContext, app);
+        return new ProjectHolder(view,mContext, app,mClickListener);
     }
 
     @Override
