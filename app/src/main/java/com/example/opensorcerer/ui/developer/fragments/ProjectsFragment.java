@@ -96,6 +96,9 @@ public class ProjectsFragment extends Fragment {
     public void queryProjects(){
         ParseQuery<Project> query = ParseQuery.getQuery(Project.class);
         query.addDescendingOrder("createdAt");
-        query.findInBackground((projects, e) -> mAdapter.addAll(projects));
+        query.findInBackground((projects, e) -> {
+            mAdapter.addAll(projects);
+            app.progressBar.setVisibility(View.GONE);
+        });
     }
 }
