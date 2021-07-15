@@ -1,7 +1,9 @@
 package com.example.opensorcerer.ui.developer.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +11,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
-import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.FragmentProjectsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.roles.Manager;
-import com.example.opensorcerer.ui.developer.DetailsFragment;
+import com.example.opensorcerer.ui.developer.DetailsActivity;
 import com.example.opensorcerer.ui.developer.adapters.ProjectsAdapter;
 import com.parse.ParseQuery;
 
@@ -70,12 +70,9 @@ public class ProjectsFragment extends Fragment {
         mProjects = new ArrayList<>();
 
         ProjectsAdapter.OnClickListener clickListener = position -> {
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("project",Parcels.wrap(mProjects.get(position)));
-            Fragment fragment = new DetailsFragment();
-            fragment.setArguments(bundle);
-            fragmentManager.beginTransaction().replace(R.id.flContainer,fragment).commit();
+            Intent i = new Intent(getContext(), DetailsActivity.class);
+            i.putExtra("project",Parcels.wrap(mProjects.get(position)));
+            startActivity(i);
         };
 
 

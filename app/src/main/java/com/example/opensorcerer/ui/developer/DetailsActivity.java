@@ -6,6 +6,8 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,35 +30,25 @@ import org.parceler.Parcels;
 import java.io.IOException;
 
 
-public class DetailsFragment extends Fragment{
+public class DetailsActivity extends AppCompatActivity {
 
     private FragmentDetailsBinding app;
     private GitHub mGitHub;
     private Project mProject;
     private Context mContext;
 
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        app = FragmentDetailsBinding.inflate(inflater,container,false);
-        return app.getRoot();
-    }
+    protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    @Override
-    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        app = FragmentDetailsBinding.inflate(getLayoutInflater());
+        setContentView(app.getRoot());
 
+        mProject = Parcels.unwrap(getIntent().getParcelableExtra("project"));
 
+        mGitHub = ((OSApplication) getApplication()).getGitHub();
 
-
-        mProject = Parcels.unwrap(getArguments().getParcelable("project"));
-
-        mGitHub = ((OSApplication) getActivity().getApplication()).getGitHub();
-
-        mContext = getContext();
+        mContext = this;
 
         app.tvTitle.setText(mProject.getTitle());
 
@@ -79,14 +71,14 @@ public class DetailsFragment extends Fragment{
                     .load(image.getUrl())
                     .transform(new RoundedCorners(1000))
                     .into(app.ivImage);
+            app.progressBar.setVisibility(View.GONE);
         }
 
-        new Thread(new GetRepoTask()).start();
-
+        new Thread(new GetReadmeTask()).start();
 
     }
 
-    private class GetRepoTask implements Runnable {
+    private class GetReadmeTask implements Runnable {
 
         @Override
         public void run() {
@@ -96,9 +88,10 @@ public class DetailsFragment extends Fragment{
                 String repoLink = mProject.getRepository().split("github.com/")[1];
                 GHRepository ghRepo = mGitHub.getRepository(repoLink);
                 GHContent readme = ghRepo.getReadme();
-                getActivity().runOnUiThread(() -> {
+                runOnUiThread(() -> {
                     try {
                         app.markdownView.setMarkDownText(readme.getContent());
+                        app.progressBarReadme.setVisibility(View.GONE);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -35,6 +35,11 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.OpenSorcerer.NoActionBar"
             />
+        <activity
+            android:name=".ui.developer.DetailsActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.OpenSorcerer.NoActionBar"
+            />
 
         <meta-data
             android:name="com.parse.SERVER_URL"
