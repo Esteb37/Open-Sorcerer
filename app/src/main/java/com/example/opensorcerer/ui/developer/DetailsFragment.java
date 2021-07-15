@@ -6,46 +6,35 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentDetailsBinding;
 import com.example.opensorcerer.models.Project;
 
-import com.mukesh.MarkdownView;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 
-import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
-import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.parceler.Parcels;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.List;
 
-public class DetailsFragment extends Fragment {
+
+public class DetailsFragment extends Fragment{
 
     private FragmentDetailsBinding app;
     private GitHub mGitHub;
     private Project mProject;
     private Context mContext;
+
 
     @Nullable
     @Override
@@ -59,6 +48,9 @@ public class DetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+
 
         mProject = Parcels.unwrap(getArguments().getParcelable("project"));
 
@@ -88,8 +80,10 @@ public class DetailsFragment extends Fragment {
                     .transform(new RoundedCorners(1000))
                     .into(app.ivImage);
         }
-        
+
         new Thread(new GetRepoTask()).start();
+
+
     }
 
     private class GetRepoTask implements Runnable {
@@ -116,4 +110,5 @@ public class DetailsFragment extends Fragment {
             }
         }
     }
+
 }

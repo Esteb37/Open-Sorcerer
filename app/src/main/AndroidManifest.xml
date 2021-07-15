@@ -32,7 +32,9 @@
             />
         <activity
             android:name=".ui.developer.DeveloperHomeActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:theme="@style/Theme.OpenSorcerer.NoActionBar"
+            />
 
         <meta-data
             android:name="com.parse.SERVER_URL"
