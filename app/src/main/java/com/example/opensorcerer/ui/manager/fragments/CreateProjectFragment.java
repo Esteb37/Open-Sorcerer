@@ -3,7 +3,6 @@ package com.example.opensorcerer.ui.manager.fragments;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,8 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -29,28 +26,19 @@ import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreateProjectBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.roles.Manager;
-import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 import com.parse.ParseRelation;
-import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
-import org.kohsuke.github.GHLabel;
 import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GHTag;
 import org.kohsuke.github.GitHub;
-import org.kohsuke.github.PagedIterable;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 
 public class CreateProjectFragment extends Fragment {
