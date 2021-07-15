@@ -23,6 +23,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
     Context mContext;
 
     ItemProjectBinding app;
+    ProjectHolder mHolder;
 
     public interface OnClickListener{
         void onItemClicked(int position);
@@ -30,6 +31,11 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
 
     private final OnClickListener mClickListener;
 
+    /**
+     *
+     * @param projects
+     * @param context
+     */
     public ProjectsAdapter(List<Project> projects, Context context, OnClickListener clickListener) {
         mProjects = projects;
         mContext = context;
@@ -42,12 +48,14 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
     public ProjectHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         app = ItemProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = app.getRoot();
-        return new ProjectHolder(view,mContext, app,mClickListener);
+        return new ProjectHolder(view,mContext,app,mClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ProjectHolder holder, int position) {
-        holder.bind(mProjects.get(position));
+        mHolder = holder;
+        mHolder.bind(mProjects.get(position));
+
     }
 
     @Override
@@ -63,5 +71,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
     public void addAll(List<Project> list) {
         mProjects.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public Project getCurrentProject(){
+       return  mHolder.getAdapterPosition()>0 ? mProjects.get(mHolder.getAdapterPosition()-1) : mProjects.get(0);
     }
 }

@@ -51,7 +51,7 @@ public class DeveloperHomeActivity extends AppCompatActivity{
         app = ActivityDeveloperHomeBinding.inflate(getLayoutInflater());
         setContentView(app.getRoot());
 
-        app.horizontalScroller.setFeatureItems();;
+
 
         mContext = this;
 
@@ -77,6 +77,7 @@ public class DeveloperHomeActivity extends AppCompatActivity{
                 //Home Item selected
                 case actionHome:
                     fragment = new ProjectsFragment();
+                    app.horizontalScroller.setFeatureItems((ProjectsFragment) fragment);;
                     break;
 
                 //Post item selected
@@ -89,6 +90,7 @@ public class DeveloperHomeActivity extends AppCompatActivity{
 
                     //Put the current user into the arguments of the fragment
                     fragment = new ProfileFragment();
+
                     break;
 
                 //Profile item selected

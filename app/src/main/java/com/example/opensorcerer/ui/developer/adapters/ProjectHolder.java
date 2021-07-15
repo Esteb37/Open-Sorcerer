@@ -1,18 +1,26 @@
 package com.example.opensorcerer.ui.developer.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.example.opensorcerer.databinding.ItemManagerProjectBinding;
+import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.ItemProjectBinding;
 import com.example.opensorcerer.models.Project;
+import com.example.opensorcerer.ui.developer.DetailsFragment;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 import java.util.StringTokenizer;
@@ -28,11 +36,12 @@ public class ProjectHolder extends RecyclerView.ViewHolder{
     private final Context mContext;
 
 
-    public ProjectHolder(View view, Context context, ItemProjectBinding binder,ProjectsAdapter.OnClickListener clickListener) {
+    public ProjectHolder(View view, Context context, ItemProjectBinding binder, ProjectsAdapter.OnClickListener clickListener) {
         super(view);
         app = binder;
         mContext = context;
-        itemView.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
+        view.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
+
     }
 
     public void bind(Project project) {

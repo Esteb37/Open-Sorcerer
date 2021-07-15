@@ -1,8 +1,10 @@
 package com.example.opensorcerer.ui.developer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +88,7 @@ public class DetailsFragment extends Fragment{
                         .into(app.ivImage);
                 app.progressBar.setVisibility(View.GONE);
             }
+
             new Thread(new GetReadmeTask()).start();
         }
 
@@ -104,7 +107,7 @@ public class DetailsFragment extends Fragment{
                 String repoLink = mProject.getRepository().split("github.com/")[1];
                 GHRepository ghRepo = mGitHub.getRepository(repoLink);
                 GHContent readme = ghRepo.getReadme();
-                getActivity().runOnUiThread(() -> {
+                ((Activity) mContext).runOnUiThread(() -> {
                     try {
                         app.markdownView.setMarkDownText(readme.getContent());
                         app.progressBarReadme.setVisibility(View.GONE);

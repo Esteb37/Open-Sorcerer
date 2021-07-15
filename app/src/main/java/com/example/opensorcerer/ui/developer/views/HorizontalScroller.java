@@ -14,7 +14,9 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.ui.developer.DetailsFragment;
-import com.example.opensorcerer.ui.developer.adapters.ProjectsAdapter;
+import com.example.opensorcerer.ui.developer.fragments.ProjectsFragment;
+
+import org.parceler.Parcels;
 
 
 public class HorizontalScroller extends HorizontalScrollView {
@@ -26,7 +28,9 @@ public class HorizontalScroller extends HorizontalScrollView {
     private GestureDetector mGestureDetector;
     private int mActiveFeature = 0;
 
-    ProjectsAdapter mAdapter;
+
+    private ProjectsFragment mProjectsFragment;
+    private DetailsFragment mDetailsFragment;
 
     public HorizontalScroller(Context context) {
         super(context);
@@ -62,16 +66,17 @@ public class HorizontalScroller extends HorizontalScrollView {
 
     private void startDetails() {
         FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
-        Fragment fragment = new DetailsFragment();
+        mDetailsFragment = new DetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("project", null);
-        fragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContainerDetails,fragment,"details").commit();
+
+        bundle.putParcelable("project", Parcels.wrap(mProjectsFragment.getCurrentProject()));
+        mDetailsFragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(R.id.flContainerDetails,mDetailsFragment,"details").commit();
     }
 
 
-    public void setFeatureItems(){
-
+    public void setFeatureItems(ProjectsFragment fragment){
+        mProjectsFragment = fragment;
         setOnTouchListener((v, event) -> {
             v.performClick();
             if (mGestureDetector.onTouchEvent(event)) {
