@@ -15,9 +15,13 @@ public class Developer extends User {
     //Database keys.
     private static final String KEY_FAVORITES = "favorites";
 
+    /**
+     * Constructor that sets the user's role
+     */
     public Developer(){
         setRole("developer");
     }
+
     /**
      * Creates a custom Developer Object from a ParseUser object
      *
@@ -30,12 +34,18 @@ public class Developer extends User {
         return developer;
     }
 
+    /**
+     * Gets the current logged in user as a Developer object
+     *
+     * @return the logged in developer
+     */
     public static Developer getCurrentUser(){
         return fromParseUser(ParseUser.getCurrentUser());
     }
 
+    /**Favorites list getter*/
     public ParseRelation<Project> getFavorites(){
-        return mUser.getRelation(KEY_FAVORITES);
+        return mHandler.getRelation(KEY_FAVORITES);
     }
 
 

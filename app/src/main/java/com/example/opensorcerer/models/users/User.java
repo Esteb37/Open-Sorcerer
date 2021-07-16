@@ -1,16 +1,20 @@
 package com.example.opensorcerer.models.users;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.example.opensorcerer.models.Conversation;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import org.parceler.Parcel;
+
+/**
+ * Custom class for handling ParseUser objects without Parse subclass restrictions
+ */
+
 @SuppressWarnings("unused")
-public class User implements Parcelable{
+@Parcel
+public class User{
 
     //Database keys
     private static final String KEY_PROFILE_PICTURE = "profilePicture";
@@ -23,136 +27,153 @@ public class User implements Parcelable{
     private static final String KEY_NAME = "name";
     private static final String KEY_BIO = "bio";
 
-    protected ParseUser mUser;
+    /**
+     * The ParseUser object that allows communication with the database
+     */
+    protected ParseUser mHandler;
 
-    protected User(Parcel in) {
-        mUser = in.readParcelable(ParseUser.class.getClassLoader());
-    }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
-
+    /**
+     * Creates a custom User Object from a ParseUser object
+     *
+     * @param parseUser The ParseUser object
+     * @return a casted custom user object
+     */
     public static User fromParseUser(ParseUser parseUser){
         User user = new User();
         user.setHandler(parseUser);
         return user;
     }
+
+    /**
+     * Constructor that sets the handler as a ParseUser for database communication
+     */
     public User(){
-        mUser = new ParseUser();
+        mHandler = new ParseUser();
     }
 
+    /**Handler getter*/
+    public ParseUser getHandler() { return mHandler; }
+
+    /**Handler setter*/
     public void setHandler(ParseUser user) {
-        mUser = user;
+        mHandler = user;
     }
 
-    public ParseUser getHandler() { return mUser; }
-
+    /**User ID getter*/
     public String getObjectId(){
-        return mUser.getObjectId();
+        return mHandler.getObjectId();
     }
 
+    /**Username getter*/
     public String getUsername(){
-        return mUser.getUsername();
+        return mHandler.getUsername();
     }
 
-    public void setUsername(String username) { mUser.setUsername(username);}
+    /**Username setter*/
+    public void setUsername(String username) { mHandler.setUsername(username);}
 
+    /**Email getter*/
     public String getEmail() {
-        return mUser.getEmail();
+        return mHandler.getEmail();
     }
 
+    /**Email setter*/
     public void setEmail(String email) {
-        mUser.setEmail(email);
+        mHandler.setEmail(email);
     }
 
+    /**Password setter*/
     public void setPassword(String password) {
-        mUser.setPassword(password);
+        mHandler.setPassword(password);
     }
 
+    /**Profile picture getter*/
     public ParseFile getProfilePicture() {
-        return mUser.getParseFile(KEY_PROFILE_PICTURE);
+        return mHandler.getParseFile(KEY_PROFILE_PICTURE);
     }
 
+    /**Profile picture setter*/
     public void setProfilePicture(ParseFile profilePicture) {
-        mUser.put(KEY_PROFILE_PICTURE,profilePicture);
+        mHandler.put(KEY_PROFILE_PICTURE,profilePicture);
     }
 
+    /**Experience getter*/
     public String getExperience() {
-        return mUser.getString(KEY_EXPERIENCE);
+        return mHandler.getString(KEY_EXPERIENCE);
     }
 
+    /**Experience setter*/
     public void setExperience(String experience) {
-        mUser.put(KEY_EXPERIENCE,experience);
+        mHandler.put(KEY_EXPERIENCE,experience);
     }
 
+    /**GitHub account link getter*/
     public String getGithub() {
-        return mUser.getString(KEY_GITHUB);
+        return mHandler.getString(KEY_GITHUB);
     }
 
+    /**GitHub account link setter*/
     public void setGithub(String github) {
-        mUser.put(KEY_GITHUB,github);
+        mHandler.put(KEY_GITHUB,github);
     }
 
+    /**GitHub token getter*/
     public String getGithubToken() {
-        return mUser.getString(KEY_GITHUB_TOKEN);
+        return mHandler.getString(KEY_GITHUB_TOKEN);
     }
 
+    /**GitHub token setter*/
     public void setGithubToken(String token) {
-        mUser.put(KEY_GITHUB_TOKEN,token);
+        mHandler.put(KEY_GITHUB_TOKEN,token);
     }
 
+    /**Role getter*/
     public String getRole() {
-        return mUser.getString(KEY_ROLE);
+        return mHandler.getString(KEY_ROLE);
     }
 
+    /**Role setter*/
     public void setRole(String role) {
-        mUser.put(KEY_ROLE,role);
+        mHandler.put(KEY_ROLE,role);
     }
 
+    /**Name getter*/
     public String getName() {
-        return mUser.getString(KEY_NAME);
+        return mHandler.getString(KEY_NAME);
     }
 
+    /**Name setter*/
     public void setName(String name) {
-        mUser.put(KEY_NAME,name);
+        mHandler.put(KEY_NAME,name);
     }
 
+    /**Bio getter*/
     public String getBio() {
-        return mUser.getString(KEY_BIO);
+        return mHandler.getString(KEY_BIO);
     }
 
+    /**Bio setter*/
     public void setBio(String bio) {
-        mUser.put(KEY_BIO,bio);
+        mHandler.put(KEY_BIO,bio);
     }
 
+    /**Conversation list getter*/
     public ParseRelation<Conversation> getConversations(){
-        return mUser.getRelation(KEY_CONVERSATIONS);
+        return mHandler.getRelation(KEY_CONVERSATIONS);
     }
 
+    /**Conversation list setter*/
     public void setConversations(ParseRelation<Conversation> conversation) {
-        mUser.put(KEY_CONVERSATIONS,conversation);
+        mHandler.put(KEY_CONVERSATIONS,conversation);
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeParcelable(mUser, flags);
-    }
-
+    /**
+     * Fetches the user handler in the background
+     * @return the user handler after the request has been completed
+     * @throws ParseException in case the user is not found
+     */
     public ParseUser fetchIfNeeded() throws ParseException {
-        return mUser.fetchIfNeeded();
+        return mHandler.fetchIfNeeded();
     }
 }

@@ -18,6 +18,7 @@ public class Manager extends User {
     public Manager(){
         setRole("manager");
     }
+
     /**
      * Creates a custom Manager Object from a ParseUser object
      *
@@ -30,15 +31,20 @@ public class Manager extends User {
         return manager;
     }
 
+    /** Gets the current logged in user as a Manager object
+     * @return the current logged in Manager
+     */
     public static Manager getCurrentUser(){
         return fromParseUser(ParseUser.getCurrentUser());
     }
 
+    /**Projects list getter*/
     public ParseRelation<Project> getProjects(){
-        return mUser.getRelation(KEY_PROJECTS);
+        return mHandler.getRelation(KEY_PROJECTS);
     }
 
+    /**Projects list setter*/
     public void setProjects(ParseRelation<Project> projects) {
-        mUser.put(KEY_PROJECTS,projects);
+        mHandler.put(KEY_PROJECTS,projects);
     }
 }
