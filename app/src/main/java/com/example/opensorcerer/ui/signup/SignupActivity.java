@@ -1,13 +1,10 @@
 package com.example.opensorcerer.ui.signup;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 
 import com.example.opensorcerer.databinding.ActivitySignupBinding;
-import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
-import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
 import com.example.opensorcerer.ui.signup.fragments.SignupRoleFragment;
 
 import androidx.appcompat.app.AppCompatActivity;

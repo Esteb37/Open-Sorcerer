@@ -1,6 +1,7 @@
 package com.example.opensorcerer.ui.signup.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.example.opensorcerer.databinding.FragmentSignupRoleBinding;
 import com.example.opensorcerer.models.users.User;
 import com.example.opensorcerer.models.users.roles.Developer;
 import com.example.opensorcerer.models.users.roles.Manager;
+import com.example.opensorcerer.ui.login.LoginActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -59,13 +61,17 @@ public class SignupRoleFragment extends Fragment {
      * Sets up the role buttons listeners
      */
     private void setupButtonListeners() {
-        app.btnDeveloper.setOnClickListener(v-> {
+        app.buttonDeveloper.setOnClickListener(v -> {
             mNewUser = new Developer();
             navigateToSignup();
         });
-        app.btnManager.setOnClickListener(v-> {
+        app.buttonManager.setOnClickListener(v -> {
             mNewUser = new Manager();
             navigateToSignup();
+        });
+        app.buttonSignin.setOnClickListener(v -> {
+            Intent i = new Intent(mContext, LoginActivity.class);
+            startActivity(i);
         });
     }
 

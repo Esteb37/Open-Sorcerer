@@ -4,27 +4,103 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     tools:context=".ui.signup.fragments.SignupRoleFragment">
 
-    <Button
-        android:id="@+id/btnDeveloper"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="70dp"
-        android:text="I'm a Developer"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="100dp"
+        android:fontFamily="sans-serif"
+        android:text="Welcome to"
+        android:textAlignment="center"
+        android:textColor="@color/darker_blue"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif"
+        android:text="Let's get started!"
+        android:textAlignment="center"
+        android:textColor="@color/darker_blue"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/buttonDeveloper"
+        app:layout_constraintStart_toStartOf="@+id/buttonDeveloper"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        app:srcCompat="@drawable/tight_name_transparent_blue" />
+
     <Button
-        android:id="@+id/btnManager"
+        android:id="@+id/buttonDeveloper"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="70dp"
+        android:text="I'm a Developer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <Button
+        android:id="@+id/buttonManager"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="I'm a project manager"
-        app:layout_constraintEnd_toEndOf="@+id/btnDeveloper"
-        app:layout_constraintStart_toStartOf="@+id/btnDeveloper"
-        app:layout_constraintTop_toBottomOf="@+id/btnDeveloper" />
+        app:layout_constraintEnd_toEndOf="@+id/buttonDeveloper"
+        app:layout_constraintStart_toStartOf="@+id/buttonDeveloper"
+        app:layout_constraintTop_toBottomOf="@+id/buttonDeveloper" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonManager">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Already have an account?"
+            android:textColor="@color/darker_blue" />
+
+        <TextView
+            android:id="@+id/buttonSignin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="Sign in."
+            android:textColor="@color/dark_blue"
+            android:textStyle="bold" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

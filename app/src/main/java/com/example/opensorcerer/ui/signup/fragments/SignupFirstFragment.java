@@ -3,7 +3,6 @@ package com.example.opensorcerer.ui.signup.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +18,8 @@ import com.example.opensorcerer.databinding.FragmentSignupFirstBinding;
 import com.example.opensorcerer.models.users.User;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * Fragment for choosing email and password when signing up.
@@ -68,14 +69,14 @@ public class SignupFirstFragment extends Fragment {
     private void setupButtonListeners() {
 
         //Setup "Next" button listener
-        app.btnNext.setOnClickListener(v -> {
+        app.buttonNext.setOnClickListener(v -> {
 
             //Verify that the email is valid and the passwords match
             if(inputsAreValid()){
 
                 //Set the credentials into the user
-                mNewUser.setEmail(app.etEmail.getText().toString());
-                mNewUser.setPassword(app.etPassword.getText().toString());
+                mNewUser.setUsername(Objects.requireNonNull(app.editTextUsername.getText()).toString());
+                mNewUser.setPassword(Objects.requireNonNull(app.editTextPassword.getText()).toString());
 
                 //Go to the next screen
                 navigateForward();
@@ -83,7 +84,7 @@ public class SignupFirstFragment extends Fragment {
         });
 
         //Setup "Back" button listener
-        app.btnBack.setOnClickListener(v -> navigateBackward());
+        app.buttonBack.setOnClickListener(v -> navigateBackward());
     }
 
     /**
@@ -105,15 +106,12 @@ public class SignupFirstFragment extends Fragment {
     }
 
     /**
-     * @return If the email is valid and the passwords match
+     * @return If the passwords match
      */
     private boolean inputsAreValid() {
-        if(!isValidEmail(app.etEmail.getText())){
-            Toast.makeText(getContext(),"Email is invalid",Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if(app.etPassword.getText() == app.etConfirm.getText()){
-            Log.d("SignupFirst", String.format("%s %s %s", app.etPassword.getText(), app.etConfirm.getText(),app.etPassword.getText().equals(app.etConfirm.getText())));
+        String password = Objects.requireNonNull(app.editTextPassword.getText()).toString();
+        String confirm = Objects.requireNonNull(app.editTextConfirm.getText()).toString();
+        if(! (password.equals(confirm))){
             Toast.makeText(getContext(),"Passwords do not match",Toast.LENGTH_SHORT).show();
             return false;
         }

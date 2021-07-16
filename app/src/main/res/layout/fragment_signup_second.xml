@@ -4,19 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     tools:context=".ui.signup.fragments.SignupSecondFragment">
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/github_combined"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etToken">
+        app:layout_constraintTop_toBottomOf="@+id/textView9">
 
         <Button
-            android:id="@+id/btnBack"
+            android:id="@+id/buttonBack"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
@@ -24,7 +35,7 @@
             android:text="Back" />
 
         <Button
-            android:id="@+id/btnFinish"
+            android:id="@+id/buttonFinish"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -32,50 +43,52 @@
             android:text="Finish" />
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/etUsername"
+    <TextView
+        android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="Username"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivProfilePicture" />
-
-    <EditText
-        android:id="@+id/etToken"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="GitHub token"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/etUsername"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/etUsername"
-        app:layout_constraintTop_toBottomOf="@+id/etUsername" />
-
-    <ImageView
-        android:id="@+id/ivProfilePicture"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="100dp"
-        android:scaleType="centerCrop"
+        android:fontFamily="sans-serif"
+        android:text="Connect with"
+        android:textAlignment="center"
+        android:textColor="@color/darker_blue"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/placeholder" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/btnEdit"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="#00FFFFFF"
-        android:scaleType="fitCenter"
-        android:src="@android:drawable/ic_menu_edit"
-        app:layout_constraintBottom_toBottomOf="@+id/ivProfilePicture"
-        app:layout_constraintEnd_toEndOf="@+id/ivProfilePicture" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout3"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:hint="GitHub Token"
+        app:boxBackgroundColor="@color/light_blue"
+        app:boxBackgroundMode="filled"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView7"
+        app:startIconDrawable="@drawable/github_small"
+        app:startIconTint="@color/dark_blue">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextToken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="How do I get my token?"
+        android:textColor="@color/darker_blue"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout3"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

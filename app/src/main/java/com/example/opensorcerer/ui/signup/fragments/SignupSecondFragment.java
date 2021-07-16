@@ -18,6 +18,8 @@ import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 /**
  * Fragment for linking a user to their GitHub account
  */
@@ -65,14 +67,13 @@ public class SignupSecondFragment extends Fragment {
     private void setupButtonListeners() {
 
         //Setup "Back" button listener
-        app.btnBack.setOnClickListener(v -> navigateBack());
+        app.buttonBack.setOnClickListener(v -> navigateBack());
 
         //Setup "Finish" button listener
-        app.btnFinish.setOnClickListener(v -> {
+        app.buttonFinish.setOnClickListener(v -> {
 
             //Get credentials
-            mNewUser.setUsername(app.etUsername.getText().toString());
-            mNewUser.setGithubToken(app.etToken.getText().toString());
+            mNewUser.setGithubToken(Objects.requireNonNull(app.editTextToken.getText()).toString());
 
             //Sign the user up into the database
             mNewUser.getHandler().signUpInBackground(e -> {
