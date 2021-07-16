@@ -26,7 +26,6 @@ import com.parse.ParseUser;
 
 import org.kohsuke.github.GitHub;
 
-import java.io.IOException;
 
 /**
  * Main activity for the Developer users
@@ -86,13 +85,7 @@ public class DeveloperHomeActivity extends AppCompatActivity{
      * Initializes the GitHub API handler with the logged in user's OAuth token
      */
     private void gitHubLogin() {
-        new Thread(() -> {
-            try {
-                ((OSApplication) getApplication()).buildGitHub(mUser.getGithubToken());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        ((OSApplication) getApplication()).buildGitHub(mUser.getGithubToken());
     }
 
     /**

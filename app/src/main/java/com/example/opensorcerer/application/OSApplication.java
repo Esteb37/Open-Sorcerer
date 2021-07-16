@@ -8,28 +8,30 @@ import com.example.opensorcerer.models.Project;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
-import org.kohsuke.github.GHMyself;
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
 import java.io.IOException;
 
 /**
-    Class for handling the Database
+    Class for hosting the application and handling the Parse database and the GitHub API
  */
 @SuppressWarnings("unused")
 public class OSApplication extends Application {
 
-    /**
-        Sets up the Parse Application
-     */
-
+    /**The GitHub API handler*/
     GitHub mGitHub;
-    GHMyself mGHMyself;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        setupParse();
+    }
+
+    /**
+     Sets up the Parse Application
+     */
+    private void setupParse() {
 
         Parse.enableLocalDatastore(this);
 
@@ -46,17 +48,22 @@ public class OSApplication extends Application {
                 .build());
     }
 
+    /**GitHub API handler getter*/
     public GitHub getGitHub(){
         return mGitHub;
     }
 
-    public void buildGitHub(String token) throws IOException{
-        mGitHub = new GitHubBuilder().withJwtToken(token).build();
-        mGHMyself = mGitHub.getMyself();
+    /**
+     * Builds the GitHub application in the background with the user's OAuth token
+     */
+    public void buildGitHub(String token){
+        new Thread(() -> {
+            try {
+                mGitHub = new GitHubBuilder().withJwtToken(token).build();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
-
-    public GHMyself getGHMyself(){
-        return mGHMyself;
-    }
 }
