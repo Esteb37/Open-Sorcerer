@@ -8,6 +8,7 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -72,11 +73,19 @@ public class DeveloperHomeActivity extends AppCompatActivity{
 
             //Navigate to a different fragment depending on the item selected
             //and update the item's icons to highlight the one selected
+
+            app.constraintLayout2.setVisibility(View.GONE);
+            fragmentManager.findFragmentByTag("details");
+            Fragment detailsFragment = fragmentManager.findFragmentByTag("details");
+            if(detailsFragment != null)
+                fragmentManager.beginTransaction().remove(detailsFragment).commit();
+
             switch(item.getItemId()){
 
                 //Home Item selected
                 case actionHome:
                     fragment = new ProjectsFragment();
+                    app.constraintLayout2.setVisibility(View.VISIBLE);
                     app.horizontalScroller.setFeatureItems((ProjectsFragment) fragment);;
                     break;
 

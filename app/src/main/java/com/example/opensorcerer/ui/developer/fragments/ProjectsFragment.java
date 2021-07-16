@@ -42,6 +42,8 @@ public class ProjectsFragment extends Fragment {
     private ProjectsAdapter mAdapter;
 
     private List<Project> mProjects;
+    private PagerSnapHelper mSnapHelper;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public ProjectsFragment() {
         // Required empty public constructor
@@ -76,10 +78,11 @@ public class ProjectsFragment extends Fragment {
 
         mAdapter = new ProjectsAdapter(mProjects,mContext, clickListener);
 
-        PagerSnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(app.rvProjects);
+        mSnapHelper = new PagerSnapHelper();
+        mSnapHelper.attachToRecyclerView(app.rvProjects);
         app.rvProjects.setAdapter(mAdapter);
-        app.rvProjects.setLayoutManager(new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false));
+        mLayoutManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
+        app.rvProjects.setLayoutManager(mLayoutManager);
 
         queryProjects();
     }
@@ -96,6 +99,8 @@ public class ProjectsFragment extends Fragment {
     }
 
     public Project getCurrentProject(){
-        return mAdapter.getCurrentProject();
+        View snapView = mSnapHelper.findSnapView(mLayoutManager);
+        int position = mLayoutManager.getPosition(snapView);
+        return mProjects.get(position);
     }
 }

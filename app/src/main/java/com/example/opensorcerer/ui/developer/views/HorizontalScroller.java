@@ -90,9 +90,6 @@ public class HorizontalScroller extends HorizontalScrollView {
                 int scrollTo = mActiveFeature*featureWidth;
                 smoothScrollTo(scrollTo, 0);
                 Log.d("Scrolling",""+scrollTo);
-                if(scrollTo>500){
-                    DetailsFragment.getInstance().loadReadme();
-                }
                 return true;
             }
             else{
