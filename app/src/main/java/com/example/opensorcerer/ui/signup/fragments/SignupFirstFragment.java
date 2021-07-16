@@ -20,57 +20,93 @@ import com.example.opensorcerer.models.users.User;
 
 import org.jetbrains.annotations.NotNull;
 
-
+/**
+ * Fragment for choosing email and password when signing up.
+ */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupFirstFragment extends Fragment {
 
+    /**Tag for logging*/
     private static final String TAG = "SignupRoleFragment";
+
+    /**Binder for View Binding*/
     private FragmentSignupFirstBinding app;
+
+    /**Fragment's context*/
     private Context mContext;
 
-    private User newUser;
+    /**Newly created user for signup*/
+    private User mNewUser;
 
+    /**
+     * Inflates the fragment's layout
+     */
     @Override
-    public View onCreateView(
-            @NotNull LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
-
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         app = FragmentSignupFirstBinding .inflate(inflater, container, false);
         return app.getRoot();
 
     }
 
+    /**
+     * Sets up the fragment's methods
+     */
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mContext = getContext();
 
-        newUser = SignupFirstFragmentArgs.fromBundle(getArguments()).getUser();
+        //Get the user created in the Role fragment
+        mNewUser = SignupFirstFragmentArgs.fromBundle(getArguments()).getUser();
 
+        setupButtonListeners();
+    }
+
+    /**
+     * Sets up the click listeners for the buttons
+     */
+    private void setupButtonListeners() {
+
+        //Setup "Next" button listener
         app.btnNext.setOnClickListener(v -> {
+
+            //Verify that the email is valid and the passwords match
             if(inputsAreValid()){
-                newUser.setEmail(app.etEmail.getText().toString());
-                newUser.setPassword(app.etPassword.getText().toString());
+
+                //Set the credentials into the user
+                mNewUser.setEmail(app.etEmail.getText().toString());
+                mNewUser.setPassword(app.etPassword.getText().toString());
+
+                //Go to the next screen
                 navigateForward();
             }
         });
 
+        //Setup "Back" button listener
         app.btnBack.setOnClickListener(v -> navigateBackward());
     }
 
+    /**
+     * Goes back to the "role" fragment
+     */
     private void navigateBackward() {
         NavDirections firstToRoleAction = SignupFirstFragmentDirections.firstToRoleAction();
         NavHostFragment.findNavController(this)
                 .navigate(firstToRoleAction);
     }
 
+    /**
+     * Goes to the GitHub user fragment
+     */
     private void navigateForward() {
-        SignupFirstFragmentDirections.FirstToSecondAction firstToSecondAction = SignupFirstFragmentDirections.firstToSecondAction(newUser);
+        SignupFirstFragmentDirections.FirstToSecondAction firstToSecondAction = SignupFirstFragmentDirections.firstToSecondAction(mNewUser);
         NavHostFragment.findNavController(this)
                 .navigate(firstToSecondAction);
     }
 
+    /**
+     * @return If the email is valid and the passwords match
+     */
     private boolean inputsAreValid() {
         if(!isValidEmail(app.etEmail.getText())){
             Toast.makeText(getContext(),"Email is invalid",Toast.LENGTH_SHORT).show();
@@ -84,14 +120,22 @@ public class SignupFirstFragment extends Fragment {
         return true;
     }
 
+    /**
+     * @return If an email address has the correct format
+     */
+    public static boolean isValidEmail(CharSequence target) {
+        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
+
+    /**
+     * Resets the ViewBinder
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         app = null;
     }
 
-    public static boolean isValidEmail(CharSequence target) {
-        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
-    }
+
 
 }

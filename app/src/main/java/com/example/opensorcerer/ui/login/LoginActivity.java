@@ -15,36 +15,69 @@ import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
 import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
 import com.parse.ParseUser;
 
+/**
+ * Activity for logging a user in
+ */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class LoginActivity extends AppCompatActivity {
 
-
+    /**Tag for Logging*/
     private static final String TAG = "LoginActivity";
+
+    /**Binder for ViewBinding*/
     private ActivityLoginBinding app;
+
+    /**Current context*/
     private Context mContext;
 
+    /**
+     * Sets up the activity's methods
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //Set current context
         mContext = this;
 
+        checkUserLogin();
+
+        setupViewBinding();
+
+        setupLoginButtonListener();
+
+    }
+
+    /**
+     * Verifies if a user has already logged in into the application and if so
+     * sends them directly to their home activity depending on their role
+     */
+    private void checkUserLogin() {
         if(ParseUser.getCurrentUser()!=null){
             String role = User.fromParseUser(ParseUser.getCurrentUser()).getRole();
             navigateToMain(role);
         }
+    }
 
-        app = ActivityLoginBinding.inflate(getLayoutInflater());
-        setContentView(app.getRoot());
+    /**
+     * Sets up the listener for the "Log in" button
+     */
+    private void setupLoginButtonListener() {
 
         app.btnLogin.setOnClickListener(v -> {
+
+            //Get the credentials
             String username = app.etUsername.getText().toString();
             String password = app.etPassword.getText().toString();
+
+            //Attempt to log the user in with the credentials
             ParseUser.logInInBackground(username, password, (user, e) -> {
 
                 //If the login is successful
                 if(e==null){
+
+                    //Go to their according home activity
                     String role = User.fromParseUser(ParseUser.getCurrentUser()).getRole();
                     navigateToMain(role);
                 } else{
@@ -55,16 +88,30 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         });
-
     }
 
+    /**
+     * Sets up the View Binder
+     */
+    private void setupViewBinding() {
+        app = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(app.getRoot());
+    }
+
+    /**
+     * Navigates to the corresponding home activity depending on the user's role
+     */
     private void navigateToMain(String role) {
         Intent i = null;
+
+        //Determine the home activity to navigate to
         if(role.equals("developer")){
-            i = new Intent(this, DeveloperHomeActivity.class);
+            i = new Intent(this,DeveloperHomeActivity.class);
         } else if (role.equals("manager")) {
             i = new Intent(this, ManagerHomeActivity.class);
         }
+
+        //Navigate to the selected home activity
         startActivity(i);
         finish();
     }

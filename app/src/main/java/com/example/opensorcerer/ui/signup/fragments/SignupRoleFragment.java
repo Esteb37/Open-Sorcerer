@@ -17,55 +17,70 @@ import com.example.opensorcerer.models.users.roles.Manager;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Fragment for choosing a user's role
+ */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupRoleFragment extends Fragment {
 
+    /**Tag for logging*/
     private static final String TAG = "SignupRoleFragment";
+
+    /**Binder for ViewBinding*/
     private FragmentSignupRoleBinding app;
+
+    /**Fragment's context*/
     private Context mContext;
 
-    User newUser;
+    /**Newly created user for signup*/
+    User mNewUser;
 
+    /**
+     * Inflates the fragment
+     */
     @Override
-    public View onCreateView(
-            @NotNull LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
-
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         app = FragmentSignupRoleBinding.inflate(inflater, container, false);
         return app.getRoot();
-
     }
 
+    /**
+     * Sets up the fragment's methods
+     */
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mContext = getContext();
 
+        setupButtonListeners();
+    }
 
+    /**
+     * Sets up the role buttons listeners
+     */
+    private void setupButtonListeners() {
         app.btnDeveloper.setOnClickListener(v-> {
-            newUser = new Developer();
+            mNewUser = new Developer();
             navigateToSignup();
         });
-
         app.btnManager.setOnClickListener(v-> {
-            newUser = new Manager();
+            mNewUser = new Manager();
             navigateToSignup();
         });
     }
 
+    /**
+     * Navigates forward to the first signup screen
+     */
     private void navigateToSignup() {
-        SignupRoleFragmentDirections.RoleToFirstAction roleToFirstAction = SignupRoleFragmentDirections.roleToFirstAction(newUser);
+        SignupRoleFragmentDirections.RoleToFirstAction roleToFirstAction = SignupRoleFragmentDirections.roleToFirstAction(mNewUser);
         NavHostFragment.findNavController(this)
                 .navigate(roleToFirstAction);
-        /*final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("user",Parcels.wrap(newUser));
-        Fragment fragment = new SignupFirstFragment();
-        fragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContainer,fragment).commit();*/
     }
 
+    /**
+     * Resets the ViewBinder
+     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();

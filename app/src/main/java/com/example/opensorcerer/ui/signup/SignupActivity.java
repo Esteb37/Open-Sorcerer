@@ -1,10 +1,13 @@
 package com.example.opensorcerer.ui.signup;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 
 import com.example.opensorcerer.databinding.ActivitySignupBinding;
+import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
+import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
 import com.example.opensorcerer.ui.signup.fragments.SignupRoleFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,39 +22,78 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.opensorcerer.R;
 import com.parse.ParseUser;
 
+/**
+ * Activity for signing a new user in
+ */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupActivity extends AppCompatActivity {
 
+    /**Tag for logging*/
     private static final String TAG = "SignupActivity";
-    private ActivitySignupBinding app;
-    private Context mContext;
-    private AppBarConfiguration appBarConfiguration;
 
+    /**Binder for ViewBinding*/
+    private ActivitySignupBinding app;
+
+    /**Activity's context*/
+    private Context mContext;
+
+    /**Configuration for the Navigation Graph*/
+    private AppBarConfiguration mAppBarConfiguration;
+
+    /**
+     * Sets up the activity's methods
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        app = ActivitySignupBinding.inflate(getLayoutInflater());
-        setContentView(app.getRoot());
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_login);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
         mContext = this;
 
+        //Make sure no user is logged in
         ParseUser.logOut();
 
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = new SignupRoleFragment();
-        fragmentManager.beginTransaction().replace(R.id.flContainer,fragment).commit();
+        setupViewBinding();
 
+        setupNavController();
+
+        loadFirstFragment();
     }
 
+    /**
+     * Sets up the fragment's layout
+     */
+    private void setupViewBinding() {
+        app = ActivitySignupBinding.inflate(getLayoutInflater());
+        setContentView(app.getRoot());
+    }
+
+    /**
+     * Sets up the controller for the navigation graph
+     */
+    private void setupNavController() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_login);
+        mAppBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+    }
+
+    /**
+     * Load the first fragment from the Signup Process
+     */
+    private void loadFirstFragment() {
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = new SignupRoleFragment();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+    }
+
+    /**
+     * Setup the navigation behavior with the nav controller
+     */
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_login);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
+
 }
