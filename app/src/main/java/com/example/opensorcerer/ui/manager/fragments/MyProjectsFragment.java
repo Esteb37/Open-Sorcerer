@@ -13,14 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentMyProjectsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.roles.Manager;
 import com.example.opensorcerer.ui.manager.adapters.ManagerProjectsAdapter;
-import com.parse.FindCallback;
-import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
@@ -28,16 +26,28 @@ import org.kohsuke.github.GitHub;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class MyProjectsFragment extends Fragment {
 
-    private static final String TAG = "CreateProject";
+    /**Tag for logging*/
+    private static final String TAG = "MyProjectsFragment";
+
+    /**Binder object for ViewBinding*/
     private FragmentMyProjectsBinding app;
+
+    /**Fragment's context*/
     private Context mContext;
-    private GitHub mGitHub;
+
+    /**Current logged in user*/
     private Manager mUser;
 
+    /**GitHub API handler*/
+    private GitHub mGitHub;
+
+    /**Adapter for the RecyclerView*/
     private ManagerProjectsAdapter mAdapter;
 
+    /**The user's created project list to display*/
     private List<Project> mProjects;
 
     public MyProjectsFragment() {
@@ -50,9 +60,11 @@ public class MyProjectsFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Inflates the fragment's layout
+     */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         app = FragmentMyProjectsBinding.inflate(inflater,container,false);
         return app.getRoot();
     }
@@ -61,22 +73,38 @@ public class MyProjectsFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mUser = Manager.getCurrentUser();
+        getState();
 
-        mProjects = new ArrayList<>();
-
-        mContext = getContext();
-
-        mAdapter = new ManagerProjectsAdapter(mProjects,mContext);
-
-        app.rvProjects.setAdapter(mAdapter);
-        app.rvProjects.setLayoutManager(new GridLayoutManager(mContext,2));
+        setupRecyclerView();
 
         queryProjects();
     }
 
+    /**
+     * Gets the current state for the member variables.
+     */
+    private void getState() {
+        mContext = getContext();
+
+        mUser = Manager.getCurrentUser();
+
+        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
+    }
+
+    /**
+     * Sets up the created projects recycler view
+     */
+    private void setupRecyclerView() {
+        mProjects = new ArrayList<>();
+        mAdapter = new ManagerProjectsAdapter(mProjects,mContext);
+        app.rvProjects.setAdapter(mAdapter);
+        app.rvProjects.setLayoutManager(new GridLayoutManager(mContext,2));
+    }
 
 
+    /**
+     * Gets the list of projects created by the user
+     */
     public void queryProjects(){
         ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContains("manager",mUser.getObjectId());
         query.addDescendingOrder("createdAt");
