@@ -1,5 +1,7 @@
 package com.example.opensorcerer.models.users;
 
+import android.util.Log;
+
 import com.example.opensorcerer.models.Conversation;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -175,5 +177,19 @@ public class User{
      */
     public ParseUser fetchIfNeeded() throws ParseException {
         return mHandler.fetchIfNeeded();
+    }
+
+    /**
+     * Updates the user's information in the database
+     */
+    public void update(){
+        mHandler.saveInBackground(e -> {
+            if(e==null){
+                Log.d("User","User updated successfully.");
+            } else {
+                Log.d("User","Error updating user");
+                e.printStackTrace();
+            }
+        });
     }
 }

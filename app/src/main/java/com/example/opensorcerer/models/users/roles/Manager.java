@@ -46,5 +46,18 @@ public class Manager extends User {
     /**Projects list setter*/
     public void setProjects(ParseRelation<Project> projects) {
         mHandler.put(KEY_PROJECTS,projects);
+        update();
     }
+
+    /**
+     * Adds a project to the user's "created projects" list
+     */
+    public void addProject(Project project){
+        ParseRelation<Project> projects = getProjects();
+        projects.add(project);
+        setProjects(projects);
+        update();
+    }
+
+
 }
