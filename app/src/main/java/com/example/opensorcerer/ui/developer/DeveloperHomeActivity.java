@@ -148,7 +148,6 @@ public class DeveloperHomeActivity extends AppCompatActivity{
         app.bottomNav.setSelectedItemId(R.id.actionHome);
     }
 
-
     /**
      * Inflates the options menu
      */
