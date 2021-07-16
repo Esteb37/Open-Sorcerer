@@ -16,32 +16,45 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+/**
+ * RecyclerView Adapter class for Projects in the Developer's timeline
+ */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
 
-    List<Project> mProjects;
-    Context mContext;
+    /**Binder object for ViewBinding*/
+    private ItemProjectBinding app;
 
-    ItemProjectBinding app;
-    ProjectHolder mHolder;
+    /**The adapter's current context*/
+    private final Context mContext;
 
+    /**The list of projects to display*/
+    private final List<Project> mProjects;
+
+    /**The ViewHolder for the project items*/
+    private ProjectHolder mHolder;
+
+    /**
+     * Interface for detecting clicks on the project
+     */
     public interface OnClickListener{
         void onItemClicked(int position);
     }
 
+    /**Click listener*/
     private final OnClickListener mClickListener;
 
-    /**
-     *
-     * @param projects
-     * @param context
-     */
     public ProjectsAdapter(List<Project> projects, Context context, OnClickListener clickListener) {
         mProjects = projects;
         mContext = context;
         mClickListener = clickListener;
     }
 
+    /**
+     * Inflates the ViewHolder and prepares it for the items
+     *
+     * @return the inflated ProjectHolder
+     */
     @NonNull
     @NotNull
     @Override
@@ -51,6 +64,9 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
         return new ProjectHolder(view,mContext,app,mClickListener);
     }
 
+    /**
+     * Binds the project to a ViewHolder to display it
+     */
     @Override
     public void onBindViewHolder(@NonNull @NotNull ProjectHolder holder, int position) {
         mHolder = holder;
@@ -58,21 +74,33 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
 
     }
 
+    /**Project list item count getter*/
     @Override
     public int getItemCount() {
         return mProjects.size();
     }
 
+    /**
+     * Cleans the project list and notifies the adapter
+     */
     public void clear() {
         mProjects.clear();
         notifyDataSetChanged();
     }
 
+    /**
+     * Adds a list of projects to the adapter
+     * @param list A list of projects
+     */
     public void addAll(List<Project> list) {
         mProjects.addAll(list);
         notifyDataSetChanged();
     }
 
+    /**
+     * Gets the project that is currently on the user's screen
+     * @return The currently viewed project
+     */
     public Project getCurrentProject(){
        return  mHolder.getAdapterPosition()>0 ? mProjects.get(mHolder.getAdapterPosition()-1) : mProjects.get(0);
     }

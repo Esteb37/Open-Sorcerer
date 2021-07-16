@@ -1,61 +1,59 @@
 package com.example.opensorcerer.ui.developer.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.ItemProjectBinding;
 import com.example.opensorcerer.models.Project;
-import com.example.opensorcerer.ui.developer.DetailsFragment;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 
-import org.parceler.Parcels;
 
 import java.util.List;
-import java.util.StringTokenizer;
 
+/**
+ * ViewHolder class for Projects in the Developer's timeline
+ */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ProjectHolder extends RecyclerView.ViewHolder{
 
 
-    //View binder
+    /**Binder object for ViewBinding*/
     private final ItemProjectBinding app;
 
-    //Current context
+    /**The Holder's context*/
     private final Context mContext;
-
 
     public ProjectHolder(View view, Context context, ItemProjectBinding binder, ProjectsAdapter.OnClickListener clickListener) {
         super(view);
         app = binder;
         mContext = context;
         view.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
-
     }
 
+    /**
+     * Populates the view's items with the project's information
+     * @param project The project to display
+     */
     public void bind(Project project) {
 
+        //Set text details
         app.tvTitle.setText(project.getTitle());
         app.tvDescription.setText(project.getDescription());
-
         app.tvTitle.setMaxLines(project.getTitle().split(" ").length);
 
+        //Set the project manager's name
         try {
             app.tvAuthor.setText(String.format("by %s", project.getManager().fetchIfNeeded().getUsername()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        //Show the first three tags
         TextView[] tagViews = {app.tvTag1,app.tvTag2,app.tvTag3};
         List<String> tags = project.getTags();
         for(int i = 0;i<3;i++){
@@ -66,6 +64,7 @@ public class ProjectHolder extends RecyclerView.ViewHolder{
             }
         }
 
+        //Show the first three languages
         TextView[] languageViews = {app.tvLanguage1,app.tvLanguage2,app.tvLanguage3};
         List<String> languages = project.getLanguages();
         for(int i = 0;i<3;i++){
@@ -76,7 +75,7 @@ public class ProjectHolder extends RecyclerView.ViewHolder{
             }
         }
 
-
+        //Load the project's logo
         ParseFile image = project.getLogoImage();
         if(image != null){
             Glide.with(mContext)
