@@ -2,45 +2,46 @@ package com.example.opensorcerer.ui.developer.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentCreateProjectBinding;
 import com.example.opensorcerer.databinding.FragmentFavoritesBinding;
-import com.example.opensorcerer.models.Project;
-import com.example.opensorcerer.models.users.roles.Manager;
-import com.parse.ParseRelation;
+import com.example.opensorcerer.models.users.roles.Developer;
 
 import org.jetbrains.annotations.NotNull;
-import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 
-import java.io.IOException;
 
-
+/**
+ * Fragment for displaying a user's liked projects.
+ */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class FavoritesFragment extends Fragment {
 
+    /**Tag for logging*/
     private static final String TAG = "FavoritesFragment";
+
+    /**Binder object for ViewBinding*/
     private FragmentFavoritesBinding app;
-    private Manager mUser;
+
+    /**Fragment's context*/
     private Context mContext;
+
+    /**Current logged in user*/
+    private Developer mUser;
+
+    /**GitHub API handler*/
     private GitHub mGitHub;
 
     public FavoritesFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class FavoritesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         app = FragmentFavoritesBinding.inflate(inflater,container,false);
         return app.getRoot();
@@ -58,11 +59,17 @@ public class FavoritesFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mContext = getContext();
-        mGitHub = ((OSApplication) getActivity().getApplication()).getGitHub();
-        mUser = Manager.getCurrentUser();
+        getState();
     }
 
+    /**
+     * Gets the current state for the member variables.
+     */
+    private void getState() {
+        mContext = getContext();
 
+        mUser = Developer.getCurrentUser();
 
+        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
+    }
 }

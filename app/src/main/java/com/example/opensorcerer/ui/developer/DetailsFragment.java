@@ -4,13 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
-import android.telecom.Call;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,9 +15,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentDetailsBinding;
-import com.example.opensorcerer.databinding.FragmentDeveloperProfileBinding;
 import com.example.opensorcerer.models.Project;
 
+import com.example.opensorcerer.models.users.roles.Developer;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 
@@ -33,24 +29,37 @@ import org.parceler.Parcels;
 
 import java.io.IOException;
 
-
+/**
+ * Fragment for displaying a project's details
+ */
+@SuppressWarnings("unused")
 public class DetailsFragment extends Fragment{
 
-    private FragmentDetailsBinding app;
-    private GitHub mGitHub;
-    private Project mProject;
-    private Context mContext;
-    private static DetailsFragment instance = null;
+    /**Tag for logging*/
+    private static final String TAG = "DetailsFragment";
 
+    /**Binder object for ViewBinding*/
+    private FragmentDetailsBinding app;
+
+    /**Fragment's context*/
+    private Context mContext;
+
+    /**Current logged in user*/
+    private Developer mUser;
+
+    /**GitHub API handler*/
+    private GitHub mGitHub;
+
+    /**Project being displayed*/
+    private Project mProject;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        instance = this;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         app = FragmentDetailsBinding.inflate(inflater,container,false);
         return app.getRoot();
@@ -60,29 +69,46 @@ public class DetailsFragment extends Fragment{
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        getState();
 
-        mProject = Parcels.unwrap(getArguments().getParcelable("project"));
+        loadProjectDetails();
+    }
 
-        mGitHub = ((OSApplication) getActivity().getApplication()).getGitHub();
+    /**
+     * Gets the current state for the member variables.
+     */
+    private void getState() {
 
         mContext = getContext();
 
-        if(mProject!=null) {
-            app.tvTitle.setText(mProject.getTitle());
+        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
 
+        assert getArguments() != null;
+        mProject = Parcels.unwrap(getArguments().getParcelable("project"));
+    }
+
+    /**
+     * Populates the fragment with the project's details
+     */
+    private void loadProjectDetails() {
+        if(mProject!=null) {
+
+            //Load text details
+            app.tvTitle.setText(mProject.getTitle());
             app.tvTitle.setMaxLines(mProject.getTitle().split(" ").length);
             app.tvViews.setText(String.valueOf(mProject.getViewCount()));
-
             app.tvLikes.setText(String.valueOf(mProject.getLikeCount()));
+            app.tvTags.setText(mProject.getTags().toString().replace("[", "").replace("]", ""));
+            app.tvLanguages.setText(mProject.getLanguages().toString().replace("[", "").replace("]", ""));
+
+            //Load Manager's name
             try {
                 app.tvAuthor.setText(String.format("by %s", mProject.getManager().fetchIfNeeded().getUsername()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            app.tvTags.setText(mProject.getTags().toString().replace("[", "").replace("]", ""));
 
-            app.tvLanguages.setText(mProject.getLanguages().toString().replace("[", "").replace("]", ""));
-
+            //Load the project's logo
             ParseFile image = mProject.getLogoImage();
             if (image != null) {
                 Glide.with(mContext)
@@ -92,44 +118,39 @@ public class DetailsFragment extends Fragment{
                 app.progressBar.setVisibility(View.GONE);
             }
 
+            //Load the project's ReadMe file
             loadReadme();
-
         }
-
-
-
     }
 
+    /**
+     * Asynchronous background task for fetching the project's readme
+     * Loads the project's ReadMe file and places it into the Markdown viewer
+     */
     public void loadReadme(){
-        new Thread(new GetReadmeTask()).start();
 
-    }
-
-    private class GetReadmeTask implements Runnable {
-
-        @Override
-        public void run() {
-
+        new Thread(() -> {
             try {
                 Looper.prepare();
+
+                //Get repository
                 String repoLink = mProject.getRepository().split("github.com/")[1];
                 GHRepository ghRepo = mGitHub.getRepository(repoLink);
+
+                //Get ReadMe content
                 GHContent readme = ghRepo.getReadme();
+
+                //noinspection deprecation
                 String content = readme.getContent();
+
+                //Load the content into the markdown viewer
                 ((Activity) mContext).runOnUiThread(() -> {
                     app.markdownView.setMarkDownText(content);
                     app.progressBarReadme.setVisibility(View.GONE);
                 });
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }).start();
     }
-
-    public static DetailsFragment getInstance() {
-        return instance;
-    }
-
 }
