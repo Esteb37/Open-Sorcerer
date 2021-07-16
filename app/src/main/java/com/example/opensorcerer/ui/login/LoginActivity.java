@@ -13,7 +13,10 @@ import com.example.opensorcerer.databinding.ActivityLoginBinding;
 import com.example.opensorcerer.models.users.User;
 import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
 import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
+import com.example.opensorcerer.ui.signup.SignupActivity;
 import com.parse.ParseUser;
+
+import java.util.Objects;
 
 /**
  * Activity for logging a user in
@@ -47,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setupLoginButtonListener();
 
+        setupSignupButtonListener();
     }
 
     /**
@@ -61,15 +65,24 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * Sets up the View Binder
+     */
+    private void setupViewBinding() {
+        app = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(app.getRoot());
+    }
+
+
+    /**
      * Sets up the listener for the "Log in" button
      */
     private void setupLoginButtonListener() {
 
-        app.btnLogin.setOnClickListener(v -> {
+        app.buttonLogin.setOnClickListener(v -> {
 
             //Get the credentials
-            String username = app.etUsername.getText().toString();
-            String password = app.etPassword.getText().toString();
+            String username = Objects.requireNonNull(app.editTextUsername.getText()).toString();
+            String password = Objects.requireNonNull(app.editTextPassword.getText()).toString();
 
             //Attempt to log the user in with the credentials
             ParseUser.logInInBackground(username, password, (user, e) -> {
@@ -91,11 +104,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets up the View Binder
+     * Sets up the "Setup" button listener
      */
-    private void setupViewBinding() {
-        app = ActivityLoginBinding.inflate(getLayoutInflater());
-        setContentView(app.getRoot());
+    private void setupSignupButtonListener() {
+
+        app.buttonSignup.setOnClickListener(v -> {
+            Intent i = new Intent(mContext, SignupActivity.class);
+            startActivity(i);
+        });
     }
 
     /**
