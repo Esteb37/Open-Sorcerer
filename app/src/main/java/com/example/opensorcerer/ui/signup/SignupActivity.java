@@ -70,7 +70,6 @@ public class SignupActivity extends AppCompatActivity {
     private void setupNavController() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_login);
         mAppBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
     }
 
     /**

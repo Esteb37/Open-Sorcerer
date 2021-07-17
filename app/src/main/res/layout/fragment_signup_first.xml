@@ -30,11 +30,11 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="50dp"
-        android:src="@drawable/tight_dark_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/tight_transparent_blue" />
+        app:srcCompat="@drawable/tight_transparent_blue"
+        tools:srcCompat="@drawable/tight_transparent_blue" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
