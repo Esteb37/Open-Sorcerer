@@ -111,6 +111,7 @@ public class MyProjectsFragment extends Fragment {
         query.findInBackground((projects, e) -> {
             if(e==null){
                 mAdapter.addAll(projects);
+                app.progressBar.setVisibility(View.GONE);
             } else {
                 Log.d(TAG,"Unable to load projects.");
             }

@@ -6,6 +6,7 @@ import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.opensorcerer.databinding.ItemManagerProjectBinding;
 import com.example.opensorcerer.models.Project;
 import com.parse.ParseFile;
@@ -47,6 +48,7 @@ public class ManagerProjectHolder extends RecyclerView.ViewHolder{
             Glide.with(mContext)
                     .load(image.getUrl())
                     .centerInside()
+                    .transform(new RoundedCorners(500))
                     .into(app.ivImage);
         }
     }

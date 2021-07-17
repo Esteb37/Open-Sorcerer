@@ -1,7 +1,9 @@
 package com.example.opensorcerer.ui.manager;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -15,7 +17,6 @@ import android.widget.Toast;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.ActivityManagerHomeBinding;
-import com.example.opensorcerer.models.users.User;
 import com.example.opensorcerer.models.users.roles.Manager;
 import com.example.opensorcerer.ui.login.LoginActivity;
 import com.example.opensorcerer.ui.manager.fragments.ConversationsFragment;
@@ -26,32 +27,76 @@ import com.parse.ParseUser;
 
 import org.kohsuke.github.GitHub;
 
-import java.io.IOException;
+import java.util.Objects;
 
+
+/**
+ * Main activity for the manager users
+ */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ManagerHomeActivity extends AppCompatActivity {
 
+    /**Tag for logging*/
+    private static final String TAG = "DeveloperManagerActivity";
 
-    private static final String TAG = "MainActivity";
+    /**Binder object for ViewBinding*/
     private ActivityManagerHomeBinding app;
+
+    /**Fragment's context*/
     private Context mContext;
+
+    /**Current logged in user*/
+    private Manager mUser;
+
+    /**GitHub API handler*/
     private GitHub mGitHub;
 
-    private User mUser;
+    /**
+     * Sets up the activity's methods
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_developer_home);
 
+        setupLayout();
 
+        getState();
+
+        gitHubLogin();
+
+        setupBottomNavigation();
+    }
+
+    /**
+     * Sets up the Activity's layout
+     */
+    private void setupLayout() {
         app = ActivityManagerHomeBinding.inflate(getLayoutInflater());
         setContentView(app.getRoot());
 
+        Objects.requireNonNull(getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.toolbar_manager_main);
+    }
+
+    /**
+     * Gets the current state of the member variables
+     */
+    private void getState() {
         mContext = this;
-
         mUser = Manager.fromParseUser(ParseUser.getCurrentUser());
+    }
 
-        new Thread(new GitHubLoginTask()).start();
+    /**
+     * Initializes the GitHub API handler with the logged in user's OAuth token
+     */
+    private void gitHubLogin() {
+        ((OSApplication) getApplication()).buildGitHub(mUser.getGithubToken());
+    }
+
+    /**
+     * Sets up the bottom navigation bar
+     */
+    private void setupBottomNavigation() {
 
         final FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -60,35 +105,31 @@ public class ManagerHomeActivity extends AppCompatActivity {
         final int actionProfile = R.id.actionProfile;
         final int actionNew = R.id.actionNew;
         final int actionChats = R.id.actionChats;
-
+        
         app.bottomNav.setOnItemSelectedListener(item -> {
-            Fragment fragment;
+            Fragment fragment = null;
 
             //Navigate to a different fragment depending on the item selected
             //and update the item's icons to highlight the one selected
-            switch(item.getItemId()){
+            switch (item.getItemId()) {
 
                 //Home Item selected
                 case actionHome:
                     fragment = new MyProjectsFragment();
                     break;
 
-                //Post item selected
+                //New project item selected
                 case actionNew:
                     fragment = new CreateProjectFragment();
                     break;
 
                 //Profile item selected
                 case actionProfile:
-
-                    //Put the current user into the arguments of the fragment
                     fragment = new ProfileFragment();
                     break;
 
-                //Profile item selected
+                //Chats item selected
                 case actionChats:
-
-                    //Put the current user into the arguments of the fragment
                     fragment = new ConversationsFragment();
                     break;
                 default:
@@ -96,52 +137,50 @@ public class ManagerHomeActivity extends AppCompatActivity {
             }
 
             //Open the selected fragment
-            fragmentManager.beginTransaction().replace(app.flContainer.getId(),fragment).commit();
+            fragmentManager.beginTransaction().replace(app.flContainer.getId(), fragment).commit();
             return true;
         });
 
         //Set the default window to be the Home
         app.bottomNav.setSelectedItemId(R.id.actionHome);
+
+         
     }
 
-
+    /**
+     * Inflates the options menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
     }
 
+    /**
+     * Detects the Options Menu item that was clicked and responds accordingly
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        //If the logout button was clicked
         if(item.getItemId() == R.id.btnLogout){
+
+            //Log the user out
             ParseUser.logOutInBackground(e -> {
+
+                //Go to the login activity
                 if(e == null){
                     Intent i = new Intent(mContext, LoginActivity.class);
                     startActivity(i);
                     finish();
-                } else {
+                } else { //Notify error
                     Toast.makeText(mContext, "Unable to log out.", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             });
-
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-    public class GitHubLoginTask implements Runnable{
-        @Override
-        public void run() {
-            try {
-                ((OSApplication) getApplication()).buildGitHub(mUser.getGithubToken());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-
 }
