@@ -1,22 +1,23 @@
-package com.example.opensorcerer.ui.developer;
+package com.example.opensorcerer.ui.developer.details;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.fragment.app.Fragment;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentDetailsBinding;
+import com.example.opensorcerer.databinding.FragmentInformationBinding;
 import com.example.opensorcerer.models.Project;
-
 import com.example.opensorcerer.models.users.roles.Developer;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -30,16 +31,16 @@ import org.parceler.Parcels;
 import java.io.IOException;
 
 /**
- * Fragment for displaying a project's details
+ * Fragment for displaying a project's general information
  */
 @SuppressWarnings("unused")
-public class DetailsFragment extends Fragment{
+public class InformationFragment extends Fragment {
 
     /**Tag for logging*/
-    private static final String TAG = "DetailsFragment";
+    private static final String TAG = "InformationFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentDetailsBinding app;
+    private FragmentInformationBinding app;
 
     /**Fragment's context*/
     private Context mContext;
@@ -53,18 +54,28 @@ public class DetailsFragment extends Fragment{
     /**Project being displayed*/
     private Project mProject;
 
+    public InformationFragment() {
+        // Required empty public constructor
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Inflates the fragment's layout and sets up ViewBinding
+     */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentDetailsBinding.inflate(inflater,container,false);
+        app = FragmentInformationBinding.inflate(inflater,container,false);
         return app.getRoot();
     }
 
+    /**
+     * Sets up the Fragment's methods
+     */
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -73,6 +84,7 @@ public class DetailsFragment extends Fragment{
 
         loadProjectDetails();
     }
+
 
     /**
      * Gets the current state for the member variables.
@@ -86,6 +98,7 @@ public class DetailsFragment extends Fragment{
         assert getArguments() != null;
         mProject = Parcels.unwrap(getArguments().getParcelable("project"));
     }
+
 
     /**
      * Populates the fragment with the project's details

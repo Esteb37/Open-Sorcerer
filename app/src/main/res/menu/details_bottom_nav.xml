@@ -2,28 +2,35 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/actionHome"
+        android:id="@+id/actionDetails"
         android:enabled="true"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@android:drawable/ic_menu_info_details"
         android:iconTint="#FFFFFF"
-        android:title="Home"
+        android:title="Details"
         app:showAsAction="always" />
     <item
-        android:id="@+id/actionFavorites"
+        android:id="@+id/actionGithub"
         android:enabled="true"
-        android:icon="@drawable/ufi_heart_active"
+        android:icon="@drawable/github_icon"
         android:iconTint="#FFFFFF"
-        android:title="Favorites"
+        android:title="GitHub"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionFork"
+        android:enabled="true"
+        android:icon="@drawable/fork"
+        android:iconTint="#FFFFFF"
+        android:title="Fork"
         app:showAsAction="always" />
     <item
         android:id="@+id/actionChats"
         android:icon="@drawable/chat"
-        android:title="Conversations"
+        android:title="Contact Manager"
         app:showAsAction="always" />
     <item
-        android:id="@+id/actionProfile"
+        android:id="@+id/actionShare"
         android:enabled="true"
-        android:icon="@drawable/profile"
+        android:icon="@android:drawable/ic_menu_share"
         android:iconTint="#FFFFFF"
         android:title="Profile"
         app:showAsAction="always" />

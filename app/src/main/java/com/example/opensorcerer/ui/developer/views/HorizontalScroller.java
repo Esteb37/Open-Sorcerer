@@ -1,9 +1,7 @@
 package com.example.opensorcerer.ui.developer.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -15,17 +13,27 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.ui.developer.DetailsFragment;
+import com.example.opensorcerer.ui.developer.details.DetailsFragment;
 import com.example.opensorcerer.ui.developer.fragments.ProjectsFragment;
 
 import org.parceler.Parcels;
 
-
+/**
+ * Custom Horizontal Scrolling View to display a project's details when swiped left
+ * Source Code:
+ *      Title: Android: Creating a “Snapping” Horizontal Scroll View
+ *      Author: Velir: Mobile Responsive Design
+ *      Date: Nov 17, 2010
+ *      Availability: https://www.velir.com/ideas/2010/11/17/android-creating-a-snapping-horizontal-scroll-view
+ */
 public class HorizontalScroller extends HorizontalScrollView {
+
+    /**The scrolling view's context*/
     Context mContext;
 
+    private static final int SWIPE_THRESHOLD_VELOCITY = 100;
     private static final int SWIPE_MIN_DISTANCE = 5;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 10000;
+
 
     private GestureDetector mGestureDetector;
     private int mActiveFeature = 0;
@@ -97,6 +105,8 @@ public class HorizontalScroller extends HorizontalScrollView {
             }
 
         });
+
+        //noinspection deprecation
         mGestureDetector = new GestureDetector(new FlingDetector());
     }
 
