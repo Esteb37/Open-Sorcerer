@@ -1,28 +1,33 @@
 package com.example.opensorcerer.models.users;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.example.opensorcerer.models.Conversation;
+import com.example.opensorcerer.models.Project;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
-import org.parceler.Parcel;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Custom class for handling ParseUser objects without Parse subclass restrictions
  */
 
 @SuppressWarnings("unused")
-@Parcel
-public class User{
+public class User implements Parcelable {
 
     //Database keys
     private static final String KEY_PROFILE_PICTURE = "profilePicture";
     private static final String KEY_CONVERSATIONS = "conversations";
     private static final String KEY_EXPERIENCE = "experience";
     private static final String KEY_GITHUB_TOKEN = "ghToken";
+    private static final String KEY_FAVORITES = "favorites";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_GITHUB = "github";
     private static final String KEY_ROLE = "role";
@@ -34,6 +39,22 @@ public class User{
      */
     protected ParseUser mHandler;
 
+
+    protected User(Parcel in) {
+        mHandler = in.readParcelable(ParseUser.class.getClassLoader());
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     /**
      * Creates a custom User Object from a ParseUser object
@@ -170,6 +191,44 @@ public class User{
         mHandler.put(KEY_CONVERSATIONS,conversation);
     }
 
+    public List<String> getFavorites(){
+        return mHandler.getList(KEY_FAVORITES);
+    }
+
+    public void setFavorites(List<String> favorites){
+        mHandler.put(KEY_FAVORITES,favorites);
+        update();
+    }
+
+    /**
+     * Likes or unlikes the selected project
+     * @param project The project to like or unlike
+     */
+    public void toggleLike(Project project) {
+        if(project.isLikedByUser(this)){
+            project.removeLike();
+            removeFavorite(project);
+        } else {
+            project.addLike();
+            addFavorite(project);
+        }
+    }
+
+    private void removeFavorite(Project project) {
+        List<String> favorites = getFavorites();
+        if(favorites == null) favorites = new ArrayList<>();
+        favorites.remove(project.getObjectId());
+        setFavorites(favorites);
+    }
+
+    private void addFavorite(Project project) {
+        List<String> favorites = getFavorites();
+        if(favorites == null) favorites = new ArrayList<>();
+        favorites.add(project.getObjectId());
+        setFavorites(favorites);
+    }
+
+
     /**
      * Fetches the user handler in the background
      * @return the user handler after the request has been completed
@@ -192,4 +251,16 @@ public class User{
             }
         });
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeParcelable(mHandler, flags);
+    }
+
+
 }

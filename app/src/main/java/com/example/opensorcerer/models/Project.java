@@ -1,11 +1,18 @@
 package com.example.opensorcerer.models;
 
 import android.os.Parcelable;
+import android.util.Log;
 
+import com.example.opensorcerer.models.users.User;
 import com.example.opensorcerer.models.users.roles.Manager;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 
 import java.util.List;
 
@@ -29,6 +36,8 @@ public class Project extends ParseObject implements Parcelable {
     private static final String KEY_README = "readme";
     private static final String KEY_TITLE = "title";
     private static final String KEY_TAGS = "tags";
+
+    private String likedByUser = null;
 
     /**Description getter**/
     public String getDescription() {
@@ -100,6 +109,13 @@ public class Project extends ParseObject implements Parcelable {
         return getLong(KEY_LIKE_COUNT);
     }
 
+    private void setLikeCount(long likes) {
+        put(KEY_LIKE_COUNT,likes);
+        update();
+    }
+
+
+
     /**View count getter*/
     public long getViewCount() {
         return getLong(KEY_VIEW_COUNT);
@@ -123,5 +139,42 @@ public class Project extends ParseObject implements Parcelable {
     /**Tag list setter*/
     public void setTags(List<String> tags) {
         put(KEY_TAGS,tags);
+    }
+
+    public boolean isLikedByUser(User user) {
+        if(likedByUser==null) {
+            List<String> favorites = user.getFavorites();
+            if(favorites != null){
+                likedByUser = String.valueOf(favorites.contains(getObjectId()));
+            } else {
+                likedByUser = "false";
+            }
+
+        }
+        return Boolean.parseBoolean(likedByUser);
+    }
+
+    public void removeLike() {
+        setLikeCount(getLikeCount()-1);
+        likedByUser = "false";
+    }
+
+    public void addLike() {
+        setLikeCount(getLikeCount()+1);
+        likedByUser = "true";
+    }
+
+    /**
+     * Updates the project's information in the database
+     */
+    public void update(){
+        saveInBackground(e -> {
+            if(e==null){
+                Log.d("User","Project updated successfully.");
+            } else {
+                Log.d("User","Error updating project");
+                e.printStackTrace();
+            }
+        });
     }
 }

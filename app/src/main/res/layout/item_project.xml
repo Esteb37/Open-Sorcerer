@@ -33,7 +33,7 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.333"
+                app:layout_constraintVertical_bias="0.3"
                 app:srcCompat="@drawable/card_background"
                 tools:srcCompat="@drawable/card_background" />
 
@@ -62,15 +62,14 @@
                 android:autoSizeTextType="uniform"
                 android:gravity="center"
                 android:maxLines="1"
-                android:textAlignment="textStart"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton4"
+                app:layout_constraintEnd_toStartOf="@+id/buttonLike"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Open Sorcerer" />
 
             <ImageButton
-                android:id="@+id/imageButton4"
+                android:id="@+id/buttonLike"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginEnd="20dp"
@@ -80,59 +79,19 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvTitle"
-                app:srcCompat="@android:drawable/btn_star" />
+                app:srcCompat="@drawable/ufi_heart_active" />
 
-            <LinearLayout
-                android:id="@+id/linearLayout3"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
+            <ImageButton
+                android:id="@+id/buttonLikeAnimator"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:scaleType="fitCenter"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/ivImage"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="@+id/ivImage">
-
-                <TextView
-                    android:id="@+id/tvAuthor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textSize="16sp"
-                    android:visibility="gone"
-                    tools:text="by Esteb37" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView">
-
-                <ImageButton
-                    android:id="@+id/imageButton6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#00FFFFFF"
-                    app:srcCompat="@android:drawable/ic_menu_info_details" />
-
-                <ImageButton
-                    android:id="@+id/imageButton5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#00FFFFFF"
-                    app:srcCompat="?attr/actionModeShareDrawable" />
-            </LinearLayout>
+                app:layout_constraintStart_toStartOf="@id/buttonLike"
+                app:layout_constraintTop_toTopOf="@id/buttonLike"
+                app:srcCompat="@drawable/ufi_heart_active" />
 
             <TextView
                 android:id="@+id/tvDescription"
@@ -145,7 +104,7 @@
                 android:textAlignment="textStart"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/divider"
-                app:layout_constraintEnd_toEndOf="@+id/imageButton4"
+                app:layout_constraintEnd_toEndOf="@+id/buttonLike"
                 app:layout_constraintStart_toStartOf="@+id/tvTitle"
                 app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 

@@ -44,10 +44,21 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
     /**Click listener*/
     private final OnClickListener mClickListener;
 
-    public ProjectsAdapter(List<Project> projects, Context context, OnClickListener clickListener) {
+    /**
+     * Interface for detecting double taps on the project
+     */
+    public interface OnDoubleTapListener{
+        void onItemDoubleTap(int position);
+    }
+
+    private final OnDoubleTapListener mDoubleTapListener;
+
+
+    public ProjectsAdapter(List<Project> projects, Context context, OnClickListener clickListener, OnDoubleTapListener doubleTapListener) {
         mProjects = projects;
         mContext = context;
         mClickListener = clickListener;
+        mDoubleTapListener = doubleTapListener;
     }
 
     /**
@@ -61,7 +72,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
     public ProjectHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         app = ItemProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = app.getRoot();
-        return new ProjectHolder(view,mContext,app,mClickListener);
+        return new ProjectHolder(view,mContext,app,mClickListener,mDoubleTapListener);
     }
 
     /**

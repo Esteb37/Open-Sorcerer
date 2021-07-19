@@ -2,7 +2,10 @@ package com.example.opensorcerer.ui.developer.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -111,8 +114,11 @@ public class ProjectsFragment extends Fragment {
 
         };
 
+        ProjectsAdapter.OnDoubleTapListener doubleTapListener = position ->
+                mUser.toggleLike(mProjects.get(position));
+
         //Set adapter
-        mAdapter = new ProjectsAdapter(mProjects,mContext, clickListener);
+        mAdapter = new ProjectsAdapter(mProjects,mContext, clickListener,doubleTapListener);
         app.rvProjects.setAdapter(mAdapter);
 
         //Set snap helper

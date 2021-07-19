@@ -12,8 +12,6 @@ import com.parse.ParseUser;
 @SuppressWarnings("unused")
 public class Developer extends User {
 
-    //Database keys.
-    private static final String KEY_FAVORITES = "favorites";
 
     /**
      * Constructor that sets the user's role
@@ -42,11 +40,4 @@ public class Developer extends User {
     public static Developer getCurrentUser(){
         return fromParseUser(ParseUser.getCurrentUser());
     }
-
-    /**Favorites list getter*/
-    public ParseRelation<Project> getFavorites(){
-        return mHandler.getRelation(KEY_FAVORITES);
-    }
-
-
 }
