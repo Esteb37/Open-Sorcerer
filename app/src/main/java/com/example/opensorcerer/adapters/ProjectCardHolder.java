@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.developer.adapters;
+package com.example.opensorcerer.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -31,10 +30,10 @@ import com.parse.ParseFile;
 import java.util.List;
 
 /**
- * ViewHolder class for Projects in the Developer's timeline
+ * ViewHolder class for Projects in linear Card format
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal", "FieldMayBeFinal"})
-public class ProjectHolder extends RecyclerView.ViewHolder{
+public class ProjectCardHolder extends RecyclerView.ViewHolder{
 
     /**Binder object for ViewBinding*/
     private final ItemProjectBinding app;
@@ -48,7 +47,7 @@ public class ProjectHolder extends RecyclerView.ViewHolder{
     /**Current Project*/
     private Project mProject;
     
-    public ProjectHolder(View view, Context context, ItemProjectBinding binder, ProjectsAdapter.OnClickListener clickListener, ProjectsAdapter.OnDoubleTapListener doubleTapListener) {
+    public ProjectCardHolder(View view, Context context, ItemProjectBinding binder, ProjectsCardAdapter.OnClickListener clickListener, ProjectsCardAdapter.OnDoubleTapListener doubleTapListener) {
         super(view);
         app = binder;
         

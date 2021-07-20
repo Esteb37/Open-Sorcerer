@@ -17,7 +17,7 @@ import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentMyProjectsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.roles.Manager;
-import com.example.opensorcerer.ui.manager.adapters.ManagerProjectsAdapter;
+import com.example.opensorcerer.adapters.ProjectsGridAdapter;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +45,7 @@ public class MyProjectsFragment extends Fragment {
     private GitHub mGitHub;
 
     /**Adapter for the RecyclerView*/
-    private ManagerProjectsAdapter mAdapter;
+    private ProjectsGridAdapter mAdapter;
 
     /**The user's created project list to display*/
     private List<Project> mProjects;
@@ -96,7 +96,7 @@ public class MyProjectsFragment extends Fragment {
      */
     private void setupRecyclerView() {
         mProjects = new ArrayList<>();
-        mAdapter = new ManagerProjectsAdapter(mProjects,mContext);
+        mAdapter = new ProjectsGridAdapter(mProjects,mContext);
         app.rvProjects.setAdapter(mAdapter);
         app.rvProjects.setLayoutManager(new GridLayoutManager(mContext,2));
     }

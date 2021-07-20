@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.manager.adapters;
+package com.example.opensorcerer.adapters;
 
 import android.content.Context;
 import android.view.View;
@@ -12,10 +12,10 @@ import com.example.opensorcerer.models.Project;
 import com.parse.ParseFile;
 
 /**
- * ViewHolder class for Projects created by the manager
+ * ViewHolder class for Projects in Grid format
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class ManagerProjectHolder extends RecyclerView.ViewHolder{
+public class ProjectGridHolder extends RecyclerView.ViewHolder{
 
     /**Binder object for ViewBinding*/
     private final ItemManagerProjectBinding app;
@@ -23,7 +23,7 @@ public class ManagerProjectHolder extends RecyclerView.ViewHolder{
     /**The Holder's context*/
     private final Context mContext;
 
-    public ManagerProjectHolder(View view, Context context, ItemManagerProjectBinding binder) {
+    public ProjectGridHolder(View view, Context context, ItemManagerProjectBinding binder) {
         super(view);
         app = binder;
         mContext = context;

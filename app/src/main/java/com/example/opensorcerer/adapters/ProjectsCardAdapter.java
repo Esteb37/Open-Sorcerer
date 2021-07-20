@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.developer.adapters;
+package com.example.opensorcerer.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,10 +17,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * RecyclerView Adapter class for Projects in the Developer's timeline
+ * RecyclerView Adapter class for Projects in linear Card format
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
+public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>{
 
     /**Binder object for ViewBinding*/
     private ItemProjectBinding app;
@@ -32,7 +32,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
     private final List<Project> mProjects;
 
     /**The ViewHolder for the project items*/
-    private ProjectHolder mHolder;
+    private ProjectCardHolder mHolder;
 
     /**
      * Interface for detecting clicks on the project
@@ -54,7 +54,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
     private final OnDoubleTapListener mDoubleTapListener;
 
 
-    public ProjectsAdapter(List<Project> projects, Context context, OnClickListener clickListener, OnDoubleTapListener doubleTapListener) {
+    public ProjectsCardAdapter(List<Project> projects, Context context, OnClickListener clickListener, OnDoubleTapListener doubleTapListener) {
         mProjects = projects;
         mContext = context;
         mClickListener = clickListener;
@@ -69,17 +69,17 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectHolder>{
     @NonNull
     @NotNull
     @Override
-    public ProjectHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public ProjectCardHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         app = ItemProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = app.getRoot();
-        return new ProjectHolder(view,mContext,app,mClickListener,mDoubleTapListener);
+        return new ProjectCardHolder(view,mContext,app,mClickListener,mDoubleTapListener);
     }
 
     /**
      * Binds the project to a ViewHolder to display it
      */
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ProjectHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull ProjectCardHolder holder, int position) {
         mHolder = holder;
         mHolder.bind(mProjects.get(position));
 

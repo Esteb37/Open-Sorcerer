@@ -2,10 +2,7 @@ package com.example.opensorcerer.ui.developer.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,7 +17,7 @@ import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProjectsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.roles.Developer;
-import com.example.opensorcerer.ui.developer.adapters.ProjectsAdapter;
+import com.example.opensorcerer.adapters.ProjectsCardAdapter;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
@@ -48,7 +45,7 @@ public class ProjectsFragment extends Fragment {
     private GitHub mGitHub;
 
     /**Adapter for the Recycler View*/
-    private ProjectsAdapter mAdapter;
+    private ProjectsCardAdapter mAdapter;
 
     /**Layout manager for the Recycler View*/
     private RecyclerView.LayoutManager mLayoutManager;
@@ -110,15 +107,15 @@ public class ProjectsFragment extends Fragment {
         //Prepare list of projects
         mProjects = new ArrayList<>();
 
-        ProjectsAdapter.OnClickListener clickListener = position -> {
+        ProjectsCardAdapter.OnClickListener clickListener = position -> {
 
         };
 
-        ProjectsAdapter.OnDoubleTapListener doubleTapListener = position ->
+        ProjectsCardAdapter.OnDoubleTapListener doubleTapListener = position ->
                 mUser.toggleLike(mProjects.get(position));
 
         //Set adapter
-        mAdapter = new ProjectsAdapter(mProjects,mContext, clickListener,doubleTapListener);
+        mAdapter = new ProjectsCardAdapter(mProjects,mContext, clickListener,doubleTapListener);
         app.rvProjects.setAdapter(mAdapter);
 
         //Set snap helper

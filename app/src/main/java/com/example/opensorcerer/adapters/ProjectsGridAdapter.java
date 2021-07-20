@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.manager.adapters;
+package com.example.opensorcerer.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,17 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.opensorcerer.databinding.ItemManagerProjectBinding;
 import com.example.opensorcerer.models.Project;
-import com.example.opensorcerer.ui.developer.adapters.ProjectHolder;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
- * RecyclerView Adapter class for Projects in the Developer's timeline
+ * RecyclerView Adapter class for Projects in Grid format
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class ManagerProjectsAdapter extends RecyclerView.Adapter<ManagerProjectHolder> {
+public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder> {
 
     /**
      * Binder object for ViewBinding
@@ -40,9 +39,9 @@ public class ManagerProjectsAdapter extends RecyclerView.Adapter<ManagerProjectH
     /**
      * The ViewHolder for the project items
      */
-    private ProjectHolder mHolder;
+    private ProjectCardHolder mHolder;
 
-    public ManagerProjectsAdapter(List<Project> projects, Context context) {
+    public ProjectsGridAdapter(List<Project> projects, Context context) {
         mProjects = projects;
         mContext = context;
     }
@@ -55,17 +54,17 @@ public class ManagerProjectsAdapter extends RecyclerView.Adapter<ManagerProjectH
     @NonNull
     @NotNull
     @Override
-    public ManagerProjectHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public ProjectGridHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         app = ItemManagerProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = app.getRoot();
-        return new ManagerProjectHolder(view, mContext, app);
+        return new ProjectGridHolder(view, mContext, app);
     }
 
     /**
      * Binds the project to a ViewHolder to display it
      */
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ManagerProjectHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull ProjectGridHolder holder, int position) {
         holder.bind(mProjects.get(position));
     }
 
