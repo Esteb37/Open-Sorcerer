@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.opensorcerer.adapters.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.adapters.ProjectsGridAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentFavoritesGridBinding;
@@ -35,6 +37,9 @@ public class FavoritesFragmentGrid extends Fragment {
     /**Tag for logging*/
     private static final String TAG = "FavoritesFragment";
 
+    /**Amount of items to query per call*/
+    private static final int QUERY_LIMIT = 20;
+
     /**Binder object for ViewBinding*/
     private FragmentFavoritesGridBinding app;
 
@@ -50,8 +55,12 @@ public class FavoritesFragmentGrid extends Fragment {
     /**Adapter for the RecyclerView*/
     private ProjectsGridAdapter mAdapter;
 
+    /**Layout manager for the RecyclerView*/
+    private GridLayoutManager mLayoutManager;
+
     /**The user's created project list to display*/
     private List<Project> mProjects;
+
 
 
     public FavoritesFragmentGrid() {
@@ -84,7 +93,7 @@ public class FavoritesFragmentGrid extends Fragment {
 
         setupRecyclerView();
 
-        queryProjects();
+        queryProjects(0);
     }
 
     /**
@@ -109,26 +118,43 @@ public class FavoritesFragmentGrid extends Fragment {
         app.recyclerViewFavorites.setAdapter(mAdapter);
 
         //Set the layout
-        app.recyclerViewFavorites.setLayoutManager(new GridLayoutManager(mContext,2));
+        mLayoutManager = new GridLayoutManager(mContext,2);
+        app.recyclerViewFavorites.setLayoutManager(mLayoutManager);
+
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryProjects(page);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        app.recyclerViewFavorites.addOnScrollListener(scrollListener);
     }
 
 
     /**
-     * Gets the list of projects created by the user
+     * Gets the list of projects liked by the user
      */
-    public void queryProjects(){
+    public void queryProjects(int page){
+
         app.progressBar.setVisibility(View.VISIBLE);
-        ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContainedIn("objectId", mUser.getFavorites());
-        query.addDescendingOrder("createdAt");
-        query.findInBackground((projects, e) -> {
-            if(e==null){
-                mAdapter.clear();
-                mAdapter.addAll(projects);
-                app.progressBar.setVisibility(View.GONE);
-            } else {
-                Log.d(TAG,"Unable to load projects.");
-            }
-        });
+        List<String> favorites = mUser.getFavorites();
+        if(favorites!=null) {
+            ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContainedIn("objectId", favorites);
+            query.addDescendingOrder("createdAt");
+            query.setLimit(QUERY_LIMIT);
+            query.setSkip(QUERY_LIMIT*page);
+            query.findInBackground((projects, e) -> {
+                if (e == null) {
+                    mAdapter.addAll(projects);
+                    app.progressBar.setVisibility(View.GONE);
+                } else {
+                    Log.d(TAG, "Unable to load projects.");
+                }
+            });
+        } else {
+            app.progressBar.setVisibility(View.GONE);
+        }
     }
 
    /* public void setSearchListener(){

@@ -2,24 +2,21 @@ package com.example.opensorcerer.ui.developer.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.opensorcerer.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.opensorcerer.adapters.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.adapters.ProjectsCardAdapter;
-import com.example.opensorcerer.adapters.ProjectsGridAdapter;
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentFavoritesGridBinding;
 import com.example.opensorcerer.databinding.FragmentFavoritesLinearBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.roles.Developer;
@@ -40,6 +37,9 @@ public class FavoritesFragmentLinear extends Fragment {
     /**Tag for logging*/
     private static final String TAG = "FavoritesFragment";
 
+    /**Amount of items to query per call*/
+    private static final int QUERY_LIMIT = 5;
+
     /**Binder object for ViewBinding*/
     private FragmentFavoritesLinearBinding app;
 
@@ -54,6 +54,9 @@ public class FavoritesFragmentLinear extends Fragment {
 
     /**Adapter for the RecyclerView*/
     private ProjectsCardAdapter mAdapter;
+
+    /**Layout manager for the RecyclerView*/
+    private LinearLayoutManager mLayoutManager;
 
     /**The user's created project list to display*/
     private List<Project> mProjects;
@@ -92,7 +95,7 @@ public class FavoritesFragmentLinear extends Fragment {
 
         setupRecyclerView();
 
-        queryProjects();
+        queryProjects(0);
     }
 
     /**
@@ -129,26 +132,42 @@ public class FavoritesFragmentLinear extends Fragment {
         mSnapHelper.attachToRecyclerView(app.recyclerViewFavorites);
 
         //Set the layout manager
-        app.recyclerViewFavorites.setLayoutManager(new LinearLayoutManager(mContext));
+        mLayoutManager = new LinearLayoutManager(mContext);
+        app.recyclerViewFavorites.setLayoutManager(mLayoutManager);
+
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryProjects(page);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        app.recyclerViewFavorites.addOnScrollListener(scrollListener);
     }
 
-
     /**
-     * Gets the list of projects created by the user
+     * Gets the list of projects liked by the user
      */
-    public void queryProjects(){
+    public void queryProjects(int page){
+
         app.progressBar.setVisibility(View.VISIBLE);
-        ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContainedIn("objectId", mUser.getFavorites());
-        query.addDescendingOrder("createdAt");
-        query.findInBackground((projects, e) -> {
-            if(e==null){
-                mAdapter.clear();
-                mAdapter.addAll(projects);
-                app.progressBar.setVisibility(View.GONE);
-            } else {
-                Log.d(TAG,"Unable to load projects.");
-            }
-        });
+        List<String> favorites = mUser.getFavorites();
+        if(favorites!=null) {
+            ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContainedIn("objectId", favorites);
+            query.addDescendingOrder("createdAt");
+            query.setLimit(QUERY_LIMIT);
+            query.setSkip(QUERY_LIMIT*page);
+            query.findInBackground((projects, e) -> {
+                if (e == null) {
+                    mAdapter.addAll(projects);
+                    app.progressBar.setVisibility(View.GONE);
+                } else {
+                    Log.d(TAG, "Unable to load projects.");
+                }
+            });
+        } else {
+            app.progressBar.setVisibility(View.GONE);
+        }
     }
 
 }

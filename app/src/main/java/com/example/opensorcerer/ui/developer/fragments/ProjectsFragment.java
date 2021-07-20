@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.opensorcerer.R;
+import com.example.opensorcerer.adapters.EndlessRecyclerViewScrollListener;
+import com.example.opensorcerer.adapters.ProjectsCardAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProjectsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.users.roles.Developer;
-import com.example.opensorcerer.adapters.ProjectsCardAdapter;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +33,9 @@ public class ProjectsFragment extends Fragment {
 
     /**Tag for logging*/
     private static final String TAG = "ProjectsFragment";
+
+    /**Amount of items to query per call*/
+    private static final int QUERY_LIMIT = 5;
 
     /**Binder object for ViewBinding*/
     private FragmentProjectsBinding app;
@@ -48,7 +53,7 @@ public class ProjectsFragment extends Fragment {
     private ProjectsCardAdapter mAdapter;
 
     /**Layout manager for the Recycler View*/
-    private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
 
     /**Snap helper for the Recycler View*/
     private PagerSnapHelper mSnapHelper;
@@ -84,7 +89,18 @@ public class ProjectsFragment extends Fragment {
 
         setupRecyclerView();
 
-        queryProjects();
+        queryProjects(0);
+
+        setupSwipeRefresh();
+    }
+
+    private void setupSwipeRefresh() {
+        app.swipeContainer.setOnRefreshListener(() -> queryProjects(0));
+
+        app.swipeContainer.setColorSchemeResources(R.color.darker_blue,
+                R.color.dark_blue,
+                R.color.light_blue,
+                android.R.color.holo_red_light);
     }
 
 
@@ -125,18 +141,31 @@ public class ProjectsFragment extends Fragment {
         //Set layout manager
         mLayoutManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
         app.rvProjects.setLayoutManager(mLayoutManager);
+
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryProjects(page);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        app.rvProjects.addOnScrollListener(scrollListener);
     }
 
 
     /**
      * Gets the list of projects from the developer's timeline
      */
-    private void queryProjects(){
+    private void queryProjects(int page){
+
         ParseQuery<Project> query = ParseQuery.getQuery(Project.class);
         query.addDescendingOrder("createdAt");
+        query.setLimit(QUERY_LIMIT);
+        query.setSkip(page*QUERY_LIMIT);
         query.findInBackground((projects, e) -> {
             mAdapter.addAll(projects);
             app.progressBar.setVisibility(View.GONE);
+            app.swipeContainer.setRefreshing(false);
         });
     }
 
