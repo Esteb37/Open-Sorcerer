@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         //Set current context
         mContext = this;
 
-        checkUserLogin();
+        //checkUserLogin();
 
         setupViewBinding();
 
