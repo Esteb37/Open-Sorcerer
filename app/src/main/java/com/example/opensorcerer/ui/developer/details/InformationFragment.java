@@ -2,10 +2,15 @@ package com.example.opensorcerer.ui.developer.details;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Looper;
@@ -15,6 +20,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentInformationBinding;
 import com.example.opensorcerer.models.Project;
@@ -131,8 +137,12 @@ public class InformationFragment extends Fragment {
                 app.progressBar.setVisibility(View.GONE);
             }
 
+            setLikeButton();
+
             //Load the project's ReadMe file
             loadReadme();
+
+
         }
     }
 
@@ -165,5 +175,13 @@ public class InformationFragment extends Fragment {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    private void setLikeButton() {
+        Drawable unwrappedDrawable = AppCompatResources.getDrawable(mContext, R.drawable.ufi_heart_active);
+        assert unwrappedDrawable != null;
+        Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+        DrawableCompat.setTint(wrappedDrawable, mProject.isLikedByUser(mUser) ? Color.RED : ContextCompat.getColor(mContext,R.color.darker_blue));
+        app.buttonLike.setImageDrawable(wrappedDrawable);
     }
 }
