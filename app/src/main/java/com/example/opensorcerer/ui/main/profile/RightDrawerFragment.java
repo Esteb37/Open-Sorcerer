@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.developer.fragments;
+package com.example.opensorcerer.ui.main.profile;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +12,6 @@ public class RightDrawerFragment extends androidx.fragment.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_right_drawer,container,false);
-        return view;
+        return inflater.inflate(R.layout.fragment_right_drawer,container,false);
     }
 }

@@ -20,9 +20,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.example.opensorcerer.databinding.FragmentSignupDetailsBinding;
-import com.example.opensorcerer.models.users.User;
-import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
-import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
+import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.HomeActivity;
 import com.parse.ParseFile;
 import com.parse.SaveCallback;
 
@@ -123,21 +122,15 @@ public class SignupDetailsFragment extends Fragment {
                 });
             }
         });
-        app.buttonSkip.setOnClickListener(v -> navigateToMain(mNewUser.getRole()));
+
+        app.buttonSkip.setOnClickListener(v -> navigateToMain());
     }
 
     /**
      * Navigates to the corresponding home activity depending on the user's role
      */
-    private void navigateToMain(String role) {
-        Intent i = null;
-
-        //Determine the home activity to navigate to
-        if(role.equals("developer")){
-            i = new Intent(mContext, DeveloperHomeActivity.class);
-        } else if (role.equals("manager")) {
-            i = new Intent(mContext, ManagerHomeActivity.class);
-        }
+    private void navigateToMain() {
+        Intent i =  new Intent(mContext, HomeActivity.class);
 
         //Navigate to the selected home activity
         startActivity(i);

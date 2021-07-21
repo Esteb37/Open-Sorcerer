@@ -1,42 +1,29 @@
-package com.example.opensorcerer.ui.manager.fragments;
+package com.example.opensorcerer.ui.main.create;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import android.os.Looper;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentCreateProjectBinding;
-import com.example.opensorcerer.models.Project;
-import com.example.opensorcerer.models.users.roles.Manager;
+import com.example.opensorcerer.databinding.ActivityCreateBinding;
+import com.example.opensorcerer.models.User;
 import com.parse.ParseFile;
 
 import org.jetbrains.annotations.NotNull;
-import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Fragment for creating a new project and adding it to the database
@@ -48,13 +35,13 @@ public class CreateProjectFragment extends Fragment {
     private static final String TAG = "CreateProjectFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentCreateProjectBinding app;
+    private ActivityCreateBinding app;
 
     /**Fragment's context*/
     private Context mContext;
 
     /**Current logged in user*/
-    private Manager mUser;
+    private User mUser;
 
     /**GitHub API handler*/
     private GitHub mGitHub;
@@ -74,7 +61,7 @@ public class CreateProjectFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentCreateProjectBinding.inflate(inflater,container,false);
+        app = ActivityCreateBinding.inflate(inflater,container,false);
         return app.getRoot();
     }
 
@@ -101,7 +88,7 @@ public class CreateProjectFragment extends Fragment {
     private void setupQuickSetupButtonListener() {
 
         //Create a background thread on the button's click
-        app.btnQuick.setOnClickListener(v -> new Thread(() -> {
+        /*app.btnQuick.setOnClickListener(v -> new Thread(() -> {
 
             //Get the repo in user/repo format
             String repoLink = app.etRepo.getText().toString().split("github.com/")[1];
@@ -135,6 +122,8 @@ public class CreateProjectFragment extends Fragment {
                 e.printStackTrace();
             }
         }).start());
+
+         */
     }
 
 
@@ -143,7 +132,7 @@ public class CreateProjectFragment extends Fragment {
      */
     private void setupCreateProjectButtonListener() {
 
-        app.btnCreate.setOnClickListener(v -> {
+        /*app.btnCreate.setOnClickListener(v -> {
 
             //Create a new project
             Project project = new Project();
@@ -187,6 +176,8 @@ public class CreateProjectFragment extends Fragment {
                 });
             }).start();
         });
+
+         */
     }
 
 
@@ -194,7 +185,7 @@ public class CreateProjectFragment extends Fragment {
      * Sets up a listener for when the user has finished typing into the Image input
      */
     private void setupImageEditorListener() {
-        (app.etImage).setOnEditorActionListener(
+       /* (app.etImage).setOnEditorActionListener(
                 (v, actionId, event) -> {
 
                     //If the user has finished typing, typed enter or down
@@ -218,6 +209,8 @@ public class CreateProjectFragment extends Fragment {
                     return false; // pass on to other listeners.
                 }
         );
+        
+        */
     }
 
 
@@ -228,7 +221,7 @@ public class CreateProjectFragment extends Fragment {
     private void getState() {
         mContext = getContext();
 
-        mUser = Manager.getCurrentUser();
+        mUser = User.getCurrentUser();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }

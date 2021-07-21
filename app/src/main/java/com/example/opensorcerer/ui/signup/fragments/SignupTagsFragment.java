@@ -22,9 +22,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.FragmentSignupTagsBinding;
 import com.example.opensorcerer.models.Tags;
-import com.example.opensorcerer.models.users.User;
-import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
-import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
+import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.HomeActivity;
 import com.google.android.material.chip.ChipDrawable;
 
 import org.jetbrains.annotations.NotNull;
@@ -100,10 +99,10 @@ public class SignupTagsFragment extends Fragment {
         app.buttonFinish.setOnClickListener(v -> {
             mNewUser.setLanguages(Arrays.asList(app.chipInputLanguages.getText().toString().split(",")));
             mNewUser.setInterests(Arrays.asList(app.chipInputTags.getText().toString().split(",")));
-            navigateToMain(mNewUser.getRole());
+            navigateToMain();
         });
 
-        app.buttonSkip.setOnClickListener(v -> navigateToMain(mNewUser.getRole()));
+        app.buttonSkip.setOnClickListener(v -> navigateToMain());
 
         app.buttonBack.setOnClickListener(v -> navigateBackward());
     }
@@ -111,15 +110,8 @@ public class SignupTagsFragment extends Fragment {
     /**
      * Navigates to the corresponding home activity depending on the user's role
      */
-    private void navigateToMain(String role) {
-        Intent i = null;
-
-        //Determine the home activity to navigate to
-        if(role.equals("developer")){
-            i = new Intent(mContext, DeveloperHomeActivity.class);
-        } else if (role.equals("manager")) {
-            i = new Intent(mContext, ManagerHomeActivity.class);
-        }
+    private void navigateToMain() {
+        Intent i = new Intent(mContext, HomeActivity.class);
 
         //Navigate to the selected home activity
         startActivity(i);

@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.developer.views;
+package com.example.opensorcerer.ui.views;
 
 import android.content.Context;
 import android.text.Layout;
@@ -7,8 +7,12 @@ import android.view.View;
 import android.widget.TextView;
 
 /**
- * User: Bazlur Rahman Rokon
- * Date: 9/7/13 - 3:33 AM
+ * Custom Text view that expands and retracts on click
+ * Code fragments taken from:
+ *      Title: Android - Expandable TextView with Animation
+ *      Author: Bazlur Rahman Rokon
+ *      Date: September 7, 2013
+ *      Availability: https://stackoverflow.com/questions/15627530/android-expandable-textview-with-animation
  */
 @SuppressWarnings("unused")
 public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextView {

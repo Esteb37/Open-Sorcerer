@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.opensorcerer.ui.developer.fragments.FavoritesFragmentGrid;
-import com.example.opensorcerer.ui.developer.fragments.FavoritesFragmentLinear;
+import com.example.opensorcerer.ui.main.favorites.FavoritesFragmentGrid;
+import com.example.opensorcerer.ui.main.favorites.FavoritesFragmentLinear;
 
 /**
  * Pager adapter for the Favorites pager view

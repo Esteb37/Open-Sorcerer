@@ -35,7 +35,7 @@
             app:exitAnim="@anim/slide_out_right" />
         <argument
             android:name="user"
-            app:argType="com.example.opensorcerer.models.users.User" />
+            app:argType="com.example.opensorcerer.models.User" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -58,7 +58,7 @@
 
         <argument
             android:name="user"
-            app:argType="com.example.opensorcerer.models.users.User" />
+            app:argType="com.example.opensorcerer.models.User" />
     </fragment>
 
     <fragment
@@ -76,7 +76,7 @@
 
         <argument
             android:name="user"
-            app:argType="com.example.opensorcerer.models.users.User" />
+            app:argType="com.example.opensorcerer.models.User" />
     </fragment>
 
     <fragment
@@ -92,6 +92,6 @@
             app:exitAnim="@anim/slide_out_right"   />
         <argument
             android:name="user"
-            app:argType="com.example.opensorcerer.models.users.User" />
+            app:argType="com.example.opensorcerer.models.User" />
     </fragment>
 </navigation>

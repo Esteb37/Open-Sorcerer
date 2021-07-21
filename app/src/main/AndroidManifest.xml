@@ -27,12 +27,7 @@
             android:label="Sign Up">
         </activity>
         <activity
-            android:name=".ui.manager.ManagerHomeActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.OpenSorcerer"
-            />
-        <activity
-            android:name=".ui.developer.DeveloperHomeActivity"
+            android:name=".ui.main.HomeActivity"
             android:label="@string/app_name"
             />
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.opensorcerer.ui.developer.views.HorizontalScroller xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.opensorcerer.ui.views.HorizontalScroller xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/horizontalScroller"
@@ -78,4 +78,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</com.example.opensorcerer.ui.developer.views.HorizontalScroller>
+</com.example.opensorcerer.ui.views.HorizontalScroller>

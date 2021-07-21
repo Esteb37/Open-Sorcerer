@@ -1,47 +1,44 @@
-package com.example.opensorcerer.ui.manager.fragments;
+package com.example.opensorcerer.ui.main.conversations;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentDeveloperProfileBinding;
-import com.example.opensorcerer.databinding.FragmentManagerProfileBinding;
-import com.example.opensorcerer.models.users.roles.Developer;
+import com.example.opensorcerer.databinding.FragmentConversationsBinding;
+import com.example.opensorcerer.models.User;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
 
 /**
- * Fragment for displaying a user's profile.
+ * Fragment for displaying the user's list of active conversations
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class ProfileFragment extends Fragment {
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
+public class ConversationsFragment extends Fragment {
 
     /**Tag for logging*/
-    private static final String TAG = "ProfileFragment";
+    private static final String TAG = "ConversationsFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentDeveloperProfileBinding app;
+    private FragmentConversationsBinding app;
 
     /**Fragment's context*/
     private Context mContext;
 
     /**Current logged in user*/
-    private Developer mUser;
+    private User mUser;
 
     /**GitHub API handler*/
     private GitHub mGitHub;
 
-    public ProfileFragment () {
+    public ConversationsFragment() {
         // Required empty public constructor
     }
 
@@ -50,18 +47,18 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    /**
-     * Inflates the fragment's layout
-     */
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentDeveloperProfileBinding.inflate(inflater,container,false);
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        app = FragmentConversationsBinding.inflate(inflater,container,false);
         return app.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getState();
     }
 
     /**
@@ -70,7 +67,7 @@ public class ProfileFragment extends Fragment {
     private void getState() {
         mContext = getContext();
 
-        mUser = Developer.getCurrentUser();
+        mUser = User.getCurrentUser();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }

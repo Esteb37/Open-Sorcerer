@@ -158,7 +158,7 @@
                     app:layout_constraintStart_toStartOf="@+id/textViewBio"
                     app:layout_constraintTop_toBottomOf="@id/divider7" />
 
-                <com.example.opensorcerer.ui.developer.views.ExpandableTextView
+                <com.example.opensorcerer.ui.views.ExpandableTextView
                     android:id="@+id/textViewLanguages"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
                     app:layout_constraintStart_toStartOf="@+id/textViewBio"
                     app:layout_constraintTop_toBottomOf="@+id/textViewMoreLanguages" />
 
-                <com.example.opensorcerer.ui.developer.views.ExpandableTextView
+                <com.example.opensorcerer.ui.views.ExpandableTextView
                     android:id="@+id/textViewInterests"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

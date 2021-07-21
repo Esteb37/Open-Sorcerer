@@ -15,7 +15,7 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.opensorcerer.databinding.FragmentSignupFirstBinding;
-import com.example.opensorcerer.models.users.User;
+import com.example.opensorcerer.models.User;
 
 import org.jetbrains.annotations.NotNull;
 

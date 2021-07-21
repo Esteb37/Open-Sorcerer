@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.manager.fragments;
+package com.example.opensorcerer.ui.main;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,8 +16,8 @@ import android.view.ViewGroup;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentMyProjectsBinding;
 import com.example.opensorcerer.models.Project;
-import com.example.opensorcerer.models.users.roles.Manager;
 import com.example.opensorcerer.adapters.ProjectsGridAdapter;
+import com.example.opensorcerer.models.User;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +39,7 @@ public class MyProjectsFragment extends Fragment {
     private Context mContext;
 
     /**Current logged in user*/
-    private Manager mUser;
+    private User mUser;
 
     /**GitHub API handler*/
     private GitHub mGitHub;
@@ -86,7 +86,7 @@ public class MyProjectsFragment extends Fragment {
     private void getState() {
         mContext = getContext();
 
-        mUser = Manager.getCurrentUser();
+        mUser = User.getCurrentUser();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }

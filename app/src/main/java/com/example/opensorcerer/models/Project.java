@@ -3,16 +3,9 @@ package com.example.opensorcerer.models;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.example.opensorcerer.models.users.User;
-import com.example.opensorcerer.models.users.roles.Manager;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseClassName;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 
 import java.util.List;
 
@@ -80,12 +73,12 @@ public class Project extends ParseObject implements Parcelable {
     }
 
     /**Manager getter*/
-    public Manager getManager() {
-        return Manager.fromParseUser(getParseUser(KEY_MANAGER));
+    public User getManager() {
+        return User.fromParseUser(getParseUser(KEY_MANAGER));
     }
 
     /**Manager setter*/
-    public void setManager(Manager manager) {
+    public void setManager(User manager) {
         put(KEY_MANAGER,manager.getHandler());
     }
 

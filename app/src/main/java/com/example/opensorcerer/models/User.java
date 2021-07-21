@@ -1,11 +1,9 @@
-package com.example.opensorcerer.models.users;
+package com.example.opensorcerer.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.example.opensorcerer.models.Conversation;
-import com.example.opensorcerer.models.Project;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseRelation;
@@ -30,6 +28,7 @@ public class User implements Parcelable {
     private static final String KEY_LANGUAGES = "languages";
     private static final String KEY_FAVORITES = "favorites";
     private static final String KEY_PASSWORD = "password";
+    private static final String KEY_PROJECTS = "projects";
     private static final String KEY_GITHUB = "github";
     private static final String KEY_ROLE = "role";
     private static final String KEY_NAME = "name";
@@ -40,22 +39,6 @@ public class User implements Parcelable {
      */
     protected ParseUser mHandler;
 
-
-    protected User(Parcel in) {
-        mHandler = in.readParcelable(ParseUser.class.getClassLoader());
-    }
-
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 
     /**
      * Creates a custom User Object from a ParseUser object
@@ -74,6 +57,10 @@ public class User implements Parcelable {
      */
     public User(){
         mHandler = new ParseUser();
+    }
+
+    public static User getCurrentUser() {
+        return fromParseUser(ParseUser.getCurrentUser());
     }
 
     /**Handler getter*/
@@ -278,6 +265,28 @@ public class User implements Parcelable {
         });
     }
 
+
+    /**Projects list getter*/
+    public ParseRelation<Project> getProjects(){
+        return mHandler.getRelation(KEY_PROJECTS);
+    }
+
+    /**Projects list setter*/
+    public void setProjects(ParseRelation<Project> projects) {
+        mHandler.put(KEY_PROJECTS,projects);
+        update();
+    }
+
+    /**
+     * Adds a project to the user's "created projects" list
+     */
+    public void addProject(Project project){
+        ParseRelation<Project> projects = getProjects();
+        projects.add(project);
+        setProjects(projects);
+        update();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -288,5 +297,22 @@ public class User implements Parcelable {
         dest.writeParcelable(mHandler, flags);
     }
 
+
+
+    protected User(Parcel in) {
+        mHandler = in.readParcelable(ParseUser.class.getClassLoader());
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
 }

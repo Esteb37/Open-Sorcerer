@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.developer.fragments;
+package com.example.opensorcerer.ui.main.profile;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.FavoritesPagerAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentDeveloperProfileBinding;
-import com.example.opensorcerer.models.users.roles.Developer;
+import com.example.opensorcerer.models.User;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
@@ -39,7 +39,7 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     private Context mContext;
 
     /**Current logged in user*/
-    private Developer mUser;
+    private User mUser;
 
     /**GitHub API handler*/
     private GitHub mGitHub;
@@ -108,7 +108,7 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     private void getState() {
         mContext = getContext();
 
-        mUser = Developer.getCurrentUser();
+        mUser = User.getCurrentUser();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }

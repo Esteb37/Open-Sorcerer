@@ -1,18 +1,17 @@
 package com.example.opensorcerer.ui.login;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.ActivityLoginBinding;
-import com.example.opensorcerer.models.users.User;
-import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
-import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
+import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.HomeActivity;
 import com.example.opensorcerer.ui.signup.SignupActivity;
 import com.parse.ParseUser;
 
@@ -60,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     private void checkUserLogin() {
         if(ParseUser.getCurrentUser()!=null){
             String role = User.fromParseUser(ParseUser.getCurrentUser()).getRole();
-            navigateToMain(role);
+            navigateToMain();
         }
     }
 
@@ -92,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     //Go to their according home activity
                     String role = User.fromParseUser(ParseUser.getCurrentUser()).getRole();
-                    navigateToMain(role);
+                    navigateToMain();
                 } else{
                     Log.d(TAG,"Issue with login",e);
 
@@ -117,17 +116,8 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Navigates to the corresponding home activity depending on the user's role
      */
-    private void navigateToMain(String role) {
-        Intent i = null;
-
-        //Determine the home activity to navigate to
-        if(role.equals("developer")){
-            i = new Intent(this,DeveloperHomeActivity.class);
-        } else if (role.equals("manager")) {
-            i = new Intent(this, ManagerHomeActivity.class);
-        }
-
-        //Navigate to the selected home activity
+    private void navigateToMain() {
+        Intent i = new Intent(this, HomeActivity.class);
         startActivity(i);
         finish();
     }

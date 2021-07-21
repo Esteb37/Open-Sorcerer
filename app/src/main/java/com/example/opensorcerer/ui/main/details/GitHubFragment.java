@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.developer.details;
+package com.example.opensorcerer.ui.main.details;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentGitHubBinding;
 import com.example.opensorcerer.models.Project;
-import com.example.opensorcerer.models.users.roles.Developer;
+import com.example.opensorcerer.models.User;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
@@ -44,7 +44,7 @@ public class GitHubFragment extends Fragment {
     /**
      * Current logged in user
      */
-    private Developer mUser;
+    private User mUser;
 
     /**
      * GitHub API handler

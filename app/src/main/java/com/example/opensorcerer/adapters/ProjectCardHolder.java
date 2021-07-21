@@ -23,7 +23,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.ItemProjectBinding;
 import com.example.opensorcerer.models.Project;
-import com.example.opensorcerer.models.users.roles.Developer;
+import com.example.opensorcerer.models.User;
 import com.parse.ParseFile;
 
 
@@ -42,7 +42,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
     private final Context mContext;
 
     /**Current user*/
-    private Developer mUser;
+    private User mUser;
 
     /**Current Project*/
     private Project mProject;
@@ -53,7 +53,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
         
         mContext = context;
 
-        mUser = Developer.getCurrentUser();
+        mUser = User.getCurrentUser();
 
         
         view.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));

@@ -1,52 +1,49 @@
-package com.example.opensorcerer.ui.manager;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+package com.example.opensorcerer.ui.main;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.ActivityManagerHomeBinding;
-import com.example.opensorcerer.models.users.roles.Manager;
+import com.example.opensorcerer.databinding.ActivityDeveloperHomeBinding;
+import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.conversations.ConversationsFragment;
+import com.example.opensorcerer.ui.main.favorites.FavoritesFragment;
+import com.example.opensorcerer.ui.main.profile.ProfileFragment;
+import com.example.opensorcerer.ui.main.projects.ProjectsFragment;
 import com.example.opensorcerer.ui.login.LoginActivity;
-import com.example.opensorcerer.ui.manager.fragments.ConversationsFragment;
-import com.example.opensorcerer.ui.manager.fragments.CreateProjectFragment;
-import com.example.opensorcerer.ui.manager.fragments.MyProjectsFragment;
-import com.example.opensorcerer.ui.manager.fragments.ProfileFragment;
 import com.parse.ParseUser;
 
 import org.kohsuke.github.GitHub;
 
-import java.util.Objects;
-
 
 /**
- * Main activity for the manager users
+ * Main activity for the Developer users
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class ManagerHomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity{
 
     /**Tag for logging*/
-    private static final String TAG = "DeveloperManagerActivity";
+    private static final String TAG = "DeveloperHomeActivity";
 
     /**Binder object for ViewBinding*/
-    private ActivityManagerHomeBinding app;
+    private ActivityDeveloperHomeBinding app;
 
     /**Fragment's context*/
     private Context mContext;
 
     /**Current logged in user*/
-    private Manager mUser;
+    private User mUser;
 
     /**GitHub API handler*/
     private GitHub mGitHub;
@@ -68,14 +65,12 @@ public class ManagerHomeActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets up the Activity's layout
+     * Sets up the activity's layout
      */
     private void setupLayout() {
-        app = ActivityManagerHomeBinding.inflate(getLayoutInflater());
+        setContentView(R.layout.activity_developer_home);
+        app = ActivityDeveloperHomeBinding.inflate(getLayoutInflater());
         setContentView(app.getRoot());
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(R.layout.toolbar_manager_main);
     }
 
     /**
@@ -83,7 +78,7 @@ public class ManagerHomeActivity extends AppCompatActivity {
      */
     private void getState() {
         mContext = this;
-        mUser = Manager.fromParseUser(ParseUser.getCurrentUser());
+        mUser = User.fromParseUser(ParseUser.getCurrentUser());
     }
 
     /**
@@ -103,24 +98,32 @@ public class ManagerHomeActivity extends AppCompatActivity {
         //Ensure that the id's of the navigation items are final for the switch
         final int actionHome = R.id.actionHome;
         final int actionProfile = R.id.actionProfile;
-        final int actionNew = R.id.actionNew;
+        final int actionFavorites = R.id.actionFavorites;
         final int actionChats = R.id.actionChats;
-        
+
         app.bottomNav.setOnItemSelectedListener(item -> {
-            Fragment fragment = null;
+            Fragment fragment;
+
+            //Eliminate the Details fragment
+            app.constraintLayout2.setVisibility(View.GONE);
+            fragmentManager.findFragmentByTag("details");
+            Fragment detailsFragment = fragmentManager.findFragmentByTag("details");
+            if(detailsFragment != null)
+                fragmentManager.beginTransaction().remove(detailsFragment).commit();
 
             //Navigate to a different fragment depending on the item selected
-            //and update the item's icons to highlight the one selected
-            switch (item.getItemId()) {
+            switch(item.getItemId()){
 
                 //Home Item selected
                 case actionHome:
-                    fragment = new MyProjectsFragment();
+                    fragment = new ProjectsFragment();
+                    app.constraintLayout2.setVisibility(View.VISIBLE);
+                    app.horizontalScroller.setFeatureItems((ProjectsFragment) fragment);
                     break;
 
-                //New project item selected
-                case actionNew:
-                    fragment = new CreateProjectFragment();
+                //Favorites item selected
+                case actionFavorites:
+                    fragment = new FavoritesFragment();
                     break;
 
                 //Profile item selected
@@ -137,15 +140,15 @@ public class ManagerHomeActivity extends AppCompatActivity {
             }
 
             //Open the selected fragment
-            fragmentManager.beginTransaction().replace(app.flContainer.getId(), fragment).commit();
+            fragmentManager.beginTransaction().replace(app.flContainer.getId(),fragment).commit();
             return true;
         });
 
         //Set the default window to be the Home
         app.bottomNav.setSelectedItemId(R.id.actionHome);
-
-         
     }
+
+
 
     /**
      * Inflates the options menu

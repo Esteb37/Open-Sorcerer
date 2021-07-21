@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.developer.views;
+package com.example.opensorcerer.ui.views;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,14 +13,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.ui.developer.details.DetailsFragment;
-import com.example.opensorcerer.ui.developer.fragments.ProjectsFragment;
+import com.example.opensorcerer.ui.main.details.DetailsFragment;
+import com.example.opensorcerer.ui.main.projects.ProjectsFragment;
 
 import org.parceler.Parcels;
 
 /**
  * Custom Horizontal Scrolling View to display a project's details when swiped left
- * Source Code:
+ * Code fragments taken from:
  *      Title: Android: Creating a “Snapping” Horizontal Scroll View
  *      Author: Velir: Mobile Responsive Design
  *      Date: Nov 17, 2010
@@ -40,7 +40,6 @@ public class HorizontalScroller extends HorizontalScrollView {
 
 
     private ProjectsFragment mProjectsFragment;
-    private DetailsFragment mDetailsFragment;
 
     public HorizontalScroller(Context context) {
         super(context);
@@ -76,11 +75,11 @@ public class HorizontalScroller extends HorizontalScrollView {
 
     private void startDetails() {
         FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
-        mDetailsFragment = new DetailsFragment();
+        DetailsFragment mDetailsFragment = new DetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("project", Parcels.wrap(mProjectsFragment.getCurrentProject()));
         mDetailsFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContainerDetails,mDetailsFragment,"details").commit();
+        fragmentManager.beginTransaction().replace(R.id.flContainerDetails, mDetailsFragment,"details").commit();
     }
 
 
