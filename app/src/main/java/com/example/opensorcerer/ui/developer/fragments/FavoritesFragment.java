@@ -81,7 +81,7 @@ public class FavoritesFragment extends Fragment {
         app.viewPager.setAdapter(mPagerAdapter);
 
         //Set the tab icons
-        new TabLayoutMediator(app.tabLayout2, app.viewPager,
+        new TabLayoutMediator(app.tabLayout, app.viewPager,
                 (tab, position) -> tab.setIcon(position == 0
                         ? R.drawable.ic_dashboard_black_24dp
                         : R.drawable.menu)
