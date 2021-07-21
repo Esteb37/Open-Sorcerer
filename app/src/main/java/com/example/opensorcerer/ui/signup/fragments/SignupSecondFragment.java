@@ -1,7 +1,6 @@
 package com.example.opensorcerer.ui.signup.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +12,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.opensorcerer.databinding.FragmentSignupSecondBinding;
 import com.example.opensorcerer.models.users.User;
-import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
-import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -72,19 +69,19 @@ public class SignupSecondFragment extends Fragment {
         //Setup "Finish" button listener
         app.buttonFinish.setOnClickListener(v -> {
 
-            navigateForward();
+
             //Get credentials
             mNewUser.setGithubToken(Objects.requireNonNull(app.editTextToken.getText()).toString());
 
             //Sign the user up into the database
-            /*mNewUser.getHandler().signUpInBackground(e -> {
+            mNewUser.getHandler().signUpInBackground(e -> {
                 if(e==null){
-
+                    navigateForward();
                 }
                 else{
                     e.printStackTrace();
                 }
-            });*/
+            });
         });
     }
 

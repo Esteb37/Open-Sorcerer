@@ -23,9 +23,12 @@ import com.example.opensorcerer.databinding.FragmentSignupDetailsBinding;
 import com.example.opensorcerer.models.users.User;
 import com.example.opensorcerer.ui.developer.DeveloperHomeActivity;
 import com.example.opensorcerer.ui.manager.ManagerHomeActivity;
+import com.parse.ParseFile;
+import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Objects;
@@ -98,9 +101,28 @@ public class SignupDetailsFragment extends Fragment {
             mNewUser.setExperience(Objects.requireNonNull(app.editTextExperience.getText()).toString());
             mNewUser.setName(Objects.requireNonNull(app.editTextName.getText()).toString());
 
-            navigateForward();
-        });
+            if(mProfilePicture!=null){
+                //Transform the selected profile picture bitmap into a ParseFile
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                mProfilePicture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                byte[] image = stream.toByteArray();
+                ParseFile profilePicture  = new ParseFile("profile_picture.jpeg", image);
 
+                //Save the profile picture into the database
+                profilePicture.saveInBackground((SaveCallback) fe -> {
+
+                    //If the image was saved correctly
+                    if(fe==null){
+
+                        //Set the image as the user's profile picture
+                        mNewUser.setProfilePicture(profilePicture);
+                        navigateForward();
+                    } else {
+                        fe.printStackTrace();
+                    }
+                });
+            }
+        });
         app.buttonSkip.setOnClickListener(v -> navigateToMain(mNewUser.getRole()));
     }
 

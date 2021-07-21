@@ -29,6 +29,8 @@ import com.google.android.material.chip.ChipDrawable;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 /**
  * Fragment for adding interested categories and languages
  */
@@ -95,7 +97,11 @@ public class SignupTagsFragment extends Fragment {
      */
     private void setupButtonListeners() {
 
-        app.buttonFinish.setOnClickListener(v -> navigateToMain(mNewUser.getRole()));
+        app.buttonFinish.setOnClickListener(v -> {
+            mNewUser.setLanguages(Arrays.asList(app.chipInputLanguages.getText().toString().split(",")));
+            mNewUser.setInterests(Arrays.asList(app.chipInputTags.getText().toString().split(",")));
+            navigateToMain(mNewUser.getRole());
+        });
 
         app.buttonSkip.setOnClickListener(v -> navigateToMain(mNewUser.getRole()));
 
@@ -140,9 +146,7 @@ public class SignupTagsFragment extends Fragment {
         app.chipInputLanguages.setAdapter(adapter);
         app.chipInputLanguages.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
-        app.chipInputLanguages.setOnItemClickListener((parent, arg1, pos, id) -> {
-            tokenize(app.chipInputLanguages);
-        });
+        app.chipInputLanguages.setOnItemClickListener((parent, arg1, pos, id) -> tokenize(app.chipInputLanguages));
 
         app.chipInputLanguages.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_COMMA) {
@@ -159,9 +163,7 @@ public class SignupTagsFragment extends Fragment {
         app.chipInputTags.setAdapter(adapter);
         app.chipInputTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
-        app.chipInputTags.setOnItemClickListener((parent, arg1, pos, id) -> {
-            tokenize(app.chipInputTags);
-        });
+        app.chipInputTags.setOnItemClickListener((parent, arg1, pos, id) -> tokenize(app.chipInputTags));
 
         app.chipInputTags.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_COMMA) {

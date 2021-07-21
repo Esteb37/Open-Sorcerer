@@ -11,7 +11,6 @@ import com.parse.ParseFile;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +26,8 @@ public class User implements Parcelable {
     private static final String KEY_CONVERSATIONS = "conversations";
     private static final String KEY_EXPERIENCE = "experience";
     private static final String KEY_GITHUB_TOKEN = "ghToken";
+    private static final String KEY_INTERESTS = "interests";
+    private static final String KEY_LANGUAGES = "languages";
     private static final String KEY_FAVORITES = "favorites";
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_GITHUB = "github";
@@ -119,6 +120,7 @@ public class User implements Parcelable {
     /**Profile picture setter*/
     public void setProfilePicture(ParseFile profilePicture) {
         mHandler.put(KEY_PROFILE_PICTURE,profilePicture);
+        update();
     }
 
     /**Experience getter*/
@@ -129,6 +131,7 @@ public class User implements Parcelable {
     /**Experience setter*/
     public void setExperience(String experience) {
         mHandler.put(KEY_EXPERIENCE,experience);
+        update();
     }
 
     /**GitHub account link getter*/
@@ -169,6 +172,7 @@ public class User implements Parcelable {
     /**Name setter*/
     public void setName(String name) {
         mHandler.put(KEY_NAME,name);
+        update();
     }
 
     /**Bio getter*/
@@ -179,8 +183,30 @@ public class User implements Parcelable {
     /**Bio setter*/
     public void setBio(String bio) {
         mHandler.put(KEY_BIO,bio);
+        update();
     }
 
+    /**Interests getter*/
+    public List<String> getInterests(){
+        return mHandler.getList(KEY_INTERESTS);
+    }
+
+    /**Interests setter*/
+    public void setInterests(List<String> interests){
+        mHandler.put(KEY_INTERESTS,interests);
+        update();
+    }
+
+    /**Languages getter*/
+    public List<String> getLanguages(){
+        return mHandler.getList(KEY_LANGUAGES);
+    }
+
+    /**Languages setter*/
+    public void setLanguages(List<String> languages){
+        mHandler.put(KEY_LANGUAGES,languages);
+        update();
+    }
     /**Conversation list getter*/
     public ParseRelation<Conversation> getConversations(){
         return mHandler.getRelation(KEY_CONVERSATIONS);
