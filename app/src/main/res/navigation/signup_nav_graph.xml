@@ -44,10 +44,52 @@
         tools:layout="@layout/fragment_signup_second">
 
         <action
+            android:id="@+id/secondToDetailsAction"
+            app:destination="@id/DetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            />
+
+        <action
             android:id="@+id/secondToFirstAction"
             app:destination="@id/FirstFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"  />
+
+        <argument
+            android:name="user"
+            app:argType="com.example.opensorcerer.models.users.User" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/DetailsFragment"
+        android:name="com.example.opensorcerer.ui.signup.fragments.SignupDetailsFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_signup_details">
+
+        <action
+            android:id="@+id/detailsToTagsAction"
+            app:destination="@id/TagsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            />
+
+        <argument
+            android:name="user"
+            app:argType="com.example.opensorcerer.models.users.User" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/TagsFragment"
+        android:name="com.example.opensorcerer.ui.signup.fragments.SignupTagsFragment"
+        android:label="@string/second_fragment_label"
+        tools:layout="@layout/fragment_signup_tags">
+
+        <action
+            android:id="@+id/tagsToDetailsAction"
+            app:destination="@id/DetailsFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"   />
         <argument
             android:name="user"
             app:argType="com.example.opensorcerer.models.users.User" />

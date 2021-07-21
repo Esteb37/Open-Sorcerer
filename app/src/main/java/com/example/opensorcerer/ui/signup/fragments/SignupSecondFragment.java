@@ -72,18 +72,19 @@ public class SignupSecondFragment extends Fragment {
         //Setup "Finish" button listener
         app.buttonFinish.setOnClickListener(v -> {
 
+            navigateForward();
             //Get credentials
             mNewUser.setGithubToken(Objects.requireNonNull(app.editTextToken.getText()).toString());
 
             //Sign the user up into the database
-            mNewUser.getHandler().signUpInBackground(e -> {
+            /*mNewUser.getHandler().signUpInBackground(e -> {
                 if(e==null){
-                    navigateToMain(mNewUser.getRole());
+
                 }
                 else{
                     e.printStackTrace();
                 }
-            });
+            });*/
         });
     }
 
@@ -97,30 +98,21 @@ public class SignupSecondFragment extends Fragment {
     }
 
     /**
+     * Goes to the Details  fragment
+     */
+    private void navigateForward() {
+        SignupSecondFragmentDirections.SecondToDetailsAction secondToDetailsAction = SignupSecondFragmentDirections.secondToDetailsAction(mNewUser);
+        NavHostFragment.findNavController(this)
+                .navigate(secondToDetailsAction);
+    }
+
+    /**
      * Resets the ViewBinder
      */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         app = null;
-    }
-
-    /**
-     * Navigates to the corresponding home activity depending on the user's role
-     */
-    private void navigateToMain(String role) {
-        Intent i = null;
-
-        //Determine the home activity to navigate to
-        if(role.equals("developer")){
-            i = new Intent(mContext, DeveloperHomeActivity.class);
-        } else if (role.equals("manager")) {
-            i = new Intent(mContext, ManagerHomeActivity.class);
-        }
-
-        //Navigate to the selected home activity
-        startActivity(i);
-        requireActivity().finish();
     }
 
 }
