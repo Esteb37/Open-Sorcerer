@@ -1,8 +1,6 @@
 package com.example.opensorcerer.ui.main.create;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,27 +14,20 @@ import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreateSecondBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
-import com.parse.ParseFile;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.parceler.Parcels;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.util.Objects;
-
 /**
- * Fragment for creating a new project and adding it to the database
+ * Second fragment for creating a new project and adding it to the database
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class CreateProjectSecondFragment extends Fragment {
 
     /**Tag for logging*/
-    private static final String TAG = "CreateProjectFragment";
+    private static final String TAG = "CreateProjectSecondFragment";
 
     /**Binder object for ViewBinding*/
     private FragmentCreateSecondBinding app;
@@ -83,45 +74,6 @@ public class CreateProjectSecondFragment extends Fragment {
         getState();
 
         loadRepoDetails();
-
-    }
-
-    private void loadRepoDetails() {
-
-        mRepo = mNewProject.getRepoObject();
-
-        //Get the repo's information
-        String name = mRepo.getName();
-
-        String description = mRepo.getDescription();
-        String repo = mRepo.getHtmlUrl().toString();
-
-        String website = mRepo.getHomepage();;
-        if(website.equals("")){
-            website = repo;
-        }
-        /*//Get the tags and languages in comma separated list form
-        try {
-            String tags = mRepo.listTopics().toString().replace("[","").replace("]","");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            String languages = mRepo.listLanguages().keySet().toString().replace("[","").replace("]","");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-        //Go back to the main thread
-        String finalWebsite = website;
-        requireActivity().runOnUiThread(() -> {
-
-            //Set the inputs to the repo's information
-            app.editTextTitle.setText(name);
-            app.editTextWebsite.setText(finalWebsite);
-            app.editTextDescription.setText(description);
-            app.editTextRepository.setText(repo);
-        });
     }
 
     /**
@@ -136,6 +88,40 @@ public class CreateProjectSecondFragment extends Fragment {
 
         mNewProject = Parcels.unwrap(requireArguments().getParcelable("project"));
     }
+
+    /**
+     * Populates the inputs with the imported repo's details
+     */
+    private void loadRepoDetails() {
+
+        //Get the repo object
+        mRepo = mNewProject.getRepoObject();
+
+        //Get the repo's information
+        String name = mRepo.getName();
+        String description = mRepo.getDescription();
+        String repo = mRepo.getHtmlUrl().toString();
+
+        //Get the website or set the website to the project's github page
+        String website = mRepo.getHomepage();
+        if(website.equals("")){
+            website = repo;
+        }
+        String finalWebsite = website;
+
+
+
+        //Go back to the main thread
+        requireActivity().runOnUiThread(() -> {
+
+            //Set the inputs to the repo's information
+            app.editTextTitle.setText(name);
+            app.editTextWebsite.setText(finalWebsite);
+            app.editTextDescription.setText(description);
+            app.editTextRepository.setText(repo);
+        });
+    }
+
 
 
     /*private void setupCreateProjectButtonListener() {
@@ -187,9 +173,7 @@ public class CreateProjectSecondFragment extends Fragment {
     }*/
 
 
-    /**
-     * Sets up a listener for when the user has finished typing into the Image input
-     */
+
     /*private void setupImageEditorListener() {
        (app.etImage).setOnEditorActionListener(
                 (v, actionId, event) -> {
@@ -217,29 +201,15 @@ public class CreateProjectSecondFragment extends Fragment {
         );
     }*/
 
-
-
-
-    public Bitmap getBitmapFromURL(String src) {
+      /*//Get the tags and languages in comma separated list form
         try {
-            java.net.URL url = new java.net.URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            return BitmapFactory.decodeStream(input);
+            String tags = mRepo.listTopics().toString().replace("[","").replace("]","");
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
         }
-    }
-
-    public ParseFile bitmapToParseFile(Bitmap imageBitmap){
-        ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
-        imageBitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
-        byte[] imageByte = byteArrayOutputStream.toByteArray();
-        return new ParseFile("logo.png",imageByte);
-    }
-
+        try {
+            String languages = mRepo.listLanguages().keySet().toString().replace("[","").replace("]","");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
 }

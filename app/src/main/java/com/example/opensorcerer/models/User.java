@@ -15,7 +15,6 @@ import java.util.List;
 /**
  * Custom class for handling ParseUser objects without Parse subclass restrictions
  */
-
 @SuppressWarnings("unused")
 public class User implements Parcelable {
 
@@ -39,7 +38,6 @@ public class User implements Parcelable {
      */
     protected ParseUser mHandler;
 
-
     /**
      * Creates a custom User Object from a ParseUser object
      *
@@ -59,6 +57,9 @@ public class User implements Parcelable {
         mHandler = new ParseUser();
     }
 
+    /**
+     * Gets the current logged in user as a custom User object
+     */
     public static User getCurrentUser() {
         return fromParseUser(ParseUser.getCurrentUser());
     }
@@ -204,12 +205,25 @@ public class User implements Parcelable {
         mHandler.put(KEY_CONVERSATIONS,conversation);
     }
 
+    /**Favorites list getter*/
     public List<String> getFavorites(){
         return mHandler.getList(KEY_FAVORITES);
     }
 
+    /**Favorites list setter*/
     public void setFavorites(List<String> favorites){
         mHandler.put(KEY_FAVORITES,favorites);
+        update();
+    }
+
+    /**Projects list getter*/
+    public ParseRelation<Project> getProjects(){
+        return mHandler.getRelation(KEY_PROJECTS);
+    }
+
+    /**Projects list setter*/
+    public void setProjects(ParseRelation<Project> projects) {
+        mHandler.put(KEY_PROJECTS,projects);
         update();
     }
 
@@ -227,13 +241,10 @@ public class User implements Parcelable {
         }
     }
 
-    private void removeFavorite(Project project) {
-        List<String> favorites = getFavorites();
-        if(favorites == null) favorites = new ArrayList<>();
-        favorites.remove(project.getObjectId());
-        setFavorites(favorites);
-    }
-
+    /**
+     * Adds the project to the user's list of liked projects
+     * @param project The project to like
+     */
     private void addFavorite(Project project) {
         List<String> favorites = getFavorites();
         if(favorites == null) favorites = new ArrayList<>();
@@ -241,6 +252,16 @@ public class User implements Parcelable {
         setFavorites(favorites);
     }
 
+    /**
+     * Removes the project from the user's list of liked projects
+     * @param project The project to unlike
+     */
+    private void removeFavorite(Project project) {
+        List<String> favorites = getFavorites();
+        if(favorites == null) favorites = new ArrayList<>();
+        favorites.remove(project.getObjectId());
+        setFavorites(favorites);
+    }
 
     /**
      * Fetches the user handler in the background
@@ -266,27 +287,6 @@ public class User implements Parcelable {
     }
 
 
-    /**Projects list getter*/
-    public ParseRelation<Project> getProjects(){
-        return mHandler.getRelation(KEY_PROJECTS);
-    }
-
-    /**Projects list setter*/
-    public void setProjects(ParseRelation<Project> projects) {
-        mHandler.put(KEY_PROJECTS,projects);
-        update();
-    }
-
-    /**
-     * Adds a project to the user's "created projects" list
-     */
-    public void addProject(Project project){
-        ParseRelation<Project> projects = getProjects();
-        projects.add(project);
-        setProjects(projects);
-        update();
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -296,8 +296,6 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(mHandler, flags);
     }
-
-
 
     protected User(Parcel in) {
         mHandler = in.readParcelable(ParseUser.class.getClassLoader());

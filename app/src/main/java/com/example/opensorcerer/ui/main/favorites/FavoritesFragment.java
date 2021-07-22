@@ -55,6 +55,9 @@ public class FavoritesFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Inflates the fragment and sets up ViewBinding
+     */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,6 +65,9 @@ public class FavoritesFragment extends Fragment {
         return app.getRoot();
     }
 
+    /**
+     * Sets up the fragment's methods
+     */
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -69,6 +75,17 @@ public class FavoritesFragment extends Fragment {
         getState();
 
         setupPagerView();
+    }
+
+    /**
+     * Gets the current state for the member variables.
+     */
+    private void getState() {
+        mContext = getContext();
+
+        mUser = User.getCurrentUser();
+
+        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }
 
     /**
@@ -87,19 +104,6 @@ public class FavoritesFragment extends Fragment {
                         : R.drawable.menu)
         ).attach();
     }
-
-
-    /**
-     * Gets the current state for the member variables.
-     */
-    private void getState() {
-        mContext = getContext();
-
-        mUser = User.getCurrentUser();
-
-        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
-    }
-
 
    /* public void setSearchListener(){
         //Set listener for searchbar input
@@ -137,6 +141,4 @@ public class FavoritesFragment extends Fragment {
             }
         });
     }*/
-
-
 }

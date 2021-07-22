@@ -18,8 +18,6 @@ import java.util.List;
 @ParseClassName("Project")
 public class Project extends ParseObject implements Parcelable {
 
-    GHRepository mRepoObject;
-
     //Database keys
     private static final String KEY_BANNER_IMAGE = "bannerImage";
     private static final String KEY_DESCRIPTION = "description";
@@ -35,7 +33,11 @@ public class Project extends ParseObject implements Parcelable {
     private static final String KEY_TITLE = "title";
     private static final String KEY_TAGS = "tags";
 
+    /**If this project has been liked by the user*/
     private String likedByUser = null;
+
+     /**GitHub repository object linked to this project*/
+    private GHRepository mRepoObject;
 
     /**Description getter**/
     public String getDescription() {
@@ -156,8 +158,14 @@ public class Project extends ParseObject implements Parcelable {
     public void setWebsite(String website){
         put(KEY_WEBSITE,website);
     }
+
+    /**Determines if the user has liked this project*/
     public boolean isLikedByUser(User user) {
+
+        //If it has not been determined before
         if(likedByUser==null) {
+
+            //See if the user's liked projects contains this
             List<String> favorites = user.getFavorites();
             if(favorites != null){
                 likedByUser = String.valueOf(favorites.contains(getObjectId()));
@@ -169,19 +177,19 @@ public class Project extends ParseObject implements Parcelable {
         return Boolean.parseBoolean(likedByUser);
     }
 
-    public void removeLike() {
-        setLikeCount(getLikeCount()-1);
-        likedByUser = "false";
-    }
-
+    /**Adds a like to the like count*/
     public void addLike() {
         setLikeCount(getLikeCount()+1);
         likedByUser = "true";
     }
 
-    /**
-     * Updates the project's information in the database
-     */
+    /**Removes a like from the like count*/
+    public void removeLike() {
+        setLikeCount(getLikeCount()-1);
+        likedByUser = "false";
+    }
+
+    /** Updates the project's information in the database*/
     public void update(){
         saveInBackground(e -> {
             if(e==null){

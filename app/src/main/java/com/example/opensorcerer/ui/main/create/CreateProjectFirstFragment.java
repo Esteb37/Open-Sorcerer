@@ -28,13 +28,13 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Fragment for creating a new project and adding it to the database
+ * First fragment for creating a new project and adding it to the database
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class CreateProjectFirstFragment extends Fragment {
 
     /**Tag for logging*/
-    private static final String TAG = "CreateProjectFragment";
+    private static final String TAG = "CreateProjectFirstFragment";
 
     /**Binder object for ViewBinding*/
     private FragmentCreateFirstBinding app;
@@ -48,9 +48,8 @@ public class CreateProjectFirstFragment extends Fragment {
     /**GitHub API handler*/
     private GitHub mGitHub;
 
+    /**The project being created*/
     private Project mNewProject;
-
-    private View mView;
 
     public CreateProjectFirstFragment() {
         // Required empty public constructor
@@ -78,8 +77,6 @@ public class CreateProjectFirstFragment extends Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mView = view;
-
         getState();
 
         setupImportButtonListener();
@@ -101,16 +98,14 @@ public class CreateProjectFirstFragment extends Fragment {
                 String repoLink = Objects.requireNonNull(app.editTextRepo.getText()).toString().split("github.com/")[1];
 
                 try {
-
                     //Get the repository
                     GHRepository ghRepo = mGitHub.getRepository(repoLink);
 
+                    //Create a new project and add the repo
                     mNewProject = new Project();
-
                     mNewProject.setRepoObject(ghRepo);
 
                     navigateForward();
-
                 } catch (IOException e) {
                     requireActivity().runOnUiThread(()->
                             Toast.makeText(mContext, "Invalid Repo Link", Toast.LENGTH_SHORT).show());
@@ -122,12 +117,13 @@ public class CreateProjectFirstFragment extends Fragment {
                                 Toast.makeText(mContext, "Link must have the format 'github.com/user/project'", Toast.LENGTH_SHORT).show()
                         );
             }
-
-
         }).start());
     }
 
 
+    /**
+     * Navigates to the second Create Project Fragment
+     */
     private void navigateForward() {
         final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         Fragment fragment = new CreateProjectSecondFragment();

@@ -35,7 +35,7 @@ import java.util.List;
 public class FavoritesFragmentLinear extends Fragment {
 
     /**Tag for logging*/
-    private static final String TAG = "FavoritesFragment";
+    private static final String TAG = "FavoritesFragmentLinear";
 
     /**Amount of items to query per call*/
     private static final int QUERY_LIMIT = 5;
@@ -135,6 +135,7 @@ public class FavoritesFragmentLinear extends Fragment {
         mLayoutManager = new LinearLayoutManager(mContext);
         app.recyclerViewFavorites.setLayoutManager(mLayoutManager);
 
+        //Setup endless scrolling
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -153,10 +154,16 @@ public class FavoritesFragmentLinear extends Fragment {
         app.progressBar.setVisibility(View.VISIBLE);
         List<String> favorites = mUser.getFavorites();
         if(favorites!=null) {
+
+            //Get a query from the user's favorites
             ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContainedIn("objectId", favorites);
             query.addDescendingOrder("createdAt");
+
+            //Setup pagination
             query.setLimit(QUERY_LIMIT);
             query.setSkip(QUERY_LIMIT*page);
+
+            //Get the liked projects
             query.findInBackground((projects, e) -> {
                 if (e == null) {
                     mAdapter.addAll(projects);
@@ -169,5 +176,4 @@ public class FavoritesFragmentLinear extends Fragment {
             app.progressBar.setVisibility(View.GONE);
         }
     }
-
 }

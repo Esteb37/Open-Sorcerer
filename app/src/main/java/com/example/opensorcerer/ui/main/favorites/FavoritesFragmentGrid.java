@@ -35,7 +35,7 @@ public class FavoritesFragmentGrid extends Fragment {
 
 
     /**Tag for logging*/
-    private static final String TAG = "FavoritesFragment";
+    private static final String TAG = "FavoritesFragmentGrid";
 
     /**Amount of items to query per call*/
     private static final int QUERY_LIMIT = 20;
@@ -60,8 +60,6 @@ public class FavoritesFragmentGrid extends Fragment {
 
     /**The user's created project list to display*/
     private List<Project> mProjects;
-
-
 
     public FavoritesFragmentGrid() {
         // Required empty public constructor
@@ -121,12 +119,14 @@ public class FavoritesFragmentGrid extends Fragment {
         mLayoutManager = new GridLayoutManager(mContext,2);
         app.recyclerViewFavorites.setLayoutManager(mLayoutManager);
 
+        //Setup endless scrolling
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 queryProjects(page);
             }
         };
+
         // Adds the scroll listener to RecyclerView
         app.recyclerViewFavorites.addOnScrollListener(scrollListener);
     }
@@ -140,10 +140,16 @@ public class FavoritesFragmentGrid extends Fragment {
         app.progressBar.setVisibility(View.VISIBLE);
         List<String> favorites = mUser.getFavorites();
         if(favorites!=null) {
+
+            //Get a query from the user's favorites
             ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContainedIn("objectId", favorites);
             query.addDescendingOrder("createdAt");
+
+            //Setup pagination
             query.setLimit(QUERY_LIMIT);
             query.setSkip(QUERY_LIMIT*page);
+
+            //Get the liked projects
             query.findInBackground((projects, e) -> {
                 if (e == null) {
                     mAdapter.addAll(projects);
@@ -155,42 +161,5 @@ public class FavoritesFragmentGrid extends Fragment {
         } else {
             app.progressBar.setVisibility(View.GONE);
         }
-    }
-
-   /* public void setSearchListener(){
-        //Set listener for searchbar input
-        app.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-
-            //Whenever a new character is entered
-            public boolean onQueryTextChange(String newText) {
-                if(newText.length()>0) {
-                    searchProject(newText);
-                } else {
-                    queryProjects();
-                }
-
-                return false;
-            }
-        });
-    }*/
-
-    private void searchProject(String search) {
-        ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereMatches("title","("+search+")","i");
-        query.addDescendingOrder("createdAt");
-        query.findInBackground((projects, e) -> {
-            if(e==null){
-                mAdapter.clear();
-                mAdapter.addAll(projects);
-                app.progressBar.setVisibility(View.GONE);
-            } else {
-                Log.d(TAG,"Unable to load projects.");
-            }
-        });
     }
 }
