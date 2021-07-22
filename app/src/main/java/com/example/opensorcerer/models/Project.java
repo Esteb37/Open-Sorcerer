@@ -7,6 +7,8 @@ import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 
+import org.kohsuke.github.GHRepository;
+
 import java.util.List;
 
 /**
@@ -15,6 +17,8 @@ import java.util.List;
 @SuppressWarnings("unused")
 @ParseClassName("Project")
 public class Project extends ParseObject implements Parcelable {
+
+    GHRepository mRepoObject;
 
     //Database keys
     private static final String KEY_BANNER_IMAGE = "bannerImage";
@@ -25,6 +29,7 @@ public class Project extends ParseObject implements Parcelable {
     private static final String KEY_LIKE_COUNT = "likeCount";
     private static final String KEY_VIEW_COUNT = "viewCount";
     private static final String KEY_LANGUAGES = "languages";
+    private static final String KEY_WEBSITE = "website";
     private static final String KEY_MANAGER = "manager";
     private static final String KEY_README = "readme";
     private static final String KEY_TITLE = "title";
@@ -92,6 +97,15 @@ public class Project extends ParseObject implements Parcelable {
         put(KEY_REPOSITORY,repository);
     }
 
+    /**Repository object getter*/
+    public GHRepository getRepoObject(){
+        return mRepoObject;
+    }
+
+    /**Repository object setter*/
+    public void setRepoObject(GHRepository repoObject){
+        mRepoObject = repoObject;
+    }
     /**Click count getter*/
     public long getClickCount() {
         return getLong(KEY_CLICK_COUNT);
@@ -102,12 +116,11 @@ public class Project extends ParseObject implements Parcelable {
         return getLong(KEY_LIKE_COUNT);
     }
 
+    /**Like count setter*/
     private void setLikeCount(long likes) {
         put(KEY_LIKE_COUNT,likes);
         update();
     }
-
-
 
     /**View count getter*/
     public long getViewCount() {
@@ -134,6 +147,15 @@ public class Project extends ParseObject implements Parcelable {
         put(KEY_TAGS,tags);
     }
 
+    /**Website getter*/
+    public String getWebsite(){
+        return getString(KEY_WEBSITE);
+    }
+
+    /**Website setter*/
+    public void setWebsite(String website){
+        put(KEY_WEBSITE,website);
+    }
     public boolean isLikedByUser(User user) {
         if(likedByUser==null) {
             List<String> favorites = user.getFavorites();

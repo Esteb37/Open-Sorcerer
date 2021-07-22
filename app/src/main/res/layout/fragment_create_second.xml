@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.create.CreateProjectSecondFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayoutPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewProjectLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder"
+            app:border_color="@color/dark_blue"
+            app:border_width="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewWelcome2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="sans-serif"
+            android:text="Add a logo to your project"
+            android:textAlignment="center"
+            android:textColor="@color/darker_blue"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/imageViewProjectLogo"
+            app:layout_constraintStart_toStartOf="@+id/imageViewProjectLogo"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewProjectLogo" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/edittext_bg"
+        android:ems="10"
+        android:hint="Add an attractive title"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView26" />
+
+    <TextView
+        android:id="@+id/textView26"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Project Title"
+        android:textColor="@color/darker_blue"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTitle"
+        app:layout_constraintStart_toStartOf="@+id/editTextTitle"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayoutPicture" />
+
+    <TextView
+        android:id="@+id/textView27"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Description"
+        android:textColor="@color/darker_blue"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTitle"
+        app:layout_constraintStart_toStartOf="@+id/editTextTitle"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTitle" />
+
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_bg"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Briefly describe your project"
+        android:inputType="textMultiLine"
+        android:minHeight="100dp"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTitle"
+        app:layout_constraintHeight_min="50dp"
+        app:layout_constraintStart_toStartOf="@+id/editTextTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textView27" />
+
+    <EditText
+        android:id="@+id/editTextRepository"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/edittext_bg"
+        android:ems="10"
+        android:hint="https://github.com/user/project"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextDescription"
+        app:layout_constraintStart_toStartOf="@+id/editTextDescription"
+        app:layout_constraintTop_toBottomOf="@+id/textView28" />
+
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="GitHub repository link"
+        android:textColor="@color/darker_blue"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTitle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextTitle"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
+
+    <EditText
+        android:id="@+id/editTextWebsite"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/edittext_bg"
+        android:ems="10"
+        android:hint="www.myprojectwebsite.com"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextRepository"
+        app:layout_constraintStart_toStartOf="@+id/editTextRepository"
+        app:layout_constraintTop_toBottomOf="@+id/textView29" />
+
+    <TextView
+        android:id="@+id/textView29"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Project website"
+        android:textColor="@color/darker_blue"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTitle"
+        app:layout_constraintStart_toStartOf="@+id/editTextTitle"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRepository" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextWebsite">
+
+        <Button
+            android:id="@+id/buttonBack"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="10dp"
+            android:text="Back" />
+
+        <Button
+            android:id="@+id/buttonNext"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:text="Next" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

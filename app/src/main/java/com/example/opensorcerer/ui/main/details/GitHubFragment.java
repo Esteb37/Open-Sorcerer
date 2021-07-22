@@ -85,7 +85,7 @@ public class GitHubFragment extends Fragment {
 
         getState();
 
-        loadRepo();
+        loadWebsite();
     }
 
     /**
@@ -104,8 +104,8 @@ public class GitHubFragment extends Fragment {
     /**
      * Loads the GitHub repository into the WebViewer
      */
-    private void loadRepo(){
-        app.webView.loadUrl(mProject.getRepository());
+    private void loadWebsite(){
+        app.webView.loadUrl(mProject.getWebsite());
         app.progressBar.setVisibility(View.GONE);
     }
 
