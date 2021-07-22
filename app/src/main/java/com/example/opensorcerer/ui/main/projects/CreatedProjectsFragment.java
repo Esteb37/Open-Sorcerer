@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.main;
+package com.example.opensorcerer.ui.main.projects;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentMyProjectsBinding;
+import com.example.opensorcerer.databinding.FragmentCreatedProjectsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.adapters.ProjectsGridAdapter;
 import com.example.opensorcerer.models.User;
@@ -27,13 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class MyProjectsFragment extends Fragment {
+public class CreatedProjectsFragment extends Fragment {
 
     /**Tag for logging*/
     private static final String TAG = "MyProjectsFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentMyProjectsBinding app;
+    private FragmentCreatedProjectsBinding app;
 
     /**Fragment's context*/
     private Context mContext;
@@ -50,7 +50,7 @@ public class MyProjectsFragment extends Fragment {
     /**The user's created project list to display*/
     private List<Project> mProjects;
 
-    public MyProjectsFragment() {
+    public CreatedProjectsFragment() {
         // Required empty public constructor
     }
 
@@ -65,7 +65,7 @@ public class MyProjectsFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        app = FragmentMyProjectsBinding.inflate(inflater,container,false);
+        app = FragmentCreatedProjectsBinding.inflate(inflater,container,false);
         return app.getRoot();
     }
 
@@ -97,8 +97,8 @@ public class MyProjectsFragment extends Fragment {
     private void setupRecyclerView() {
         mProjects = new ArrayList<>();
         mAdapter = new ProjectsGridAdapter(mProjects,mContext);
-        app.rvProjects.setAdapter(mAdapter);
-        app.rvProjects.setLayoutManager(new GridLayoutManager(mContext,2));
+        app.recyclerViewProjects.setAdapter(mAdapter);
+        app.recyclerViewProjects.setLayoutManager(new GridLayoutManager(mContext,2));
     }
 
 

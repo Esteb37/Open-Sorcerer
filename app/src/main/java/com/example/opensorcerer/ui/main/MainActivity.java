@@ -14,9 +14,9 @@ import com.example.opensorcerer.databinding.ActivityHomeBinding;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.conversations.ConversationsFragment;
 import com.example.opensorcerer.ui.main.create.CreateProjectFirstFragment;
-import com.example.opensorcerer.ui.main.favorites.FavoritesFragment;
-import com.example.opensorcerer.ui.main.profile.ProfileFragment;
 import com.example.opensorcerer.ui.main.projects.ProjectsFragment;
+import com.example.opensorcerer.ui.main.profile.ProfileFragment;
+import com.example.opensorcerer.ui.main.home.HomeFragment;
 import com.parse.ParseUser;
 
 import org.kohsuke.github.GitHub;
@@ -26,10 +26,10 @@ import org.kohsuke.github.GitHub;
  * Main activity
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class HomeActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity{
 
     /**Tag for logging*/
-    private static final String TAG = "DeveloperHomeActivity";
+    private static final String TAG = "MainActivity";
 
     /**Binder object for ViewBinding*/
     private ActivityHomeBinding app;
@@ -93,7 +93,7 @@ public class HomeActivity extends AppCompatActivity{
         //Ensure that the id's of the navigation items are final for the switch
         final int actionHome = R.id.actionHome;
         final int actionProfile = R.id.actionProfile;
-        final int actionFavorites = R.id.actionFavorites;
+        final int actionProjects = R.id.actionProjects;
         final int actionChats = R.id.actionChats;
         final int actionCreate = R.id.actionCreate;
 
@@ -112,14 +112,14 @@ public class HomeActivity extends AppCompatActivity{
 
                 //Home Item selected
                 case actionHome:
-                    fragment = new ProjectsFragment();
+                    fragment = new HomeFragment();
                     app.constraintLayout2.setVisibility(View.VISIBLE);
-                    app.horizontalScroller.setFeatureItems((ProjectsFragment) fragment);
+                    app.horizontalScroller.setFeatureItems((HomeFragment) fragment);
                     break;
 
                 //Favorites item selected
-                case actionFavorites:
-                    fragment = new FavoritesFragment();
+                case actionProjects:
+                    fragment = new ProjectsFragment();
                     break;
 
                 //Create item selected

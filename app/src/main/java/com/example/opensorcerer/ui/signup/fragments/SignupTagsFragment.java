@@ -20,7 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.opensorcerer.databinding.FragmentSignupTagsBinding;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
-import com.example.opensorcerer.ui.main.HomeActivity;
+import com.example.opensorcerer.ui.main.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -106,7 +106,7 @@ public class SignupTagsFragment extends Fragment {
      * Navigates to the corresponding home activity depending on the user's role
      */
     private void navigateToMain() {
-        Intent i = new Intent(mContext, HomeActivity.class);
+        Intent i = new Intent(mContext, MainActivity.class);
 
         //Navigate to the selected home activity
         startActivity(i);

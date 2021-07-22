@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.main.favorites;
+package com.example.opensorcerer.ui.main.projects;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,13 +10,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.opensorcerer.adapters.EndlessRecyclerViewScrollListener;
-import com.example.opensorcerer.adapters.ProjectsGridAdapter;
+import com.example.opensorcerer.adapters.ProjectsCardAdapter;
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentFavoritesGridBinding;
+import com.example.opensorcerer.databinding.FragmentFavoritesLinearBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
 import com.parse.ParseQuery;
@@ -28,20 +29,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Fragment for displaying the user's liked projects in grid format
+ * Fragment for displaying the user's liked projects in linear card format
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class FavoritesFragmentGrid extends Fragment {
-
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
+public class FavoritesFragmentLinear extends Fragment {
 
     /**Tag for logging*/
-    private static final String TAG = "FavoritesFragmentGrid";
+    private static final String TAG = "FavoritesFragmentLinear";
 
     /**Amount of items to query per call*/
-    private static final int QUERY_LIMIT = 20;
+    private static final int QUERY_LIMIT = 5;
 
     /**Binder object for ViewBinding*/
-    private FragmentFavoritesGridBinding app;
+    private FragmentFavoritesLinearBinding app;
 
     /**Fragment's context*/
     private Context mContext;
@@ -53,15 +53,19 @@ public class FavoritesFragmentGrid extends Fragment {
     private GitHub mGitHub;
 
     /**Adapter for the RecyclerView*/
-    private ProjectsGridAdapter mAdapter;
+    private ProjectsCardAdapter mAdapter;
 
     /**Layout manager for the RecyclerView*/
-    private GridLayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
 
     /**The user's created project list to display*/
     private List<Project> mProjects;
 
-    public FavoritesFragmentGrid() {
+    /**Snap helper for the recyclerview*/
+    private PagerSnapHelper mSnapHelper;
+
+
+    public FavoritesFragmentLinear() {
         // Required empty public constructor
     }
 
@@ -76,7 +80,7 @@ public class FavoritesFragmentGrid extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentFavoritesGridBinding.inflate(inflater,container,false);
+        app = FragmentFavoritesLinearBinding.inflate(inflater,container,false);
         return app.getRoot();
     }
 
@@ -111,12 +115,24 @@ public class FavoritesFragmentGrid extends Fragment {
     private void setupRecyclerView() {
         mProjects = new ArrayList<>();
 
+        //Create the listeners
+        ProjectsCardAdapter.OnClickListener clickListener = position -> {
+
+        };
+
+        ProjectsCardAdapter.OnDoubleTapListener doubleTapListener = position ->
+                mUser.toggleLike(mProjects.get(position));
+
         //Set the adapter
-        mAdapter = new ProjectsGridAdapter(mProjects,mContext);
+        mAdapter = new ProjectsCardAdapter(mProjects,mContext,clickListener,doubleTapListener);
         app.recyclerViewFavorites.setAdapter(mAdapter);
 
-        //Set the layout
-        mLayoutManager = new GridLayoutManager(mContext,2);
+        //Set snap helper
+        mSnapHelper = new PagerSnapHelper();
+        mSnapHelper.attachToRecyclerView(app.recyclerViewFavorites);
+
+        //Set the layout manager
+        mLayoutManager = new LinearLayoutManager(mContext);
         app.recyclerViewFavorites.setLayoutManager(mLayoutManager);
 
         //Setup endless scrolling
@@ -126,11 +142,9 @@ public class FavoritesFragmentGrid extends Fragment {
                 queryProjects(page);
             }
         };
-
         // Adds the scroll listener to RecyclerView
         app.recyclerViewFavorites.addOnScrollListener(scrollListener);
     }
-
 
     /**
      * Gets the list of projects liked by the user

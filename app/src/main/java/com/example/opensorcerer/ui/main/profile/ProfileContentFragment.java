@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.adapters.FavoritesPagerAdapter;
+import com.example.opensorcerer.adapters.ProjectsPagerAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProfileContentBinding;
 import com.example.opensorcerer.models.Tools;
@@ -44,7 +44,7 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
     private GitHub mGitHub;
 
     /**Fragment pager adapter*/
-    FavoritesPagerAdapter mPagerAdapter;
+    ProjectsPagerAdapter mPagerAdapter;
 
     /**Interface for listening to the drawer*/
     public interface OnFragmentInteractionListener {
@@ -127,7 +127,7 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
     private void setupPagerView() {
 
         //Set the adapter
-        mPagerAdapter = new FavoritesPagerAdapter(this);
+        mPagerAdapter = new ProjectsPagerAdapter(this);
         app.viewPager.setAdapter(mPagerAdapter);
 
         //Set the tab icons

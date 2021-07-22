@@ -9,11 +9,11 @@
         android:title="Home"
         app:showAsAction="always" />
     <item
-        android:id="@+id/actionFavorites"
+        android:id="@+id/actionProjects"
         android:enabled="true"
-        android:icon="@drawable/ufi_heart_active"
+        android:icon="@drawable/ic_dashboard_black_24dp"
         android:iconTint="#FFFFFF"
-        android:title="Favorites"
+        android:title="Projects"
         app:showAsAction="always" />
     <item
         android:id="@+id/actionCreate"

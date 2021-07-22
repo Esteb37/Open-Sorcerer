@@ -4,15 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.opensorcerer.ui.main.projects.CreatedProjectsFragment;
 import com.example.opensorcerer.ui.main.projects.FavoritesGridFragment;
-import com.example.opensorcerer.ui.main.projects.FavoritesFragmentLinear;
 
 /**
- * Pager adapter for the Favorites pager view
+ * Pager adapter for the projects pager view
  */
-public class FavoritesPagerAdapter extends FragmentStateAdapter {
+public class ProjectsPagerAdapter extends FragmentStateAdapter {
 
-    public FavoritesPagerAdapter(Fragment fragment) {
+    private static final int PAGE_COUNT = 2;
+
+    public ProjectsPagerAdapter(Fragment fragment) {
         super(fragment);
     }
 
@@ -23,13 +25,14 @@ public class FavoritesPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         return position == 0
-                ? new FavoritesGridFragment()
-                : new FavoritesFragmentLinear();
+                ? new CreatedProjectsFragment()
+                : new FavoritesGridFragment();
+
     }
 
     /**Getter for amount of pages in pager view*/
     @Override
     public int getItemCount() {
-        return 2;
+        return PAGE_COUNT;
     }
 }

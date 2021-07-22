@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.example.opensorcerer.databinding.FragmentSignupDetailsBinding;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
-import com.example.opensorcerer.ui.main.HomeActivity;
+import com.example.opensorcerer.ui.main.MainActivity;
 import com.parse.ParseFile;
 import com.parse.SaveCallback;
 
@@ -196,7 +196,7 @@ public class SignupDetailsFragment extends Fragment {
      * Navigates to the home activity
      */
     private void navigateToMain() {
-        Intent i =  new Intent(mContext, HomeActivity.class);
+        Intent i =  new Intent(mContext, MainActivity.class);
 
         //Navigate to the selected home activity
         startActivity(i);

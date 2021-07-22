@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.ActivityLoginBinding;
 import com.example.opensorcerer.models.User;
-import com.example.opensorcerer.ui.main.HomeActivity;
+import com.example.opensorcerer.ui.main.MainActivity;
 import com.example.opensorcerer.ui.signup.SignupActivity;
 import com.parse.ParseUser;
 
@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
      * Navigates to the corresponding home activity depending on the user's role
      */
     private void navigateToMain() {
-        Intent i = new Intent(this, HomeActivity.class);
+        Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
     }
