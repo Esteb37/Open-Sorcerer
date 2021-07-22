@@ -268,8 +268,8 @@ public class User implements Parcelable {
      * @return the user handler after the request has been completed
      * @throws ParseException in case the user is not found
      */
-    public ParseUser fetchIfNeeded() throws ParseException {
-        return mHandler.fetchIfNeeded();
+    public User fetchIfNeeded() throws ParseException {
+        return fromParseUser(mHandler.fetchIfNeeded());
     }
 
     /**

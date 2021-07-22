@@ -24,6 +24,7 @@ import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.ItemCardProjectBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 
 
@@ -133,6 +134,22 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
                     .transform(new RoundedCorners(1000))
                     .into(app.imageViewLogo);
         }
+
+        User manager;
+        try {
+            manager = mProject.getManager().fetchIfNeeded();
+            assert manager != null;
+            app.textViewAuthor.setText(manager.getUsername());
+            ParseFile profilePicture = manager.getProfilePicture();
+            if(image != null) {
+                Glide.with(mContext)
+                        .load(profilePicture.getUrl())
+                        .into(app.imageViewProfilePicture);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         
         setLikeButton();
     }
