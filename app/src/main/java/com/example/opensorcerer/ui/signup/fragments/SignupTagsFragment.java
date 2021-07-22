@@ -33,24 +33,16 @@ import java.util.List;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupTagsFragment extends Fragment {
 
-    /**
-     * Tag for logging
-     */
+    /**Tag for logging*/
     private static final String TAG = "SignupTagsFragment";
 
-    /**
-     * Binder for View Binding
-     */
+    /**Binder for View Binding*/
     private FragmentSignupTagsBinding app;
 
-    /**
-     * Fragment's context
-     */
+    /**Fragment's context*/
     private Context mContext;
 
-    /**
-     * Newly created user for signup
-     */
+    /**Newly created user for signup*/
     private User mNewUser;
 
     /**User's selected profile picture*/

@@ -8,6 +8,8 @@ import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
 
+import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView;
+
 import com.example.opensorcerer.R;
 import com.google.android.material.chip.ChipDrawable;
 import com.parse.ParseFile;
@@ -22,7 +24,7 @@ import java.util.List;
  * Abstract class for general use static methods
  */
 @SuppressWarnings("SpellCheckingInspection")
-public class Tools {
+public abstract class Tools {
 
     /**List of all recognized programming languages*/
     private static final String[] languages = {"(Visual) FoxPro: FoxPro, " +
@@ -133,6 +135,26 @@ public class Tools {
         chip.setBounds(0, 0, chip.getIntrinsicWidth(), chip.getIntrinsicHeight());
         ImageSpan span = new ImageSpan(chip);
         editable.setSpan(span, spannedLength, editable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return editable;
+    }
+
+    /**
+     * Creates a new chip token from the last inputed item in an editable
+     */
+    public static Editable addChip(Context context, String item, AppCompatMultiAutoCompleteTextView chipInput) {
+
+        Editable editable = chipInput.getText();
+        String inputString = editable.toString();
+        int spannedLength = inputString.length();
+        chipInput.setText(String.format("%s%s", inputString, item));
+        editable = chipInput.getText();
+        ChipDrawable chip = ChipDrawable.createFromResource(context, R.xml.chip);
+        chip.setText(item);
+        chip.setBounds(0, 0, chip.getIntrinsicWidth(), chip.getIntrinsicHeight());
+        ImageSpan span = new ImageSpan(chip);
+
+        editable.setSpan(span, spannedLength, spannedLength+item.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return editable;
     }

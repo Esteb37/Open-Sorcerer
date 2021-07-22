@@ -133,8 +133,8 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
         //Set the tab icons
         new TabLayoutMediator(app.tabLayout, app.viewPager,
                 (tab, position) -> tab.setIcon(position == 0
-                        ? R.drawable.ufi_heart_liked
-                        : R.drawable.ic_dashboard_black_24dp)
+                        ? R.drawable.ic_dashboard_black_24dp
+                        : R.drawable.ufi_heart_active)
         ).attach();
     }
 
