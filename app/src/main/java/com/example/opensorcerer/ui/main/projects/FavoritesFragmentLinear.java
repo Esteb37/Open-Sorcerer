@@ -166,7 +166,13 @@ public class FavoritesFragmentLinear extends Fragment {
             //Get the liked projects
             query.findInBackground((projects, e) -> {
                 if (e == null) {
-                    mAdapter.addAll(projects);
+
+                    if(projects.size()>0){
+                        mAdapter.addAll(projects);
+                    } else {
+                        app.textViewNoProjects.setVisibility(View.VISIBLE);
+                    }
+
                     app.progressBar.setVisibility(View.GONE);
                 } else {
                     Log.d(TAG, "Unable to load projects.");
