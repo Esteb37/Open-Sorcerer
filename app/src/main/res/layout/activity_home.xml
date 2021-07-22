@@ -27,7 +27,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:menu="@menu/developer_bottom_nav" />
+                app:menu="@menu/main_bottom_nav" />
 
             <FrameLayout
                 android:id="@+id/flContainer"
@@ -59,7 +59,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:menu="@menu/developer_bottom_nav">
+                app:menu="@menu/main_bottom_nav">
 
             </com.google.android.material.bottomnavigation.BottomNavigationView>
 

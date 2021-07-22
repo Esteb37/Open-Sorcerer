@@ -15,13 +15,14 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.ActivityDeveloperHomeBinding;
+import com.example.opensorcerer.databinding.ActivityHomeBinding;
 import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.login.LoginActivity;
 import com.example.opensorcerer.ui.main.conversations.ConversationsFragment;
+import com.example.opensorcerer.ui.main.create.CreateProjectFragment;
 import com.example.opensorcerer.ui.main.favorites.FavoritesFragment;
 import com.example.opensorcerer.ui.main.profile.ProfileFragment;
 import com.example.opensorcerer.ui.main.projects.ProjectsFragment;
-import com.example.opensorcerer.ui.login.LoginActivity;
 import com.parse.ParseUser;
 
 import org.kohsuke.github.GitHub;
@@ -37,7 +38,7 @@ public class HomeActivity extends AppCompatActivity{
     private static final String TAG = "DeveloperHomeActivity";
 
     /**Binder object for ViewBinding*/
-    private ActivityDeveloperHomeBinding app;
+    private ActivityHomeBinding app;
 
     /**Fragment's context*/
     private Context mContext;
@@ -68,8 +69,8 @@ public class HomeActivity extends AppCompatActivity{
      * Sets up the activity's layout
      */
     private void setupLayout() {
-        setContentView(R.layout.activity_developer_home);
-        app = ActivityDeveloperHomeBinding.inflate(getLayoutInflater());
+        setContentView(R.layout.activity_home);
+        app = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(app.getRoot());
     }
 
@@ -100,6 +101,7 @@ public class HomeActivity extends AppCompatActivity{
         final int actionProfile = R.id.actionProfile;
         final int actionFavorites = R.id.actionFavorites;
         final int actionChats = R.id.actionChats;
+        final int actionCreate = R.id.actionCreate;
 
         app.bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment;
@@ -124,6 +126,11 @@ public class HomeActivity extends AppCompatActivity{
                 //Favorites item selected
                 case actionFavorites:
                     fragment = new FavoritesFragment();
+                    break;
+
+                //Profile item selected
+                case actionCreate:
+                    fragment = new CreateProjectFragment();
                     break;
 
                 //Profile item selected
