@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
     /**Binder for ViewBinding*/
-    private ActivityLoginBinding app;
+    private ActivityLoginBinding mApp;
 
     /**Current context*/
     private Context mContext;
@@ -67,8 +67,8 @@ public class LoginActivity extends AppCompatActivity {
      * Sets up the View Binder
      */
     private void setupViewBinding() {
-        app = ActivityLoginBinding.inflate(getLayoutInflater());
-        setContentView(app.getRoot());
+        mApp = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(mApp.getRoot());
     }
 
 
@@ -77,11 +77,11 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void setupLoginButtonListener() {
 
-        app.buttonLogin.setOnClickListener(v -> {
+        mApp.buttonLogin.setOnClickListener(v -> {
 
             //Get the credentials
-            String username = Objects.requireNonNull(app.editTextUsername.getText()).toString();
-            String password = Objects.requireNonNull(app.editTextPassword.getText()).toString();
+            String username = Objects.requireNonNull(mApp.editTextUsername.getText()).toString();
+            String password = Objects.requireNonNull(mApp.editTextPassword.getText()).toString();
 
             //Attempt to log the user in with the credentials
             ParseUser.logInInBackground(username, password, (user, e) -> {
@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
      * Sets up the "Setup" button listener
      */
     private void setupSignupButtonListener() {
-        app.buttonSignup.setOnClickListener(v -> {
+        mApp.buttonSignup.setOnClickListener(v -> {
             Intent i = new Intent(mContext, SignupActivity.class);
             startActivity(i);
         });

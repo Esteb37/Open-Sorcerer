@@ -18,14 +18,14 @@ import com.parse.ParseFile;
 public class ProjectGridHolder extends RecyclerView.ViewHolder{
 
     /**Binder object for ViewBinding*/
-    private final ItemGridProjectBinding app;
+    private final ItemGridProjectBinding mApp;
 
     /**The Holder's context*/
     private final Context mContext;
 
     public ProjectGridHolder(View view, Context context, ItemGridProjectBinding binder) {
         super(view);
-        app = binder;
+        mApp = binder;
         mContext = context;
     }
 
@@ -36,11 +36,11 @@ public class ProjectGridHolder extends RecyclerView.ViewHolder{
     public void bind(Project project) {
 
         //Set text details
-        app.textViewTitle.setText(project.getTitle());
-        app.textViewDescription.setText(project.getDescription());
+        mApp.textViewTitle.setText(project.getTitle());
+        mApp.textViewDescription.setText(project.getDescription());
 
         //Dynamically set the title's max lines to avoid word breaking
-        app.textViewTitle.setMaxLines(project.getTitle().split(" ").length);
+        mApp.textViewTitle.setMaxLines(project.getTitle().split(" ").length);
 
         //Load the project's image
         ParseFile image = project.getLogoImage();
@@ -49,7 +49,7 @@ public class ProjectGridHolder extends RecyclerView.ViewHolder{
                     .load(image.getUrl())
                     .centerInside()
                     .transform(new RoundedCorners(500))
-                    .into(app.imageViewLogo);
+                    .into(mApp.imageViewLogo);
         }
     }
 }

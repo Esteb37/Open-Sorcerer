@@ -46,7 +46,7 @@ public class CreateProjectTagsFragment extends Fragment {
     private static final String TAG = "CreateProjectTagsFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentCreateTagsBinding app;
+    private FragmentCreateTagsBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -78,8 +78,8 @@ public class CreateProjectTagsFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentCreateTagsBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentCreateTagsBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     /**
@@ -93,9 +93,9 @@ public class CreateProjectTagsFragment extends Fragment {
 
         loadRepoDetails();
 
-        setupChipInput(app.chipInputLanguages, Arrays.asList(Tools.getLanguages()));
+        setupChipInput(mApp.chipInputLanguages, Arrays.asList(Tools.getLanguages()));
 
-        setupChipInput(app.chipInputTags, Arrays.asList(Tools.getLanguages()));
+        setupChipInput(mApp.chipInputTags, Arrays.asList(Tools.getLanguages()));
 
         setupButtonListeners();
     }
@@ -125,13 +125,13 @@ public class CreateProjectTagsFragment extends Fragment {
         new Thread(() -> {
             try {
                 List<String> languages = new ArrayList<>(mRepo.listLanguages().keySet());
-                requireActivity().runOnUiThread(() -> loadChips(app.chipInputLanguages, languages));
+                requireActivity().runOnUiThread(() -> loadChips(mApp.chipInputLanguages, languages));
             } catch (IOException e) {
                 e.printStackTrace();
             }
             try {
                 List<String> tags = mRepo.listTopics();
-                requireActivity().runOnUiThread(() -> loadChips(app.chipInputTags, tags));
+                requireActivity().runOnUiThread(() -> loadChips(mApp.chipInputTags, tags));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -167,9 +167,9 @@ public class CreateProjectTagsFragment extends Fragment {
      * Sets up the navigation button listeners
      */
     public void setupButtonListeners(){
-       app.buttonBack.setOnClickListener(v -> navigateBackward());
+       mApp.buttonBack.setOnClickListener(v -> navigateBackward());
 
-       app.buttonFinish.setOnClickListener(v -> saveProject());
+       mApp.buttonFinish.setOnClickListener(v -> saveProject());
     }
 
     /**
@@ -177,9 +177,9 @@ public class CreateProjectTagsFragment extends Fragment {
      */
     private void saveProject() {
         //Set the tags and languages as lists
-        List<String> languages = Arrays.asList(app.chipInputLanguages.getText().toString().split(","));
+        List<String> languages = Arrays.asList(mApp.chipInputLanguages.getText().toString().split(","));
         mNewProject.setLanguages(languages);
-        List<String> tags = Arrays.asList(app.chipInputTags.getText().toString().split(","));
+        List<String> tags = Arrays.asList(mApp.chipInputTags.getText().toString().split(","));
         mNewProject.setTags(tags);
 
         //Save the project
@@ -203,7 +203,7 @@ public class CreateProjectTagsFragment extends Fragment {
     private void tokenize(AppCompatMultiAutoCompleteTextView chipInput) {
 
         //Get the spanned length depending on which chip input is being tokenized
-        int spannedLength = chipInput == app.chipInputLanguages ? spannedLengthLanguages : spannedLengthTags;
+        int spannedLength = chipInput == mApp.chipInputLanguages ? spannedLengthLanguages : spannedLengthTags;
 
         //Add a new chip to the input
         Editable editable = Tools.addChip(mContext,chipInput.getEditableText(),spannedLength);
@@ -211,7 +211,7 @@ public class CreateProjectTagsFragment extends Fragment {
         Log.d("Test", String.valueOf(spannedLength));
 
         //Update the current length of the selected input
-        if(chipInput == app.chipInputLanguages){
+        if(chipInput == mApp.chipInputLanguages){
             spannedLengthLanguages = editable.length();
         } else {
             spannedLengthTags = editable.length();

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity{
     private static final String TAG = "MainActivity";
 
     /**Binder object for ViewBinding*/
-    private ActivityHomeBinding app;
+    private ActivityHomeBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity{
      */
     private void setupLayout() {
         setContentView(R.layout.activity_home);
-        app = ActivityHomeBinding.inflate(getLayoutInflater());
-        setContentView(app.getRoot());
+        mApp = ActivityHomeBinding.inflate(getLayoutInflater());
+        setContentView(mApp.getRoot());
     }
 
     /**
@@ -97,11 +97,11 @@ public class MainActivity extends AppCompatActivity{
         final int actionChats = R.id.actionChats;
         final int actionCreate = R.id.actionCreate;
 
-        app.bottomNav.setOnItemSelectedListener(item -> {
+        mApp.bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment;
 
             //Eliminate the Details fragment
-            app.constraintLayout2.setVisibility(View.GONE);
+            mApp.constraintLayout2.setVisibility(View.GONE);
             fragmentManager.findFragmentByTag("details");
             Fragment detailsFragment = fragmentManager.findFragmentByTag("details");
             if(detailsFragment != null)
@@ -113,8 +113,8 @@ public class MainActivity extends AppCompatActivity{
                 //Home Item selected
                 case actionHome:
                     fragment = new HomeFragment();
-                    app.constraintLayout2.setVisibility(View.VISIBLE);
-                    app.horizontalScroller.setFeatureItems((HomeFragment) fragment);
+                    mApp.constraintLayout2.setVisibility(View.VISIBLE);
+                    mApp.horizontalScroller.setFeatureItems((HomeFragment) fragment);
                     break;
 
                 //Favorites item selected
@@ -141,11 +141,11 @@ public class MainActivity extends AppCompatActivity{
             }
 
             //Open the selected fragment
-            fragmentManager.beginTransaction().replace(app.flContainer.getId(),fragment).commit();
+            fragmentManager.beginTransaction().replace(mApp.flContainer.getId(),fragment).commit();
             return true;
         });
 
         //Set the default window to be the Home
-        app.bottomNav.setSelectedItemId(R.id.actionHome);
+        mApp.bottomNav.setSelectedItemId(R.id.actionHome);
     }
 }

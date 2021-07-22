@@ -47,7 +47,7 @@ public class CreateProjectDetailsFragment extends Fragment {
     private static final String TAG = "CreateProjectDetailsFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentCreateDetailsBinding app;
+    private FragmentCreateDetailsBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -82,8 +82,8 @@ public class CreateProjectDetailsFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentCreateDetailsBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentCreateDetailsBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     /**
@@ -139,10 +139,10 @@ public class CreateProjectDetailsFragment extends Fragment {
         requireActivity().runOnUiThread(() -> {
 
             //Set the inputs to the repo's information
-            app.editTextTitle.setText(name);
-            app.editTextWebsite.setText(finalWebsite);
-            app.editTextDescription.setText(description);
-            app.editTextRepository.setText(repo);
+            mApp.editTextTitle.setText(name);
+            mApp.editTextWebsite.setText(finalWebsite);
+            mApp.editTextDescription.setText(description);
+            mApp.editTextRepository.setText(repo);
         });
     }
 
@@ -150,13 +150,13 @@ public class CreateProjectDetailsFragment extends Fragment {
      * Sets up the listeners for the navigation buttons
      */
     private void setupButtonListeners(){
-        app.buttonNext.setOnClickListener(v -> {
+        mApp.buttonNext.setOnClickListener(v -> {
 
             //Set the project's details from the inputs
-            mNewProject.setTitle(app.editTextTitle.getText().toString());
-            mNewProject.setDescription(app.editTextDescription.getText().toString());
-            mNewProject.setRepository(app.editTextRepository.getText().toString());
-            mNewProject.setWebsite(app.editTextWebsite.getText().toString());
+            mNewProject.setTitle(mApp.editTextTitle.getText().toString());
+            mNewProject.setDescription(mApp.editTextDescription.getText().toString());
+            mNewProject.setRepository(mApp.editTextRepository.getText().toString());
+            mNewProject.setWebsite(mApp.editTextWebsite.getText().toString());
 
             //Set the project's manager to this user
             mNewProject.setManager(mUser);
@@ -185,14 +185,14 @@ public class CreateProjectDetailsFragment extends Fragment {
             }
         });
 
-        app.buttonBack.setOnClickListener(v -> navigateBackward());
+        mApp.buttonBack.setOnClickListener(v -> navigateBackward());
     }
 
     /**
      * Sets the listener for uploading the logo image
      */
     private void setupImageListener(){
-        app.constraintLayoutPicture.setOnClickListener(v ->{
+        mApp.constraintLayoutPicture.setOnClickListener(v ->{
 
             Intent chooserIntent = Tools.createChooserIntent();
 
@@ -241,7 +241,7 @@ public class CreateProjectDetailsFragment extends Fragment {
                             //Load the profile picture into the placeholder
                             Glide.with(mContext)
                                     .load(mProjectLogo)
-                                    .into(app.imageViewProjectLogo);
+                                    .into(mApp.imageViewProjectLogo);
 
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();

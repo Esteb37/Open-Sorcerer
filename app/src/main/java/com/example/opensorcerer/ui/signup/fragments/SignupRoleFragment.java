@@ -27,7 +27,7 @@ public class SignupRoleFragment extends Fragment {
     private static final String TAG = "SignupRoleFragment";
 
     /**Binder for ViewBinding*/
-    private FragmentSignupRoleBinding app;
+    private FragmentSignupRoleBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -40,8 +40,8 @@ public class SignupRoleFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentSignupRoleBinding.inflate(inflater, container, false);
-        return app.getRoot();
+        mApp = FragmentSignupRoleBinding.inflate(inflater, container, false);
+        return mApp.getRoot();
     }
 
     /**
@@ -61,17 +61,17 @@ public class SignupRoleFragment extends Fragment {
     private void setupButtonListeners() {
         mNewUser = new User();
 
-        app.buttonDeveloper.setOnClickListener(v -> {
+        mApp.buttonDeveloper.setOnClickListener(v -> {
             mNewUser.setRole("developer");
             navigateToSignup();
         });
 
-        app.buttonManager.setOnClickListener(v -> {
+        mApp.buttonManager.setOnClickListener(v -> {
             mNewUser.setRole("manager");
             navigateToSignup();
         });
 
-        app.buttonSignin.setOnClickListener(v -> {
+        mApp.buttonSignin.setOnClickListener(v -> {
             Intent i = new Intent(mContext, LoginActivity.class);
             startActivity(i);
         });
@@ -92,7 +92,7 @@ public class SignupRoleFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        app = null;
+        mApp = null;
     }
 
 }

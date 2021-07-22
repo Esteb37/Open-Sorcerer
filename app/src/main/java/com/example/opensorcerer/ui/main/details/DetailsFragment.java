@@ -31,7 +31,7 @@ public class DetailsFragment extends Fragment{
     private static final String TAG = "DetailsFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentDetailsBinding app;
+    private FragmentDetailsBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -56,8 +56,8 @@ public class DetailsFragment extends Fragment{
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentDetailsBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentDetailsBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     /**
@@ -97,7 +97,7 @@ public class DetailsFragment extends Fragment{
         final int actionDetails = R.id.actionDetails;
         final int actionGithub = R.id.actionGithub;
 
-        app.bottomNavDetails.setOnItemSelectedListener(item -> {
+        mApp.bottomNavDetails.setOnItemSelectedListener(item -> {
             Fragment fragment;
 
             Bundle bundle = new Bundle();
@@ -120,10 +120,10 @@ public class DetailsFragment extends Fragment{
             fragment.setArguments(bundle);
 
             //Open the selected fragment
-            fragmentManager.beginTransaction().replace(app.flContainerDetailsInternal.getId(),fragment).commit();
+            fragmentManager.beginTransaction().replace(mApp.flContainerDetailsInternal.getId(),fragment).commit();
             return true;
         });
 
-        app.bottomNavDetails.setSelectedItemId(R.id.actionDetails);
+        mApp.bottomNavDetails.setSelectedItemId(R.id.actionDetails);
     }
 }

@@ -27,7 +27,7 @@ public class SignupGithubFragment extends Fragment {
     private static final String TAG = "SignupGithubFragment";
 
     /**Binder for ViewBinding*/
-    private FragmentSignupGithubBinding app;
+    private FragmentSignupGithubBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -40,8 +40,8 @@ public class SignupGithubFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentSignupGithubBinding.inflate(inflater, container, false);
-        return app.getRoot();
+        mApp = FragmentSignupGithubBinding.inflate(inflater, container, false);
+        return mApp.getRoot();
     }
 
     /**
@@ -64,13 +64,13 @@ public class SignupGithubFragment extends Fragment {
     private void setupButtonListeners() {
 
         //Setup "Back" button listener
-        app.buttonBack.setOnClickListener(v -> navigateBack());
+        mApp.buttonBack.setOnClickListener(v -> navigateBack());
 
         //Setup "Finish" button listener
-        app.buttonFinish.setOnClickListener(v -> {
+        mApp.buttonFinish.setOnClickListener(v -> {
 
             //Get credentials
-            mNewUser.setGithubToken(Objects.requireNonNull(app.editTextToken.getText()).toString());
+            mNewUser.setGithubToken(Objects.requireNonNull(mApp.editTextToken.getText()).toString());
 
             //Sign the user up into the database
             mNewUser.getHandler().signUpInBackground(e -> {
@@ -108,7 +108,7 @@ public class SignupGithubFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        app = null;
+        mApp = null;
     }
 
 }

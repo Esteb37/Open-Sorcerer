@@ -37,7 +37,7 @@ public class SignupTagsFragment extends Fragment {
     private static final String TAG = "SignupTagsFragment";
 
     /**Binder for View Binding*/
-    private FragmentSignupTagsBinding app;
+    private FragmentSignupTagsBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -53,8 +53,8 @@ public class SignupTagsFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentSignupTagsBinding.inflate(inflater, container, false);
-        return app.getRoot();
+        mApp = FragmentSignupTagsBinding.inflate(inflater, container, false);
+        return mApp.getRoot();
 
     }
 
@@ -71,9 +71,9 @@ public class SignupTagsFragment extends Fragment {
 
         setupButtonListeners();
 
-        setupChipInput(app.chipInputLanguages, Arrays.asList(Tools.getLanguages()));
+        setupChipInput(mApp.chipInputLanguages, Arrays.asList(Tools.getLanguages()));
 
-        setupChipInput(app.chipInputTags, Arrays.asList(Tools.getLanguages()));
+        setupChipInput(mApp.chipInputTags, Arrays.asList(Tools.getLanguages()));
     }
 
 
@@ -83,15 +83,15 @@ public class SignupTagsFragment extends Fragment {
      */
     private void setupButtonListeners() {
 
-        app.buttonFinish.setOnClickListener(v -> {
-            mNewUser.setLanguages(Arrays.asList(app.chipInputLanguages.getText().toString().split(",")));
-            mNewUser.setInterests(Arrays.asList(app.chipInputTags.getText().toString().split(",")));
+        mApp.buttonFinish.setOnClickListener(v -> {
+            mNewUser.setLanguages(Arrays.asList(mApp.chipInputLanguages.getText().toString().split(",")));
+            mNewUser.setInterests(Arrays.asList(mApp.chipInputTags.getText().toString().split(",")));
             navigateToMain();
         });
 
-        app.buttonSkip.setOnClickListener(v -> navigateToMain());
+        mApp.buttonSkip.setOnClickListener(v -> navigateToMain());
 
-        app.buttonBack.setOnClickListener(v -> navigateBackward());
+        mApp.buttonBack.setOnClickListener(v -> navigateBackward());
     }
 
     /**
@@ -149,13 +149,13 @@ public class SignupTagsFragment extends Fragment {
     private void tokenize(AppCompatMultiAutoCompleteTextView chipInput) {
 
         //Get the spanned length depending on which chip input is being tokenized
-        int spannedLength = chipInput == app.chipInputLanguages ? spannedLengthLanguages : spannedLengthTags;
+        int spannedLength = chipInput == mApp.chipInputLanguages ? spannedLengthLanguages : spannedLengthTags;
 
         //Add a new chip to the input
         Editable editable = Tools.addChip(mContext,chipInput.getEditableText(),spannedLength);
 
         //Update the current length of the selected input
-        if(chipInput == app.chipInputLanguages){
+        if(chipInput == mApp.chipInputLanguages){
             spannedLengthLanguages = editable.length();
         } else {
             spannedLengthTags = editable.length();
@@ -168,6 +168,6 @@ public class SignupTagsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        app = null;
+        mApp = null;
     }
 }

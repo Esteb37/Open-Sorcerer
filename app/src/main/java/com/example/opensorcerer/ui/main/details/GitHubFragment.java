@@ -34,7 +34,7 @@ public class GitHubFragment extends Fragment {
     /**
      * Binder object for ViewBinding
      */
-    private FragmentGitHubBinding app;
+    private FragmentGitHubBinding mApp;
 
     /**
      * Fragment's context
@@ -72,8 +72,8 @@ public class GitHubFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentGitHubBinding.inflate(inflater, container, false);
-        return app.getRoot();
+        mApp = FragmentGitHubBinding.inflate(inflater, container, false);
+        return mApp.getRoot();
     }
 
     /**
@@ -105,8 +105,8 @@ public class GitHubFragment extends Fragment {
      * Loads the GitHub repository into the WebViewer
      */
     private void loadWebsite(){
-        app.webView.loadUrl(mProject.getWebsite());
-        app.progressBar.setVisibility(View.GONE);
+        mApp.webView.loadUrl(mProject.getWebsite());
+        mApp.progressBar.setVisibility(View.GONE);
     }
 
 }

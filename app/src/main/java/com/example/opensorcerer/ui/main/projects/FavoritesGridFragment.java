@@ -41,7 +41,7 @@ public class FavoritesGridFragment extends Fragment {
     private static final int QUERY_LIMIT = 20;
 
     /**Binder object for ViewBinding*/
-    private FragmentFavoritesGridBinding app;
+    private FragmentFavoritesGridBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -76,8 +76,8 @@ public class FavoritesGridFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentFavoritesGridBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentFavoritesGridBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     /**
@@ -113,11 +113,11 @@ public class FavoritesGridFragment extends Fragment {
 
         //Set the adapter
         mAdapter = new ProjectsGridAdapter(mProjects,mContext);
-        app.recyclerViewFavorites.setAdapter(mAdapter);
+        mApp.recyclerViewFavorites.setAdapter(mAdapter);
 
         //Set the layout
         mLayoutManager = new GridLayoutManager(mContext,2);
-        app.recyclerViewFavorites.setLayoutManager(mLayoutManager);
+        mApp.recyclerViewFavorites.setLayoutManager(mLayoutManager);
 
         //Setup endless scrolling
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
@@ -128,7 +128,7 @@ public class FavoritesGridFragment extends Fragment {
         };
 
         // Adds the scroll listener to RecyclerView
-        app.recyclerViewFavorites.addOnScrollListener(scrollListener);
+        mApp.recyclerViewFavorites.addOnScrollListener(scrollListener);
     }
 
 
@@ -137,7 +137,7 @@ public class FavoritesGridFragment extends Fragment {
      */
     public void queryProjects(int page){
 
-        app.progressBar.setVisibility(View.VISIBLE);
+        mApp.progressBar.setVisibility(View.VISIBLE);
         List<String> favorites = mUser.getFavorites();
         if(favorites!=null) {
 
@@ -155,15 +155,15 @@ public class FavoritesGridFragment extends Fragment {
                     if(projects.size()>0){
                         mAdapter.addAll(projects);
                     } else {
-                        app.textViewNoProjects.setVisibility(View.VISIBLE);
+                        mApp.textViewNoProjects.setVisibility(View.VISIBLE);
                     }
-                    app.progressBar.setVisibility(View.GONE);
+                    mApp.progressBar.setVisibility(View.GONE);
                 } else {
                     Log.d(TAG, "Unable to load projects.");
                 }
             });
         } else {
-            app.progressBar.setVisibility(View.GONE);
+            mApp.progressBar.setVisibility(View.GONE);
         }
     }
 }

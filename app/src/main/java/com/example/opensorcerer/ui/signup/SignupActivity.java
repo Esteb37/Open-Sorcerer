@@ -29,7 +29,7 @@ public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
     /**Binder for ViewBinding*/
-    private ActivitySignupBinding app;
+    private ActivitySignupBinding mApp;
 
     /**Activity's context*/
     private Context mContext;
@@ -58,8 +58,8 @@ public class SignupActivity extends AppCompatActivity {
      * Sets up the fragment's layout
      */
     private void setupViewBinding() {
-        app = ActivitySignupBinding.inflate(getLayoutInflater());
-        setContentView(app.getRoot());
+        mApp = ActivitySignupBinding.inflate(getLayoutInflater());
+        setContentView(mApp.getRoot());
     }
 
     /**

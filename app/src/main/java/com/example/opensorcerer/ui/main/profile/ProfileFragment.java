@@ -33,7 +33,7 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     private static final String TAG = "ProfileFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentProfileBinding app;
+    private FragmentProfileBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -61,12 +61,12 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
             mDrawerListener = new ProfileContentFragment.OnFragmentInteractionListener() {
         @Override
         public void openDrawer() {
-            app.drawerLy.openDrawer(GravityCompat.END);
+            mApp.drawerLy.openDrawer(GravityCompat.END);
         }
 
         @Override
         public void closeDrawer() {
-            app.drawerLy.closeDrawers();
+            mApp.drawerLy.closeDrawers();
         }
     };
 
@@ -80,8 +80,8 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentProfileBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentProfileBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     /**

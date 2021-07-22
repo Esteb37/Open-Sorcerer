@@ -32,7 +32,7 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
     private static final String TAG = "ProfileContentFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentProfileContentBinding app;
+    private FragmentProfileContentBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -68,8 +68,8 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentProfileContentBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentProfileContentBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     /**
@@ -103,22 +103,22 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
     private void loadProfileDetails() {
 
         //Load text information
-        app.textViewName.setText(mUser.getName());
-        app.textViewUsername.setText(String.format("@%s", mUser.getUsername()));
-        app.textViewBio.setText(mUser.getBio());
+        mApp.textViewName.setText(mUser.getName());
+        mApp.textViewUsername.setText(String.format("@%s", mUser.getUsername()));
+        mApp.textViewBio.setText(mUser.getBio());
 
         //Load the list of languages to an expandable view
-        app.textViewLanguages.setText(Tools.listToString(mUser.getLanguages()));
-        app.textViewLanguages.post(() -> app.textViewLanguages.setMoreMessage(app.textViewMoreLanguages));
+        mApp.textViewLanguages.setText(Tools.listToString(mUser.getLanguages()));
+        mApp.textViewLanguages.post(() -> mApp.textViewLanguages.setMoreMessage(mApp.textViewMoreLanguages));
 
         //Load the list of tags to an expandable view
-        app.textViewInterests.setText(Tools.listToString(mUser.getInterests()));
-        app.textViewInterests.post(() -> app.textViewInterests.setMoreMessage(app.textViewMoreInterests));
+        mApp.textViewInterests.setText(Tools.listToString(mUser.getInterests()));
+        mApp.textViewInterests.post(() -> mApp.textViewInterests.setMoreMessage(mApp.textViewMoreInterests));
 
         //Load the user's profile picture
         Glide.with(mContext)
                 .load(mUser.getProfilePicture().getUrl())
-                .into(app.imageViewProfilePicture);
+                .into(mApp.imageViewProfilePicture);
     }
 
     /**
@@ -128,10 +128,10 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
 
         //Set the adapter
         mPagerAdapter = new ProjectsPagerAdapter(this);
-        app.viewPager.setAdapter(mPagerAdapter);
+        mApp.viewPager.setAdapter(mPagerAdapter);
 
         //Set the tab icons
-        new TabLayoutMediator(app.tabLayout, app.viewPager,
+        new TabLayoutMediator(mApp.tabLayout, mApp.viewPager,
                 (tab, position) -> tab.setIcon(position == 0
                         ? R.drawable.ic_dashboard_black_24dp
                         : R.drawable.ufi_heart_active)
@@ -142,7 +142,7 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
      * Sets the listener for the menu button
      */
     private void setDrawerButtonListener() {
-        app.buttonDrawer.setOnClickListener(v -> mListener.openDrawer());
+        mApp.buttonDrawer.setOnClickListener(v -> mListener.openDrawer());
     }
 
 }

@@ -47,7 +47,7 @@ public class InformationFragment extends Fragment {
     private static final String TAG = "InformationFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentInformationBinding app;
+    private FragmentInformationBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -76,8 +76,8 @@ public class InformationFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentInformationBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentInformationBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     /**
@@ -116,21 +116,21 @@ public class InformationFragment extends Fragment {
         if(mProject!=null) {
 
             //Load text details
-            app.textViewTitle.setText(mProject.getTitle());
-            app.textViewTitle.setMaxLines(mProject.getTitle().split(" ").length);
-            app.textViewViews.setText(String.valueOf(mProject.getViewCount()));
-            app.textViewLikes.setText(String.valueOf(mProject.getLikeCount()));
+            mApp.textViewTitle.setText(mProject.getTitle());
+            mApp.textViewTitle.setMaxLines(mProject.getTitle().split(" ").length);
+            mApp.textViewViews.setText(String.valueOf(mProject.getViewCount()));
+            mApp.textViewLikes.setText(String.valueOf(mProject.getLikeCount()));
 
-            app.textViewTags.setText(Tools.listToString(mProject.getTags()));
-            app.textViewTags.post(() -> app.textViewTags.setMoreMessage(app.textViewMoreTags));
+            mApp.textViewTags.setText(Tools.listToString(mProject.getTags()));
+            mApp.textViewTags.post(() -> mApp.textViewTags.setMoreMessage(mApp.textViewMoreTags));
 
             //Load the list of languages to an expandable view
-            app.textViewLanguages.setText(Tools.listToString(mProject.getLanguages()));
-            app.textViewLanguages.post(() -> app.textViewLanguages.setMoreMessage(app.textViewMoreLanguages));
+            mApp.textViewLanguages.setText(Tools.listToString(mProject.getLanguages()));
+            mApp.textViewLanguages.post(() -> mApp.textViewLanguages.setMoreMessage(mApp.textViewMoreLanguages));
 
             //Load Manager's name
             try {
-                app.textViewAuthor.setText(String.format("by %s", mProject.getManager().fetchIfNeeded().getUsername()));
+                mApp.textViewAuthor.setText(String.format("by %s", mProject.getManager().fetchIfNeeded().getUsername()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -141,8 +141,8 @@ public class InformationFragment extends Fragment {
                 Glide.with(mContext)
                         .load(image.getUrl())
                         .transform(new RoundedCorners(1000))
-                        .into(app.imageViewLogo);
-                app.progressBar.setVisibility(View.GONE);
+                        .into(mApp.imageViewLogo);
+                mApp.progressBar.setVisibility(View.GONE);
             }
 
             setLikeButton();
@@ -174,8 +174,8 @@ public class InformationFragment extends Fragment {
 
                 //Load the content into the markdown viewer
                 ((Activity) mContext).runOnUiThread(() -> {
-                    app.markdownViewReadme.setMarkDownText(content);
-                    app.progressBarReadme.setVisibility(View.GONE);
+                    mApp.markdownViewReadme.setMarkDownText(content);
+                    mApp.progressBarReadme.setVisibility(View.GONE);
                 });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -191,6 +191,6 @@ public class InformationFragment extends Fragment {
         assert unwrappedDrawable != null;
         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
         DrawableCompat.setTint(wrappedDrawable, mProject.isLikedByUser(mUser) ? Color.RED : ContextCompat.getColor(mContext,R.color.darker_blue));
-        app.buttonLike.setImageDrawable(wrappedDrawable);
+        mApp.buttonLike.setImageDrawable(wrappedDrawable);
     }
 }

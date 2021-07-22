@@ -37,7 +37,7 @@ public class CreateProjectImportFragment extends Fragment {
     private static final String TAG = "CreateProjectImportFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentCreateImportBinding app;
+    private FragmentCreateImportBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -66,8 +66,8 @@ public class CreateProjectImportFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentCreateImportBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentCreateImportBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     /**
@@ -89,13 +89,13 @@ public class CreateProjectImportFragment extends Fragment {
     private void setupImportButtonListener() {
 
         //Create a background thread on the button's click
-        app.buttonImport.setOnClickListener(v -> new Thread(() -> {
+        mApp.buttonImport.setOnClickListener(v -> new Thread(() -> {
 
             Looper.prepare();
 
             try{
                 //Get the repo in user/repo format
-                String repoLink = Objects.requireNonNull(app.editTextRepo.getText()).toString().split("github.com/")[1];
+                String repoLink = Objects.requireNonNull(mApp.editTextRepo.getText()).toString().split("github.com/")[1];
 
                 try {
                     //Get the repository

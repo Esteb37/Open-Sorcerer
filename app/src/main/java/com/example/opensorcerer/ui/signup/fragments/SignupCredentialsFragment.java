@@ -29,7 +29,7 @@ public class SignupCredentialsFragment extends Fragment {
     private static final String TAG = "SignupCredentialsFragment";
 
     /**Binder for View Binding*/
-    private FragmentSignupCredentialsBinding app;
+    private FragmentSignupCredentialsBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -42,8 +42,8 @@ public class SignupCredentialsFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentSignupCredentialsBinding .inflate(inflater, container, false);
-        return app.getRoot();
+        mApp = FragmentSignupCredentialsBinding .inflate(inflater, container, false);
+        return mApp.getRoot();
 
     }
 
@@ -67,14 +67,14 @@ public class SignupCredentialsFragment extends Fragment {
     private void setupButtonListeners() {
 
         //Setup "Next" button listener
-        app.buttonNext.setOnClickListener(v -> {
+        mApp.buttonNext.setOnClickListener(v -> {
 
             //Verify that the email is valid and the passwords match
             if(passwordsMatch()){
 
                 //Set the credentials into the user
-                mNewUser.setUsername(Objects.requireNonNull(app.editTextUsername.getText()).toString());
-                mNewUser.setPassword(Objects.requireNonNull(app.editTextPassword.getText()).toString());
+                mNewUser.setUsername(Objects.requireNonNull(mApp.editTextUsername.getText()).toString());
+                mNewUser.setPassword(Objects.requireNonNull(mApp.editTextPassword.getText()).toString());
 
                 //Go to the next screen
                 navigateForward();
@@ -82,7 +82,7 @@ public class SignupCredentialsFragment extends Fragment {
         });
 
         //Setup "Back" button listener
-        app.buttonBack.setOnClickListener(v -> navigateBackward());
+        mApp.buttonBack.setOnClickListener(v -> navigateBackward());
     }
 
     /**
@@ -107,8 +107,8 @@ public class SignupCredentialsFragment extends Fragment {
      * @return If the passwords match
      */
     private boolean passwordsMatch() {
-        String password = Objects.requireNonNull(app.editTextPassword.getText()).toString();
-        String confirm = Objects.requireNonNull(app.editTextConfirm.getText()).toString();
+        String password = Objects.requireNonNull(mApp.editTextPassword.getText()).toString();
+        String confirm = Objects.requireNonNull(mApp.editTextConfirm.getText()).toString();
         if(! (password.equals(confirm))){
             Toast.makeText(getContext(),"Passwords do not match",Toast.LENGTH_SHORT).show();
             return false;
@@ -122,7 +122,7 @@ public class SignupCredentialsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        app = null;
+        mApp = null;
     }
 
 

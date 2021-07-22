@@ -12,6 +12,8 @@ import com.example.opensorcerer.ui.main.projects.FavoritesFragmentLinear;
  */
 public class FavoritesPagerAdapter extends FragmentStateAdapter {
 
+    private static final int PAGE_COUNT = 2;
+
     public FavoritesPagerAdapter(Fragment fragment) {
         super(fragment);
     }
@@ -30,6 +32,6 @@ public class FavoritesPagerAdapter extends FragmentStateAdapter {
     /**Getter for amount of pages in pager view*/
     @Override
     public int getItemCount() {
-        return 2;
+        return PAGE_COUNT;
     }
 }

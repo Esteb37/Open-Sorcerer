@@ -41,7 +41,7 @@ public class FavoritesFragmentLinear extends Fragment {
     private static final int QUERY_LIMIT = 5;
 
     /**Binder object for ViewBinding*/
-    private FragmentFavoritesLinearBinding app;
+    private FragmentFavoritesLinearBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -80,8 +80,8 @@ public class FavoritesFragmentLinear extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentFavoritesLinearBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentFavoritesLinearBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     /**
@@ -125,15 +125,15 @@ public class FavoritesFragmentLinear extends Fragment {
 
         //Set the adapter
         mAdapter = new ProjectsCardAdapter(mProjects,mContext,clickListener,doubleTapListener);
-        app.recyclerViewFavorites.setAdapter(mAdapter);
+        mApp.recyclerViewFavorites.setAdapter(mAdapter);
 
         //Set snap helper
         mSnapHelper = new PagerSnapHelper();
-        mSnapHelper.attachToRecyclerView(app.recyclerViewFavorites);
+        mSnapHelper.attachToRecyclerView(mApp.recyclerViewFavorites);
 
         //Set the layout manager
         mLayoutManager = new LinearLayoutManager(mContext);
-        app.recyclerViewFavorites.setLayoutManager(mLayoutManager);
+        mApp.recyclerViewFavorites.setLayoutManager(mLayoutManager);
 
         //Setup endless scrolling
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
@@ -143,7 +143,7 @@ public class FavoritesFragmentLinear extends Fragment {
             }
         };
         // Adds the scroll listener to RecyclerView
-        app.recyclerViewFavorites.addOnScrollListener(scrollListener);
+        mApp.recyclerViewFavorites.addOnScrollListener(scrollListener);
     }
 
     /**
@@ -151,7 +151,7 @@ public class FavoritesFragmentLinear extends Fragment {
      */
     public void queryProjects(int page){
 
-        app.progressBar.setVisibility(View.VISIBLE);
+        mApp.progressBar.setVisibility(View.VISIBLE);
         List<String> favorites = mUser.getFavorites();
         if(favorites!=null) {
 
@@ -170,16 +170,16 @@ public class FavoritesFragmentLinear extends Fragment {
                     if(projects.size()>0){
                         mAdapter.addAll(projects);
                     } else {
-                        app.textViewNoProjects.setVisibility(View.VISIBLE);
+                        mApp.textViewNoProjects.setVisibility(View.VISIBLE);
                     }
 
-                    app.progressBar.setVisibility(View.GONE);
+                    mApp.progressBar.setVisibility(View.GONE);
                 } else {
                     Log.d(TAG, "Unable to load projects.");
                 }
             });
         } else {
-            app.progressBar.setVisibility(View.GONE);
+            mApp.progressBar.setVisibility(View.GONE);
         }
     }
 }

@@ -43,7 +43,7 @@ public class SignupDetailsFragment extends Fragment {
     private static final String TAG = "SignupDetailsFragment";
 
     /**Binder for View Binding*/
-    private FragmentSignupDetailsBinding app;
+    private FragmentSignupDetailsBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -59,8 +59,8 @@ public class SignupDetailsFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentSignupDetailsBinding.inflate(inflater, container, false);
-        return app.getRoot();
+        mApp = FragmentSignupDetailsBinding.inflate(inflater, container, false);
+        return mApp.getRoot();
 
     }
 
@@ -87,12 +87,12 @@ public class SignupDetailsFragment extends Fragment {
      */
     private void setupButtonListeners() {
 
-        app.buttonNext.setOnClickListener(v -> {
+        mApp.buttonNext.setOnClickListener(v -> {
 
             //Set the imputed text into the user's details
-            mNewUser.setBio(Objects.requireNonNull(app.editTextBio.getText()).toString());
-            mNewUser.setExperience(Objects.requireNonNull(app.editTextExperience.getText()).toString());
-            mNewUser.setName(Objects.requireNonNull(app.editTextName.getText()).toString());
+            mNewUser.setBio(Objects.requireNonNull(mApp.editTextBio.getText()).toString());
+            mNewUser.setExperience(Objects.requireNonNull(mApp.editTextExperience.getText()).toString());
+            mNewUser.setName(Objects.requireNonNull(mApp.editTextName.getText()).toString());
 
             //Set the user's profile picture
             if(mProfilePicture!=null){
@@ -116,7 +116,7 @@ public class SignupDetailsFragment extends Fragment {
             }
         });
 
-        app.buttonSkip.setOnClickListener(v -> navigateToMain());
+        mApp.buttonSkip.setOnClickListener(v -> navigateToMain());
     }
 
     /**
@@ -125,29 +125,29 @@ public class SignupDetailsFragment extends Fragment {
     private void setupEditText(){
 
         //Set default tags
-        app.editTextBio.setHint("Tell everyone about yourself!");
-        app.editTextExperience.setHint("Tell us about your projects!");
-        app.editTextName.setHint("What's your name?");
+        mApp.editTextBio.setHint("Tell everyone about yourself!");
+        mApp.editTextExperience.setHint("Tell us about your projects!");
+        mApp.editTextName.setHint("What's your name?");
 
-        app.editTextBio.setOnFocusChangeListener((v, hasFocus) -> {
+        mApp.editTextBio.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus)
-                app.editTextBio.setHint("");
+                mApp.editTextBio.setHint("");
             else
-                app.editTextBio.setHint("Tell everyone about yourself!");
+                mApp.editTextBio.setHint("Tell everyone about yourself!");
         });
 
-        app.editTextExperience.setOnFocusChangeListener((v, hasFocus) -> {
+        mApp.editTextExperience.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus)
-                app.editTextExperience.setHint("");
+                mApp.editTextExperience.setHint("");
             else
-                app.editTextExperience.setHint("Tell us about your projects!");
+                mApp.editTextExperience.setHint("Tell us about your projects!");
         });
 
-        app.editTextName.setOnFocusChangeListener((v, hasFocus) -> {
+        mApp.editTextName.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus)
-                app.editTextName.setHint("");
+                mApp.editTextName.setHint("");
             else
-                app.editTextName.setHint("What's your name?");
+                mApp.editTextName.setHint("What's your name?");
         });
     }
 
@@ -155,7 +155,7 @@ public class SignupDetailsFragment extends Fragment {
      * Sets up a listener for clicking on the profile picture
      */
     private void setupProfilePictureListener(){
-        app.constraintLayoutPicture.setOnClickListener(v ->{
+        mApp.constraintLayoutPicture.setOnClickListener(v ->{
 
             Intent chooserIntent = Tools.createChooserIntent();
 
@@ -183,7 +183,7 @@ public class SignupDetailsFragment extends Fragment {
                             //Load the profile picture into the placeholder
                             Glide.with(mContext)
                                     .load(mProfilePicture)
-                                    .into(app.imageViewProfilePicture);
+                                    .into(mApp.imageViewProfilePicture);
 
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
@@ -218,6 +218,6 @@ public class SignupDetailsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        app = null;
+        mApp = null;
     }
 }

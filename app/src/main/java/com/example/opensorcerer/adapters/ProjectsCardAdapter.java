@@ -23,7 +23,7 @@ import java.util.List;
 public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>{
 
     /**Binder object for ViewBinding*/
-    private ItemCardProjectBinding app;
+    private ItemCardProjectBinding mApp;
 
     /**The adapter's current context*/
     private final Context mContext;
@@ -70,9 +70,9 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
     @NotNull
     @Override
     public ProjectCardHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        app = ItemCardProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        View view = app.getRoot();
-        return new ProjectCardHolder(view,mContext,app,mClickListener,mDoubleTapListener);
+        mApp = ItemCardProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        View view = mApp.getRoot();
+        return new ProjectCardHolder(view,mContext,mApp,mClickListener,mDoubleTapListener);
     }
 
     /**

@@ -42,7 +42,7 @@ public class HomeFragment extends Fragment {
     private static final int QUERY_LIMIT = 5;
 
     /**Binder object for ViewBinding*/
-    private FragmentHomeBinding app;
+    private FragmentHomeBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -78,8 +78,8 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentHomeBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentHomeBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     /**
@@ -126,15 +126,15 @@ public class HomeFragment extends Fragment {
 
         //Set adapter
         mAdapter = new ProjectsCardAdapter(mProjects,mContext, clickListener,doubleTapListener);
-        app.recyclerViewProjects.setAdapter(mAdapter);
+        mApp.recyclerViewProjects.setAdapter(mAdapter);
 
         //Set snap helper
         mSnapHelper = new PagerSnapHelper();
-        mSnapHelper.attachToRecyclerView(app.recyclerViewProjects);
+        mSnapHelper.attachToRecyclerView(mApp.recyclerViewProjects);
 
         //Set layout manager
         mLayoutManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
-        app.recyclerViewProjects.setLayoutManager(mLayoutManager);
+        mApp.recyclerViewProjects.setLayoutManager(mLayoutManager);
 
         //Sets up the endless scroller listener
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
@@ -145,7 +145,7 @@ public class HomeFragment extends Fragment {
         };
 
         // Adds the scroll listener to RecyclerView
-        app.recyclerViewProjects.addOnScrollListener(scrollListener);
+        mApp.recyclerViewProjects.addOnScrollListener(scrollListener);
     }
 
 
@@ -167,7 +167,7 @@ public class HomeFragment extends Fragment {
                 if(projects.size()>0){
                     mAdapter.addAll(projects);
                 }
-                app.progressBar.setVisibility(View.GONE);
+                mApp.progressBar.setVisibility(View.GONE);
             } else {
                 Log.d(TAG,"Unable to load projects.");
             }
@@ -178,9 +178,9 @@ public class HomeFragment extends Fragment {
      * Sets up the swipe down to refresh interaction
      */
     private void setupSwipeRefresh() {
-        app.swipeContainer.setOnRefreshListener(() -> queryProjects(0));
+        mApp.swipeContainer.setOnRefreshListener(() -> queryProjects(0));
 
-        app.swipeContainer.setColorSchemeResources(R.color.darker_blue,
+        mApp.swipeContainer.setColorSchemeResources(R.color.darker_blue,
                 R.color.dark_blue,
                 R.color.light_blue,
                 android.R.color.holo_red_light);

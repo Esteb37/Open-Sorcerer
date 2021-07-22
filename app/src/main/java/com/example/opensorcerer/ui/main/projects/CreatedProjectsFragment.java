@@ -33,7 +33,7 @@ public class CreatedProjectsFragment extends Fragment {
     private static final String TAG = "MyProjectsFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentCreatedProjectsBinding app;
+    private FragmentCreatedProjectsBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -65,8 +65,8 @@ public class CreatedProjectsFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        app = FragmentCreatedProjectsBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentCreatedProjectsBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     @Override
@@ -97,8 +97,8 @@ public class CreatedProjectsFragment extends Fragment {
     private void setupRecyclerView() {
         mProjects = new ArrayList<>();
         mAdapter = new ProjectsGridAdapter(mProjects,mContext);
-        app.recyclerViewProjects.setAdapter(mAdapter);
-        app.recyclerViewProjects.setLayoutManager(new GridLayoutManager(mContext,2));
+        mApp.recyclerViewProjects.setAdapter(mAdapter);
+        mApp.recyclerViewProjects.setLayoutManager(new GridLayoutManager(mContext,2));
     }
 
 
@@ -113,9 +113,9 @@ public class CreatedProjectsFragment extends Fragment {
                 if(projects.size()>0){
                     mAdapter.addAll(projects);
                 } else {
-                    app.textViewNoProjects.setVisibility(View.VISIBLE);
+                    mApp.textViewNoProjects.setVisibility(View.VISIBLE);
                 }
-                app.progressBar.setVisibility(View.GONE);
+                mApp.progressBar.setVisibility(View.GONE);
             } else {
                 Log.d(TAG,"Unable to load projects.");
             }

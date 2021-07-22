@@ -31,7 +31,7 @@ public class ProjectsFragment extends Fragment {
     private static final String TAG = "ProjectsFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentProjectsBinding app;
+    private FragmentProjectsBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -61,8 +61,8 @@ public class ProjectsFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentProjectsBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentProjectsBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     /**
@@ -95,10 +95,10 @@ public class ProjectsFragment extends Fragment {
 
         //Set the adapter
         mPagerAdapter = new ProjectsPagerAdapter(this);
-        app.viewPager.setAdapter(mPagerAdapter);
+        mApp.viewPager.setAdapter(mPagerAdapter);
 
         //Set the tab icons
-        new TabLayoutMediator(app.tabLayout, app.viewPager,
+        new TabLayoutMediator(mApp.tabLayout, mApp.viewPager,
                 (tab, position) -> {tab.setIcon(position == 0
                         ? R.drawable.ic_dashboard_black_24dp
                         : R.drawable.ufi_heart_active);
@@ -112,7 +112,7 @@ public class ProjectsFragment extends Fragment {
 
    /* public void setSearchListener(){
         //Set listener for searchbar input
-        app.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mApp.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -140,7 +140,7 @@ public class ProjectsFragment extends Fragment {
             if(e==null){
                 mAdapter.clear();
                 mAdapter.addAll(projects);
-                app.progressBar.setVisibility(View.GONE);
+                mApp.progressBar.setVisibility(View.GONE);
             } else {
                 Log.d(TAG,"Unable to load projects.");
             }

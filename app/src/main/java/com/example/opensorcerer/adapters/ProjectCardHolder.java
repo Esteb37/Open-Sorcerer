@@ -37,7 +37,10 @@ import java.util.List;
 public class ProjectCardHolder extends RecyclerView.ViewHolder{
 
     /**Binder object for ViewBinding*/
-    private final ItemCardProjectBinding app;
+    private final ItemCardProjectBinding mApp;
+
+    /**The duration for the like animations*/
+    private final int LIKE_ANIMATION_DURATION = 500;
 
     /**The Holder's context*/
     private final Context mContext;
@@ -54,7 +57,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
     public ProjectCardHolder(View view, Context context, ItemCardProjectBinding binder, ProjectsCardAdapter.OnClickListener clickListener, ProjectsCardAdapter.OnDoubleTapListener doubleTapListener) {
         super(view);
 
-        app = binder;
+        mApp = binder;
 
         mContext = context;
 
@@ -99,13 +102,13 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
         mProject = project;
         
         //Set text details
-        app.textViewTitle.setText(mProject.getTitle());
-        app.textViewDescription.setText(mProject.getDescription());
-        app.textViewTitle.setMaxLines(mProject.getTitle().split(" ").length);
+        mApp.textViewTitle.setText(mProject.getTitle());
+        mApp.textViewDescription.setText(mProject.getDescription());
+        mApp.textViewTitle.setMaxLines(mProject.getTitle().split(" ").length);
         
 
         //Show the first three tags
-        TextView[] tagViews = {app.textViewTag1,app.textViewTag2,app.textViewTag3};
+        TextView[] tagViews = {mApp.textViewTag1,mApp.textViewTag2,mApp.textViewTag3};
         List<String> tags = mProject.getTags();
         for(int i = 0;i<3;i++){
             try {
@@ -116,7 +119,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
         }
 
         //Show the first three languages
-        TextView[] languageViews = {app.textViewLanguage1,app.textViewLanguage2,app.textViewLanguage3};
+        TextView[] languageViews = {mApp.textViewLanguage1,mApp.textViewLanguage2,mApp.textViewLanguage3};
         List<String> languages = mProject.getLanguages();
         for(int i = 0;i<3;i++){
             try {
@@ -132,19 +135,19 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
             Glide.with(mContext)
                     .load(image.getUrl())
                     .transform(new RoundedCorners(1000))
-                    .into(app.imageViewLogo);
+                    .into(mApp.imageViewLogo);
         }
 
         User manager;
         try {
             manager = mProject.getManager().fetchIfNeeded();
             assert manager != null;
-            app.textViewAuthor.setText(manager.getUsername());
+            mApp.textViewAuthor.setText(manager.getUsername());
             ParseFile profilePicture = manager.getProfilePicture();
             if(image != null) {
                 Glide.with(mContext)
                         .load(profilePicture.getUrl())
-                        .into(app.imageViewProfilePicture);
+                        .into(mApp.imageViewProfilePicture);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -162,8 +165,8 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
         assert unwrappedDrawable != null;
         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
         DrawableCompat.setTint(wrappedDrawable, mProject.isLikedByUser(mUser) ? Color.RED : ContextCompat.getColor(mContext,R.color.darker_blue));
-        app.buttonLike.setImageDrawable(wrappedDrawable);
-        app.buttonLikeAnimator.setImageDrawable(wrappedDrawable);
+        mApp.buttonLike.setImageDrawable(wrappedDrawable);
+        mApp.buttonLikeAnimator.setImageDrawable(wrappedDrawable);
     }
 
     /**
@@ -172,13 +175,13 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
     private void showLikeAnimation(float posX, float posY) {
 
         //Setup the animated icon
-        app.buttonLikeAnimator.clearAnimation();
-        app.buttonLikeAnimator.setVisibility(View.VISIBLE);
+        mApp.buttonLikeAnimator.clearAnimation();
+        mApp.buttonLikeAnimator.setVisibility(View.VISIBLE);
 
         //Set the fade animation
         Animation fadeOut = new AlphaAnimation(1, 0);
         fadeOut.setInterpolator(new DecelerateInterpolator()); //and this
-        fadeOut.setDuration(500);
+        fadeOut.setDuration(LIKE_ANIMATION_DURATION);
 
         //Set the scale animation
         Animation growOut= new ScaleAnimation(
@@ -187,7 +190,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
                 Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
                 Animation.RELATIVE_TO_SELF, 0.5f); // Pivot point of Y scaling
         growOut.setFillAfter(true); // Needed to keep the result of the animation
-        growOut.setDuration(500);
+        growOut.setDuration(LIKE_ANIMATION_DURATION);
 
         //Combine the scale and fade animations
         AnimationSet animation = new AnimationSet(false); //change to false
@@ -195,7 +198,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
         animation.addAnimation(growOut);
 
         //Set the animation on the animated icon
-        app.buttonLikeAnimator.setAnimation(animation);
+        mApp.buttonLikeAnimator.setAnimation(animation);
 
         //Listen for the icon's animation end
         animation.setAnimationListener(new Animation.AnimationListener(){
@@ -206,7 +209,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
 
             @Override
             public void onAnimationEnd(Animation arg0) {
-                app.buttonLikeAnimator.setVisibility(View.INVISIBLE);
+                mApp.buttonLikeAnimator.setVisibility(View.INVISIBLE);
             }
 
             @Override

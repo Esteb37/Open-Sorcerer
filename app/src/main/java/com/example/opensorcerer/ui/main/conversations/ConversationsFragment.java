@@ -27,7 +27,7 @@ public class ConversationsFragment extends Fragment {
     private static final String TAG = "ConversationsFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentConversationsBinding app;
+    private FragmentConversationsBinding mApp;
 
     /**Fragment's context*/
     private Context mContext;
@@ -50,8 +50,8 @@ public class ConversationsFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentConversationsBinding.inflate(inflater,container,false);
-        return app.getRoot();
+        mApp = FragmentConversationsBinding.inflate(inflater,container,false);
+        return mApp.getRoot();
     }
 
     @Override
