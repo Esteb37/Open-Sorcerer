@@ -42,31 +42,46 @@ import java.util.List;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class CreateProjectTagsFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "CreateProjectTagsFragment";
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding
+     */
     private FragmentCreateTagsBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Current logged in user*/
+    /**
+     * Current logged in user
+     */
     private User mUser;
 
-    /**GitHub API handler*/
+    /**
+     * GitHub API handler
+     */
     private GitHub mGitHub;
 
-    /**The created project's repo object*/
+    /**
+     * The created project's repo object
+     */
     private GHRepository mRepo;
 
-    /**The newly created project*/
+    /**
+     * The newly created project
+     */
     private Project mNewProject;
+    private int spannedLengthLanguages = 0;
+    private int spannedLengthTags = 0;
 
     public CreateProjectTagsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +93,7 @@ public class CreateProjectTagsFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mApp = FragmentCreateTagsBinding.inflate(inflater,container,false);
+        mApp = FragmentCreateTagsBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -141,7 +156,7 @@ public class CreateProjectTagsFragment extends Fragment {
     /**
      * Sets up the text input to behave like a chip group
      */
-    private void setupChipInput(AppCompatMultiAutoCompleteTextView chipInput, List<String> recommendationItems){
+    private void setupChipInput(AppCompatMultiAutoCompleteTextView chipInput, List<String> recommendationItems) {
 
         //Set the adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
@@ -166,10 +181,10 @@ public class CreateProjectTagsFragment extends Fragment {
     /**
      * Sets up the navigation button listeners
      */
-    public void setupButtonListeners(){
-       mApp.buttonBack.setOnClickListener(v -> navigateBackward());
+    public void setupButtonListeners() {
+        mApp.buttonBack.setOnClickListener(v -> navigateBackward());
 
-       mApp.buttonFinish.setOnClickListener(v -> saveProject());
+        mApp.buttonFinish.setOnClickListener(v -> saveProject());
     }
 
     /**
@@ -184,7 +199,7 @@ public class CreateProjectTagsFragment extends Fragment {
 
         //Save the project
         mNewProject.saveInBackground(e -> {
-            if(e==null){
+            if (e == null) {
                 //Go back to the projects fragment
                 navigateToHome();
             } else {
@@ -193,9 +208,6 @@ public class CreateProjectTagsFragment extends Fragment {
             }
         });
     }
-
-    private int spannedLengthLanguages = 0;
-    private int spannedLengthTags = 0;
 
     /**
      * Creates a new chip from the last imputed word and adds it to the group
@@ -206,12 +218,12 @@ public class CreateProjectTagsFragment extends Fragment {
         int spannedLength = chipInput == mApp.chipInputLanguages ? spannedLengthLanguages : spannedLengthTags;
 
         //Add a new chip to the input
-        Editable editable = Tools.addChip(mContext,chipInput.getEditableText(),spannedLength);
+        Editable editable = Tools.addChip(mContext, chipInput.getEditableText(), spannedLength);
 
         Log.d("Test", String.valueOf(spannedLength));
 
         //Update the current length of the selected input
-        if(chipInput == mApp.chipInputLanguages){
+        if (chipInput == mApp.chipInputLanguages) {
             spannedLengthLanguages = editable.length();
         } else {
             spannedLengthTags = editable.length();
@@ -223,11 +235,11 @@ public class CreateProjectTagsFragment extends Fragment {
      */
     public void loadChips(AppCompatMultiAutoCompleteTextView chipInput, List<String> list) {
         String listText = "";
-        if(list!=null){
-            for(String item:list){
-                listText+=item+",";
+        if (list != null) {
+            for (String item : list) {
+                listText += item + ",";
                 chipInput.setText(listText);
-                Tools.addChip(mContext,item,chipInput);
+                Tools.addChip(mContext, item, chipInput);
             }
         }
     }
@@ -248,7 +260,7 @@ public class CreateProjectTagsFragment extends Fragment {
         final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         Fragment fragment = new CreateProjectDetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("project",Parcels.wrap(mNewProject));
+        bundle.putParcelable("project", Parcels.wrap(mNewProject));
         fragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
     }

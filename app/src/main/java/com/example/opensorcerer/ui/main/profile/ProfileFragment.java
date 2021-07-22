@@ -29,30 +29,20 @@ import org.kohsuke.github.GitHub;
 public class ProfileFragment extends androidx.fragment.app.Fragment {
 
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "ProfileFragment";
 
-    /**Binder object for ViewBinding*/
-    private FragmentProfileBinding mApp;
-
-    /**Fragment's context*/
-    private Context mContext;
-
-    /**Current logged in user*/
-    private User mUser;
-
-    /**GitHub API handler*/
-    private GitHub mGitHub;
-
-    /**Fragment pager adapter*/
+    /**
+     * Fragment pager adapter
+     */
     FavoritesPagerAdapter mPagerAdapter;
 
-    /**Fragment for the profile details*/
-    private Fragment profileContentFragment = null;
-
-    /**Fragment for the menu drawer*/
-    private Fragment profileDrawerFragment = null;
-
+    /**
+     * Binder object for ViewBinding
+     */
+    private FragmentProfileBinding mApp;
 
     /**
      * Listener for the profile menu's interaction to open and close the drawer
@@ -70,6 +60,31 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
         }
     };
 
+    /**
+     * Fragment's context
+     */
+    private Context mContext;
+
+    /**
+     * Current logged in user
+     */
+    private User mUser;
+
+    /**
+     * GitHub API handler
+     */
+    private GitHub mGitHub;
+
+    /**
+     * Fragment for the profile details
+     */
+    private Fragment profileContentFragment = null;
+
+    /**
+     * Fragment for the menu drawer
+     */
+    private Fragment profileDrawerFragment = null;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -80,7 +95,7 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mApp = FragmentProfileBinding.inflate(inflater,container,false);
+        mApp = FragmentProfileBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -112,7 +127,7 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     /**
      * Sets up the profile's details content fragment
      */
-    private void setupProfileContent(){
+    private void setupProfileContent() {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         profileContentFragment = new ProfileContentFragment(mDrawerListener);
         FragmentTransaction transaction = fragmentManager.beginTransaction();

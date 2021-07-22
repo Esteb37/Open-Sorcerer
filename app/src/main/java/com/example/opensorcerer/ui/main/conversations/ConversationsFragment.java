@@ -23,19 +23,29 @@ import org.kohsuke.github.GitHub;
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class ConversationsFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "ConversationsFragment";
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding
+     */
     private FragmentConversationsBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Current logged in user*/
+    /**
+     * Current logged in user
+     */
     private User mUser;
 
-    /**GitHub API handler*/
+    /**
+     * GitHub API handler
+     */
     private GitHub mGitHub;
 
     public ConversationsFragment() {
@@ -50,7 +60,7 @@ public class ConversationsFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mApp = FragmentConversationsBinding.inflate(inflater,container,false);
+        mApp = FragmentConversationsBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 

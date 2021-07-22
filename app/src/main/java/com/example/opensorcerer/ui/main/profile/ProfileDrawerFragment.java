@@ -20,7 +20,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ProfileDrawerFragment extends androidx.fragment.app.Fragment {
 
-    /**Binder for view binding*/
+    /**
+     * Binder for view binding
+     */
     private FragmentRightDrawerBinding mApp;
 
     /**
@@ -29,7 +31,7 @@ public class ProfileDrawerFragment extends androidx.fragment.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mApp = FragmentRightDrawerBinding.inflate(inflater,container,false);
+        mApp = FragmentRightDrawerBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -40,13 +42,13 @@ public class ProfileDrawerFragment extends androidx.fragment.app.Fragment {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mApp.logoutLayout.setOnClickListener(v->
+        mApp.logoutLayout.setOnClickListener(v ->
 
                 //Logout and return to login
                 ParseUser.logOutInBackground(e -> {
                     Intent i = new Intent(getContext(), LoginActivity.class);
                     startActivity(i);
                     requireActivity().finish();
-        }));
+                }));
     }
 }

@@ -15,12 +15,16 @@ import com.parse.ParseFile;
  * ViewHolder class for Projects in Grid format
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class ProjectGridHolder extends RecyclerView.ViewHolder{
+public class ProjectGridHolder extends RecyclerView.ViewHolder {
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding
+     */
     private final ItemGridProjectBinding mApp;
 
-    /**The Holder's context*/
+    /**
+     * The Holder's context
+     */
     private final Context mContext;
 
     public ProjectGridHolder(View view, Context context, ItemGridProjectBinding binder) {
@@ -31,6 +35,7 @@ public class ProjectGridHolder extends RecyclerView.ViewHolder{
 
     /**
      * Populates the view's items with the project's information
+     *
      * @param project The project to display
      */
     public void bind(Project project) {
@@ -44,7 +49,7 @@ public class ProjectGridHolder extends RecyclerView.ViewHolder{
 
         //Load the project's image
         ParseFile image = project.getLogoImage();
-        if(image != null){
+        if (image != null) {
             Glide.with(mContext)
                     .load(image.getUrl())
                     .centerInside()

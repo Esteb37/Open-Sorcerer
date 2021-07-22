@@ -34,36 +34,55 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class FavoritesFragmentLinear extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "FavoritesFragmentLinear";
 
-    /**Amount of items to query per call*/
+    /**
+     * Amount of items to query per call
+     */
     private static final int QUERY_LIMIT = 5;
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding
+     */
     private FragmentFavoritesLinearBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Current logged in user*/
+    /**
+     * Current logged in user
+     */
     private User mUser;
 
-    /**GitHub API handler*/
+    /**
+     * GitHub API handler
+     */
     private GitHub mGitHub;
 
-    /**Adapter for the RecyclerView*/
+    /**
+     * Adapter for the RecyclerView
+     */
     private ProjectsCardAdapter mAdapter;
 
-    /**Layout manager for the RecyclerView*/
+    /**
+     * Layout manager for the RecyclerView
+     */
     private LinearLayoutManager mLayoutManager;
 
-    /**The user's created project list to display*/
+    /**
+     * The user's created project list to display
+     */
     private List<Project> mProjects;
 
-    /**Snap helper for the recyclerview*/
+    /**
+     * Snap helper for the recyclerview
+     */
     private PagerSnapHelper mSnapHelper;
-
 
     public FavoritesFragmentLinear() {
         // Required empty public constructor
@@ -80,7 +99,7 @@ public class FavoritesFragmentLinear extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mApp = FragmentFavoritesLinearBinding.inflate(inflater,container,false);
+        mApp = FragmentFavoritesLinearBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -124,7 +143,7 @@ public class FavoritesFragmentLinear extends Fragment {
                 mUser.toggleLike(mProjects.get(position));
 
         //Set the adapter
-        mAdapter = new ProjectsCardAdapter(mProjects,mContext,clickListener,doubleTapListener);
+        mAdapter = new ProjectsCardAdapter(mProjects, mContext, clickListener, doubleTapListener);
         mApp.recyclerViewFavorites.setAdapter(mAdapter);
 
         //Set snap helper
@@ -149,11 +168,11 @@ public class FavoritesFragmentLinear extends Fragment {
     /**
      * Gets the list of projects liked by the user
      */
-    public void queryProjects(int page){
+    public void queryProjects(int page) {
 
         mApp.progressBar.setVisibility(View.VISIBLE);
         List<String> favorites = mUser.getFavorites();
-        if(favorites!=null) {
+        if (favorites != null) {
 
             //Get a query from the user's favorites
             ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContainedIn("objectId", favorites);
@@ -161,13 +180,13 @@ public class FavoritesFragmentLinear extends Fragment {
 
             //Setup pagination
             query.setLimit(QUERY_LIMIT);
-            query.setSkip(QUERY_LIMIT*page);
+            query.setSkip(QUERY_LIMIT * page);
 
             //Get the liked projects
             query.findInBackground((projects, e) -> {
                 if (e == null) {
 
-                    if(projects.size()>0){
+                    if (projects.size() > 0) {
                         mAdapter.addAll(projects);
                     } else {
                         mApp.textViewNoProjects.setVisibility(View.VISIBLE);

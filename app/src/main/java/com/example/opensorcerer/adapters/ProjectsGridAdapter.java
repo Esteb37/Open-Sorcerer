@@ -22,11 +22,6 @@ import java.util.List;
 public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder> {
 
     /**
-     * Binder object for ViewBinding
-     */
-    private ItemGridProjectBinding mApp;
-
-    /**
      * The adapter's current context
      */
     private final Context mContext;
@@ -35,6 +30,11 @@ public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder>
      * The list of projects to display
      */
     private final List<Project> mProjects;
+
+    /**
+     * Binder object for ViewBinding
+     */
+    private ItemGridProjectBinding mApp;
 
     /**
      * The ViewHolder for the project items
@@ -68,7 +68,9 @@ public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder>
         holder.bind(mProjects.get(position));
     }
 
-    /**Project list item count getter*/
+    /**
+     * Project list item count getter
+     */
     @Override
     public int getItemCount() {
         return mProjects.size();
@@ -84,6 +86,7 @@ public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder>
 
     /**
      * Adds a list of projects to the adapter
+     *
      * @param list A list of projects
      */
     public void addAll(List<Project> list) {

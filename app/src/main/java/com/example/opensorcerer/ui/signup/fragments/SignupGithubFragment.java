@@ -23,16 +23,24 @@ import java.util.Objects;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupGithubFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "SignupGithubFragment";
 
-    /**Binder for ViewBinding*/
+    /**
+     * Binder for ViewBinding
+     */
     private FragmentSignupGithubBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Newly created user for signup*/
+    /**
+     * Newly created user for signup
+     */
     private User mNewUser;
 
     /**
@@ -74,10 +82,9 @@ public class SignupGithubFragment extends Fragment {
 
             //Sign the user up into the database
             mNewUser.getHandler().signUpInBackground(e -> {
-                if(e==null){
+                if (e == null) {
                     navigateForward();
-                }
-                else{
+                } else {
                     e.printStackTrace();
                 }
             });

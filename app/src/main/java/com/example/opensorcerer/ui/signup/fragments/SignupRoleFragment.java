@@ -23,17 +23,25 @@ import org.jetbrains.annotations.NotNull;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupRoleFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "SignupRoleFragment";
 
-    /**Binder for ViewBinding*/
+    /**
+     * Newly created user for signup
+     */
+    User mNewUser;
+
+    /**
+     * Binder for ViewBinding
+     */
     private FragmentSignupRoleBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
-
-    /**Newly created user for signup*/
-    User mNewUser;
 
     /**
      * Inflates the fragment

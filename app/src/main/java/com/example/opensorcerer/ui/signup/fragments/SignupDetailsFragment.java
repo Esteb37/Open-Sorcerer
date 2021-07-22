@@ -39,20 +39,57 @@ import java.util.Objects;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupDetailsFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "SignupDetailsFragment";
 
-    /**Binder for View Binding*/
+    /**
+     * Binder for View Binding
+     */
     private FragmentSignupDetailsBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Newly created user for signup*/
+    /**
+     * Newly created user for signup
+     */
     private User mNewUser;
 
-    /**User's selected profile picture*/
+    /**
+     * User's selected profile picture
+     */
     private Bitmap mProfilePicture;
+    /**
+     * Activity launcher for choosing a picture from the user's files
+     */
+    ActivityResultLauncher<Intent> chooseProfilePictureActivityLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        try {
+                            //Get the selected profile picture from the data stream
+                            assert data != null;
+                            InputStream inputStream = mContext.getContentResolver().openInputStream(data.getData());
+                            mProfilePicture = BitmapFactory.decodeStream(inputStream);
+
+                            //Load the profile picture into the placeholder
+                            Glide.with(mContext)
+                                    .load(mProfilePicture)
+                                    .into(mApp.imageViewProfilePicture);
+
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
 
     /**
      * Inflates the fragment's layout
@@ -95,16 +132,16 @@ public class SignupDetailsFragment extends Fragment {
             mNewUser.setName(Objects.requireNonNull(mApp.editTextName.getText()).toString());
 
             //Set the user's profile picture
-            if(mProfilePicture!=null){
+            if (mProfilePicture != null) {
 
                 //Transform the selected profile picture bitmap into a ParseFile
-                ParseFile profilePicture  = Tools.bitmapToParseFile(mProfilePicture);
+                ParseFile profilePicture = Tools.bitmapToParseFile(mProfilePicture);
 
                 //Save the profile picture into the database
                 profilePicture.saveInBackground((SaveCallback) fe -> {
 
                     //If the image was saved correctly
-                    if(fe==null){
+                    if (fe == null) {
 
                         //Set the image as the user's profile picture
                         mNewUser.setProfilePicture(profilePicture);
@@ -122,7 +159,7 @@ public class SignupDetailsFragment extends Fragment {
     /**
      * Hides the input text layout hints on focus
      */
-    private void setupEditText(){
+    private void setupEditText() {
 
         //Set default tags
         mApp.editTextBio.setHint("Tell everyone about yourself!");
@@ -154,8 +191,8 @@ public class SignupDetailsFragment extends Fragment {
     /**
      * Sets up a listener for clicking on the profile picture
      */
-    private void setupProfilePictureListener(){
-        mApp.constraintLayoutPicture.setOnClickListener(v ->{
+    private void setupProfilePictureListener() {
+        mApp.constraintLayoutPicture.setOnClickListener(v -> {
 
             Intent chooserIntent = Tools.createChooserIntent();
 
@@ -165,38 +202,10 @@ public class SignupDetailsFragment extends Fragment {
     }
 
     /**
-     * Activity launcher for choosing a picture from the user's files
-     */
-    ActivityResultLauncher<Intent> chooseProfilePictureActivityLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        try {
-                            //Get the selected profile picture from the data stream
-                            assert data != null;
-                            InputStream inputStream = mContext.getContentResolver().openInputStream(data.getData());
-                            mProfilePicture = BitmapFactory.decodeStream(inputStream);
-
-                            //Load the profile picture into the placeholder
-                            Glide.with(mContext)
-                                    .load(mProfilePicture)
-                                    .into(mApp.imageViewProfilePicture);
-
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-
-    /**
      * Navigates to the home activity
      */
     private void navigateToMain() {
-        Intent i =  new Intent(mContext, MainActivity.class);
+        Intent i = new Intent(mContext, MainActivity.class);
 
         //Navigate to the selected home activity
         startActivity(i);

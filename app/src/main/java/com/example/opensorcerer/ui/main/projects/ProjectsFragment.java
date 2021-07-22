@@ -27,23 +27,35 @@ import org.kohsuke.github.GitHub;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ProjectsFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "ProjectsFragment";
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Fragment pager adapter
+     */
+    ProjectsPagerAdapter mPagerAdapter;
+
+    /**
+     * Binder object for ViewBinding
+     */
     private FragmentProjectsBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Current logged in user*/
+    /**
+     * Current logged in user
+     */
     private User mUser;
 
-    /**GitHub API handler*/
+    /**
+     * GitHub API handler
+     */
     private GitHub mGitHub;
-
-    /**Fragment pager adapter*/
-    ProjectsPagerAdapter mPagerAdapter;
 
 
     public ProjectsFragment() {
@@ -61,7 +73,7 @@ public class ProjectsFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mApp = FragmentProjectsBinding.inflate(inflater,container,false);
+        mApp = FragmentProjectsBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -99,14 +111,15 @@ public class ProjectsFragment extends Fragment {
 
         //Set the tab icons
         new TabLayoutMediator(mApp.tabLayout, mApp.viewPager,
-                (tab, position) -> {tab.setIcon(position == 0
-                        ? R.drawable.ic_dashboard_black_24dp
-                        : R.drawable.ufi_heart_active);
+                (tab, position) -> {
+                    tab.setIcon(position == 0
+                            ? R.drawable.ic_dashboard_black_24dp
+                            : R.drawable.ufi_heart_active);
 
-                tab.setText(position == 0
-                        ? "My Projects"
-                        : "Favorites");
-        }
+                    tab.setText(position == 0
+                            ? "My Projects"
+                            : "Favorites");
+                }
         ).attach();
     }
 

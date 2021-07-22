@@ -34,31 +34,49 @@ import java.util.List;
 public class FavoritesGridFragment extends Fragment {
 
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "FavoritesFragmentGrid";
 
-    /**Amount of items to query per call*/
+    /**
+     * Amount of items to query per call
+     */
     private static final int QUERY_LIMIT = 20;
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding
+     */
     private FragmentFavoritesGridBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Current logged in user*/
+    /**
+     * Current logged in user
+     */
     private User mUser;
 
-    /**GitHub API handler*/
+    /**
+     * GitHub API handler
+     */
     private GitHub mGitHub;
 
-    /**Adapter for the RecyclerView*/
+    /**
+     * Adapter for the RecyclerView
+     */
     private ProjectsGridAdapter mAdapter;
 
-    /**Layout manager for the RecyclerView*/
+    /**
+     * Layout manager for the RecyclerView
+     */
     private GridLayoutManager mLayoutManager;
 
-    /**The user's created project list to display*/
+    /**
+     * The user's created project list to display
+     */
     private List<Project> mProjects;
 
     public FavoritesGridFragment() {
@@ -76,7 +94,7 @@ public class FavoritesGridFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mApp = FragmentFavoritesGridBinding.inflate(inflater,container,false);
+        mApp = FragmentFavoritesGridBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -112,11 +130,11 @@ public class FavoritesGridFragment extends Fragment {
         mProjects = new ArrayList<>();
 
         //Set the adapter
-        mAdapter = new ProjectsGridAdapter(mProjects,mContext);
+        mAdapter = new ProjectsGridAdapter(mProjects, mContext);
         mApp.recyclerViewFavorites.setAdapter(mAdapter);
 
         //Set the layout
-        mLayoutManager = new GridLayoutManager(mContext,2);
+        mLayoutManager = new GridLayoutManager(mContext, 2);
         mApp.recyclerViewFavorites.setLayoutManager(mLayoutManager);
 
         //Setup endless scrolling
@@ -135,11 +153,11 @@ public class FavoritesGridFragment extends Fragment {
     /**
      * Gets the list of projects liked by the user
      */
-    public void queryProjects(int page){
+    public void queryProjects(int page) {
 
         mApp.progressBar.setVisibility(View.VISIBLE);
         List<String> favorites = mUser.getFavorites();
-        if(favorites!=null) {
+        if (favorites != null) {
 
             //Get a query from the user's favorites
             ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContainedIn("objectId", favorites);
@@ -147,12 +165,12 @@ public class FavoritesGridFragment extends Fragment {
 
             //Setup pagination
             query.setLimit(QUERY_LIMIT);
-            query.setSkip(QUERY_LIMIT*page);
+            query.setSkip(QUERY_LIMIT * page);
 
             //Get the liked projects
             query.findInBackground((projects, e) -> {
                 if (e == null) {
-                    if(projects.size()>0){
+                    if (projects.size() > 0) {
                         mAdapter.addAll(projects);
                     } else {
                         mApp.textViewNoProjects.setVisibility(View.VISIBLE);

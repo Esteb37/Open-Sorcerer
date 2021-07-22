@@ -23,13 +23,19 @@ import java.util.Objects;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class LoginActivity extends AppCompatActivity {
 
-    /**Tag for Logging*/
+    /**
+     * Tag for Logging
+     */
     private static final String TAG = "LoginActivity";
 
-    /**Binder for ViewBinding*/
+    /**
+     * Binder for ViewBinding
+     */
     private ActivityLoginBinding mApp;
 
-    /**Current context*/
+    /**
+     * Current context
+     */
     private Context mContext;
 
     /**
@@ -57,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
      * sends them directly to their home activity depending on their role
      */
     private void checkUserLogin() {
-        if(ParseUser.getCurrentUser()!=null){
+        if (ParseUser.getCurrentUser() != null) {
             String role = User.fromParseUser(ParseUser.getCurrentUser()).getRole();
             navigateToMain();
         }
@@ -87,16 +93,16 @@ public class LoginActivity extends AppCompatActivity {
             ParseUser.logInInBackground(username, password, (user, e) -> {
 
                 //If the login is successful
-                if(e==null){
+                if (e == null) {
 
                     //Go to their according home activity
                     String role = User.fromParseUser(ParseUser.getCurrentUser()).getRole();
                     navigateToMain();
-                } else{
-                    Log.d(TAG,"Issue with login",e);
+                } else {
+                    Log.d(TAG, "Issue with login", e);
 
                     //Notify the user that the login was unsuccessful
-                    Toast.makeText(mContext,"Username or password is incorrect.",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Username or password is incorrect.", Toast.LENGTH_SHORT).show();
                 }
             });
         });

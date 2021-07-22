@@ -25,16 +25,24 @@ import java.util.Objects;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupCredentialsFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "SignupCredentialsFragment";
 
-    /**Binder for View Binding*/
+    /**
+     * Binder for View Binding
+     */
     private FragmentSignupCredentialsBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Newly created user for signup*/
+    /**
+     * Newly created user for signup
+     */
     private User mNewUser;
 
     /**
@@ -42,7 +50,7 @@ public class SignupCredentialsFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mApp = FragmentSignupCredentialsBinding .inflate(inflater, container, false);
+        mApp = FragmentSignupCredentialsBinding.inflate(inflater, container, false);
         return mApp.getRoot();
 
     }
@@ -70,7 +78,7 @@ public class SignupCredentialsFragment extends Fragment {
         mApp.buttonNext.setOnClickListener(v -> {
 
             //Verify that the email is valid and the passwords match
-            if(passwordsMatch()){
+            if (passwordsMatch()) {
 
                 //Set the credentials into the user
                 mNewUser.setUsername(Objects.requireNonNull(mApp.editTextUsername.getText()).toString());
@@ -109,8 +117,8 @@ public class SignupCredentialsFragment extends Fragment {
     private boolean passwordsMatch() {
         String password = Objects.requireNonNull(mApp.editTextPassword.getText()).toString();
         String confirm = Objects.requireNonNull(mApp.editTextConfirm.getText()).toString();
-        if(! (password.equals(confirm))){
-            Toast.makeText(getContext(),"Passwords do not match",Toast.LENGTH_SHORT).show();
+        if (!(password.equals(confirm))) {
+            Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -124,7 +132,6 @@ public class SignupCredentialsFragment extends Fragment {
         super.onDestroyView();
         mApp = null;
     }
-
 
 
 }

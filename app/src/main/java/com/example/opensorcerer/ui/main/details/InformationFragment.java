@@ -5,6 +5,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Looper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,11 +16,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
-
-import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -43,22 +42,34 @@ import java.io.IOException;
 @SuppressWarnings("unused")
 public class InformationFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "InformationFragment";
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding
+     */
     private FragmentInformationBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Current logged in user*/
+    /**
+     * Current logged in user
+     */
     private User mUser;
 
-    /**GitHub API handler*/
+    /**
+     * GitHub API handler
+     */
     private GitHub mGitHub;
 
-    /**Project being displayed*/
+    /**
+     * Project being displayed
+     */
     private Project mProject;
 
     public InformationFragment() {
@@ -76,7 +87,7 @@ public class InformationFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mApp = FragmentInformationBinding.inflate(inflater,container,false);
+        mApp = FragmentInformationBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -113,7 +124,7 @@ public class InformationFragment extends Fragment {
      * Populates the fragment with the project's details
      */
     private void loadProjectDetails() {
-        if(mProject!=null) {
+        if (mProject != null) {
 
             //Load text details
             mApp.textViewTitle.setText(mProject.getTitle());
@@ -156,7 +167,7 @@ public class InformationFragment extends Fragment {
      * Asynchronous background task for fetching the project's readme
      * Loads the project's ReadMe file and places it into the Markdown viewer
      */
-    public void loadReadme(){
+    public void loadReadme() {
 
         new Thread(() -> {
             try {
@@ -190,7 +201,7 @@ public class InformationFragment extends Fragment {
         Drawable unwrappedDrawable = AppCompatResources.getDrawable(mContext, R.drawable.ufi_heart_active);
         assert unwrappedDrawable != null;
         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
-        DrawableCompat.setTint(wrappedDrawable, mProject.isLikedByUser(mUser) ? Color.RED : ContextCompat.getColor(mContext,R.color.darker_blue));
+        DrawableCompat.setTint(wrappedDrawable, mProject.isLikedByUser(mUser) ? Color.RED : ContextCompat.getColor(mContext, R.color.darker_blue));
         mApp.buttonLike.setImageDrawable(wrappedDrawable);
     }
 }

@@ -25,35 +25,43 @@ import org.kohsuke.github.GitHub;
  * Fragment for displaying a user's profile.
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
+public class ProfileContentFragment extends androidx.fragment.app.Fragment {
 
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "ProfileContentFragment";
 
-    /**Binder object for ViewBinding*/
-    private FragmentProfileContentBinding mApp;
+    /**
+     * Listener for the drawer
+     */
+    private final OnFragmentInteractionListener mListener;
 
-    /**Fragment's context*/
-    private Context mContext;
-
-    /**Current logged in user*/
-    private User mUser;
-
-    /**GitHub API handler*/
-    private GitHub mGitHub;
-
-    /**Fragment pager adapter*/
+    /**
+     * Fragment pager adapter
+     */
     ProjectsPagerAdapter mPagerAdapter;
 
-    /**Interface for listening to the drawer*/
-    public interface OnFragmentInteractionListener {
-        void openDrawer();
-        void closeDrawer();
-    }
+    /**
+     * Binder object for ViewBinding
+     */
+    private FragmentProfileContentBinding mApp;
 
-    /**Listener for the drawer*/
-    private final OnFragmentInteractionListener mListener;
+    /**
+     * Fragment's context
+     */
+    private Context mContext;
+
+    /**
+     * Current logged in user
+     */
+    private User mUser;
+
+    /**
+     * GitHub API handler
+     */
+    private GitHub mGitHub;
 
     /**
      * Sets up the listener for the drawer
@@ -68,7 +76,7 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mApp = FragmentProfileContentBinding.inflate(inflater,container,false);
+        mApp = FragmentProfileContentBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -99,7 +107,9 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }
 
-    /**Loads the user's information into the profile*/
+    /**
+     * Loads the user's information into the profile
+     */
     private void loadProfileDetails() {
 
         //Load text information
@@ -143,6 +153,15 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
      */
     private void setDrawerButtonListener() {
         mApp.buttonDrawer.setOnClickListener(v -> mListener.openDrawer());
+    }
+
+    /**
+     * Interface for listening to the drawer
+     */
+    public interface OnFragmentInteractionListener {
+        void openDrawer();
+
+        void closeDrawer();
     }
 
 }

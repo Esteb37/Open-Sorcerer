@@ -33,20 +33,32 @@ import java.util.List;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupTagsFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "SignupTagsFragment";
 
-    /**Binder for View Binding*/
+    /**
+     * Binder for View Binding
+     */
     private FragmentSignupTagsBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Newly created user for signup*/
+    /**
+     * Newly created user for signup
+     */
     private User mNewUser;
 
-    /**User's selected profile picture*/
+    /**
+     * User's selected profile picture
+     */
     private Bitmap mProfilePicture;
+    private int spannedLengthLanguages = 0;
+    private int spannedLengthTags = 0;
 
     /**
      * Inflates the fragment's layout
@@ -75,8 +87,6 @@ public class SignupTagsFragment extends Fragment {
 
         setupChipInput(mApp.chipInputTags, Arrays.asList(Tools.getLanguages()));
     }
-
-
 
     /**
      * Sets up the click listeners for the buttons
@@ -114,14 +124,10 @@ public class SignupTagsFragment extends Fragment {
                 .navigate(tagsToDetailsAction);
     }
 
-    private int spannedLengthLanguages = 0;
-
-    private int spannedLengthTags = 0;
-
     /**
      * Sets up the text input to behave like a chip group
      */
-    private void setupChipInput(AppCompatMultiAutoCompleteTextView chipInput, List<String> recommendationItems){
+    private void setupChipInput(AppCompatMultiAutoCompleteTextView chipInput, List<String> recommendationItems) {
 
         //Set the adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
@@ -152,10 +158,10 @@ public class SignupTagsFragment extends Fragment {
         int spannedLength = chipInput == mApp.chipInputLanguages ? spannedLengthLanguages : spannedLengthTags;
 
         //Add a new chip to the input
-        Editable editable = Tools.addChip(mContext,chipInput.getEditableText(),spannedLength);
+        Editable editable = Tools.addChip(mContext, chipInput.getEditableText(), spannedLength);
 
         //Update the current length of the selected input
-        if(chipInput == mApp.chipInputLanguages){
+        if (chipInput == mApp.chipInputLanguages) {
             spannedLengthLanguages = editable.length();
         } else {
             spannedLengthTags = editable.length();

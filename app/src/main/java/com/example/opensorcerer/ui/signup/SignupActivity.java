@@ -3,20 +3,14 @@ package com.example.opensorcerer.ui.signup;
 import android.content.Context;
 import android.os.Bundle;
 
-
-import com.example.opensorcerer.databinding.ActivitySignupBinding;
-import com.example.opensorcerer.ui.signup.fragments.SignupRoleFragment;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.opensorcerer.R;
+import com.example.opensorcerer.databinding.ActivitySignupBinding;
 import com.parse.ParseUser;
 
 /**
@@ -25,16 +19,24 @@ import com.parse.ParseUser;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupActivity extends AppCompatActivity {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "SignupActivity";
 
-    /**Binder for ViewBinding*/
+    /**
+     * Binder for ViewBinding
+     */
     private ActivitySignupBinding mApp;
 
-    /**Activity's context*/
+    /**
+     * Activity's context
+     */
     private Context mContext;
 
-    /**Configuration for the Navigation Graph*/
+    /**
+     * Configuration for the Navigation Graph
+     */
     private AppBarConfiguration mAppBarConfiguration;
 
     /**
@@ -69,7 +71,6 @@ public class SignupActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_login);
         mAppBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
     }
-
 
     /**
      * Setup the navigation behavior with the nav controller

@@ -27,34 +27,45 @@ import com.example.opensorcerer.models.User;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 
-
 import java.util.List;
 
 /**
- * ViewHolder class for Projects in linear Card format
+ * ViewHolder class for Projects in linear Card format.
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal", "FieldMayBeFinal"})
-public class ProjectCardHolder extends RecyclerView.ViewHolder{
+public class ProjectCardHolder extends RecyclerView.ViewHolder {
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding.
+     */
     private final ItemCardProjectBinding mApp;
 
-    /**The duration for the like animations*/
+    /**
+     * The duration for the like animations.
+     */
     private final int LIKE_ANIMATION_DURATION = 500;
 
-    /**The Holder's context*/
+    /**
+     * The Holder's context.
+     */
     private final Context mContext;
 
-    /**Current user*/
+    /**
+     * Current user.
+     */
     private User mUser;
 
-    /**Current Project*/
+    /**
+     * Current Project.
+     */
     private Project mProject;
 
     /**
-     * Sets up the item's methods
+     * Sets up the item's methods.
      */
-    public ProjectCardHolder(View view, Context context, ItemCardProjectBinding binder, ProjectsCardAdapter.OnClickListener clickListener, ProjectsCardAdapter.OnDoubleTapListener doubleTapListener) {
+    public ProjectCardHolder(View view, Context context, ItemCardProjectBinding binder,
+                             ProjectsCardAdapter.OnClickListener clickListener,
+                             ProjectsCardAdapter.OnDoubleTapListener doubleTapListener) {
         super(view);
 
         mApp = binder;
@@ -63,27 +74,29 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
 
         mUser = User.getCurrentUser();
 
-        //Set the listener for clicking on the card
+        // Set the listener for clicking on the card
         view.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
 
-        //Set the listener for double tapping on the card
+        // Set the listener for double tapping on the card
         view.setOnTouchListener(new View.OnTouchListener() {
 
-            //Create a gesture detector
-            private final GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
-                @Override
+            // Create a gesture detector
+            private final GestureDetector gestureDetector = new GestureDetector(mContext,
+                    new GestureDetector.SimpleOnGestureListener() {
 
-                //Like the project on double tap
-                public boolean onDoubleTap(MotionEvent e){
-                    doubleTapListener.onItemDoubleTap(getAdapterPosition());
+                        @Override
+                        // Like the project on double tap
+                        public boolean onDoubleTap(MotionEvent e) {
+                            doubleTapListener.onItemDoubleTap(getAdapterPosition());
 
-                    //Animate the project like
-                    setLikeButton();
-                    showLikeAnimation(e.getX(),e.getY());
+                            // Animate the project like
+                            setLikeButton();
+                            showLikeAnimation();
 
-                    return super.onDoubleTap(e);
-                }
-            });
+                            return super.onDoubleTap(e);
+                        }
+                    });
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 v.performClick();
@@ -94,57 +107,58 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
     }
 
     /**
-     * Populates the view's items with the project's information
-     * @param project The project to display
+     * Populates the view's items with the project's information.
+     *
+     * @param project The project to display.
      */
     public void bind(Project project) {
 
         mProject = project;
-        
-        //Set text details
+
+        // Set text details
         mApp.textViewTitle.setText(mProject.getTitle());
         mApp.textViewDescription.setText(mProject.getDescription());
         mApp.textViewTitle.setMaxLines(mProject.getTitle().split(" ").length);
-        
 
-        //Show the first three tags
-        TextView[] tagViews = {mApp.textViewTag1,mApp.textViewTag2,mApp.textViewTag3};
+        // Show the first three tags
+        TextView[] tagViews = {mApp.textViewTag1, mApp.textViewTag2, mApp.textViewTag3};
         List<String> tags = mProject.getTags();
-        for(int i = 0;i<3;i++){
+        for (int i = 0; i < tagViews.length; i++) {
             try {
-                tagViews[i].setText(tags.get(i).replace("-"," "));
-            } catch(IndexOutOfBoundsException e){
+                tagViews[i].setText(tags.get(i).replace("-", " "));
+            } catch (IndexOutOfBoundsException e) {
                 tagViews[i].setText("");
             }
         }
 
-        //Show the first three languages
-        TextView[] languageViews = {mApp.textViewLanguage1,mApp.textViewLanguage2,mApp.textViewLanguage3};
+        // Show the first three languages
+        TextView[] languageViews = {mApp.textViewLanguage1, mApp.textViewLanguage2, mApp.textViewLanguage3};
         List<String> languages = mProject.getLanguages();
-        for(int i = 0;i<3;i++){
+        for (int i = 0; i < languageViews.length; i++) {
             try {
-                languageViews[i].setText(languages.get(i).replace("-"," "));
-            } catch(IndexOutOfBoundsException e){
+                languageViews[i].setText(languages.get(i).replace("-", " "));
+            } catch (IndexOutOfBoundsException e) {
                 languageViews[i].setText("");
             }
         }
 
-        //Load the project's logo
+        // Load the project's logo
         ParseFile image = mProject.getLogoImage();
-        if(image != null){
+        if (image != null) {
             Glide.with(mContext)
                     .load(image.getUrl())
                     .transform(new RoundedCorners(1000))
                     .into(mApp.imageViewLogo);
         }
 
+        // Load the project manager's information
         User manager;
         try {
             manager = mProject.getManager().fetchIfNeeded();
             assert manager != null;
             mApp.textViewAuthor.setText(manager.getUsername());
             ParseFile profilePicture = manager.getProfilePicture();
-            if(image != null) {
+            if (profilePicture != null) {
                 Glide.with(mContext)
                         .load(profilePicture.getUrl())
                         .into(mApp.imageViewProfilePicture);
@@ -153,55 +167,58 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
             e.printStackTrace();
         }
 
-        
         setLikeButton();
     }
 
     /**
-     * Sets the color of the like button depending on if the user has liked the project
+     * Sets the color of the like button depending on if the user has liked the project.
      */
     private void setLikeButton() {
         Drawable unwrappedDrawable = AppCompatResources.getDrawable(mContext, R.drawable.ufi_heart_active);
         assert unwrappedDrawable != null;
         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
-        DrawableCompat.setTint(wrappedDrawable, mProject.isLikedByUser(mUser) ? Color.RED : ContextCompat.getColor(mContext,R.color.darker_blue));
+
+        DrawableCompat.setTint(wrappedDrawable, mProject.isLikedByUser(mUser)
+                ? Color.RED
+                : ContextCompat.getColor(mContext, R.color.darker_blue));
+
         mApp.buttonLike.setImageDrawable(wrappedDrawable);
         mApp.buttonLikeAnimator.setImageDrawable(wrappedDrawable);
     }
 
     /**
-     * Shows a growing and fading animation to notify the user that the project was liked
+     * Shows a growing and fading animation to notify the user that the project was liked.
      */
-    private void showLikeAnimation(float posX, float posY) {
+    private void showLikeAnimation() {
 
-        //Setup the animated icon
+        // Setup the animated icon
         mApp.buttonLikeAnimator.clearAnimation();
         mApp.buttonLikeAnimator.setVisibility(View.VISIBLE);
 
-        //Set the fade animation
+        // Set the fade animation
         Animation fadeOut = new AlphaAnimation(1, 0);
-        fadeOut.setInterpolator(new DecelerateInterpolator()); //and this
+        fadeOut.setInterpolator(new DecelerateInterpolator()); // and this
         fadeOut.setDuration(LIKE_ANIMATION_DURATION);
 
-        //Set the scale animation
-        Animation growOut= new ScaleAnimation(
-                1f, 2f, // Start and end values for the X axis scaling
-                1f, 2f, // Start and end values for the Y axis scaling
-                Animation.RELATIVE_TO_SELF, 0.5f, // Pivot point of X scaling
-                Animation.RELATIVE_TO_SELF, 0.5f); // Pivot point of Y scaling
-        growOut.setFillAfter(true); // Needed to keep the result of the animation
+        // Set the scale animation
+        Animation growOut = new ScaleAnimation(
+                1f, 2f, //  Start and end values for the X axis scaling
+                1f, 2f, //  Start and end values for the Y axis scaling
+                Animation.RELATIVE_TO_SELF, 0.5f, //  Pivot point of X scaling
+                Animation.RELATIVE_TO_SELF, 0.5f); //  Pivot point of Y scaling
+        growOut.setFillAfter(true); //  Needed to keep the result of the animation
         growOut.setDuration(LIKE_ANIMATION_DURATION);
 
-        //Combine the scale and fade animations
-        AnimationSet animation = new AnimationSet(false); //change to false
+        // Combine the scale and fade animations
+        AnimationSet animation = new AnimationSet(false); // change to false
         animation.addAnimation(fadeOut);
         animation.addAnimation(growOut);
 
-        //Set the animation on the animated icon
+        // Set the animation on the animated icon
         mApp.buttonLikeAnimator.setAnimation(animation);
 
-        //Listen for the icon's animation end
-        animation.setAnimationListener(new Animation.AnimationListener(){
+        // Listen for the icon's animation end
+        animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
 

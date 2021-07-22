@@ -21,20 +21,19 @@ import org.parceler.Parcels;
 /**
  * Custom Horizontal Scrolling View to display a project's details when swiped left
  * Code fragments taken from:
- *      Title: Android: Creating a “Snapping” Horizontal Scroll View
- *      Author: Velir: Mobile Responsive Design
- *      Date: Nov 17, 2010
- *      Availability: https://www.velir.com/ideas/2010/11/17/android-creating-a-snapping-horizontal-scroll-view
+ * Title: Android: Creating a “Snapping” Horizontal Scroll View
+ * Author: Velir: Mobile Responsive Design
+ * Date: Nov 17, 2010
+ * Availability: https://www.velir.com/ideas/2010/11/17/android-creating-a-snapping-horizontal-scroll-view
  */
 public class HorizontalScroller extends HorizontalScrollView {
 
-    /**The scrolling view's context*/
-    Context mContext;
-
     private static final int SWIPE_THRESHOLD_VELOCITY = 100;
     private static final int SWIPE_MIN_DISTANCE = 5;
-
-
+    /**
+     * The scrolling view's context
+     */
+    Context mContext;
     private GestureDetector mGestureDetector;
     private int mActiveFeature = 0;
 
@@ -59,9 +58,9 @@ public class HorizontalScroller extends HorizontalScrollView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-        if(l>=200){
+        if (l >= 200) {
             startDetails();
-        } else{
+        } else {
             endDetails();
         }
     }
@@ -69,7 +68,7 @@ public class HorizontalScroller extends HorizontalScrollView {
     private void endDetails() {
         FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentByTag("details");
-        if(fragment != null)
+        if (fragment != null)
             fragmentManager.beginTransaction().remove(fragment).commit();
     }
 
@@ -79,27 +78,25 @@ public class HorizontalScroller extends HorizontalScrollView {
         Bundle bundle = new Bundle();
         bundle.putParcelable("project", Parcels.wrap(mHomeFragment.getCurrentProject()));
         mDetailsFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContainerDetails, mDetailsFragment,"details").commit();
+        fragmentManager.beginTransaction().replace(R.id.flContainerDetails, mDetailsFragment, "details").commit();
     }
 
 
-    public void setFeatureItems(HomeFragment fragment){
+    public void setFeatureItems(HomeFragment fragment) {
         mHomeFragment = fragment;
         setOnTouchListener((v, event) -> {
             v.performClick();
             if (mGestureDetector.onTouchEvent(event)) {
                 return true;
-            }
-            else if(event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL ){
+            } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                 int scrollX = getScrollX();
                 int featureWidth = v.getMeasuredWidth();
-                mActiveFeature = ((scrollX + (featureWidth/2))/featureWidth);
-                int scrollTo = mActiveFeature*featureWidth;
+                mActiveFeature = ((scrollX + (featureWidth / 2)) / featureWidth);
+                int scrollTo = mActiveFeature * featureWidth;
                 smoothScrollTo(scrollTo, 0);
-                Log.d("Scrolling",""+scrollTo);
+                Log.d("Scrolling", "" + scrollTo);
                 return true;
-            }
-            else{
+            } else {
                 return false;
             }
 

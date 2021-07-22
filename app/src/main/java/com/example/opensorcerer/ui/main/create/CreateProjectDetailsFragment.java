@@ -43,34 +43,78 @@ import java.io.InputStream;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class CreateProjectDetailsFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "CreateProjectDetailsFragment";
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding
+     */
     private FragmentCreateDetailsBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Current logged in user*/
+    /**
+     * Current logged in user
+     */
     private User mUser;
 
-    /**GitHub API handler*/
+    /**
+     * GitHub API handler
+     */
     private GitHub mGitHub;
 
-    /**The new project's repo object*/
+    /**
+     * The new project's repo object
+     */
     private GHRepository mRepo;
 
-    /**The newly created project*/
+    /**
+     * The newly created project
+     */
     private Project mNewProject;
 
-    /**New project's logo image*/
+    /**
+     * New project's logo image
+     */
     private Bitmap mProjectLogo;
+
+    /**
+     * Activity launcher for choosing a picture from the user's files
+     */
+    ActivityResultLauncher<Intent> chooseProjectLogoActivityLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        try {
+                            //Get the selected profile picture from the data stream
+                            assert data != null;
+                            InputStream inputStream = mContext.getContentResolver().openInputStream(data.getData());
+                            mProjectLogo = BitmapFactory.decodeStream(inputStream);
+
+                            //Load the profile picture into the placeholder
+                            Glide.with(mContext)
+                                    .load(mProjectLogo)
+                                    .into(mApp.imageViewProjectLogo);
+
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+
 
     public CreateProjectDetailsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +126,7 @@ public class CreateProjectDetailsFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mApp = FragmentCreateDetailsBinding.inflate(inflater,container,false);
+        mApp = FragmentCreateDetailsBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -130,7 +174,7 @@ public class CreateProjectDetailsFragment extends Fragment {
 
         //Get the website or set the website to the project's github page
         String website = mRepo.getHomepage();
-        if(website == null || website.equals("")){
+        if (website == null || website.equals("")) {
             website = repo;
         }
         String finalWebsite = website;
@@ -149,7 +193,7 @@ public class CreateProjectDetailsFragment extends Fragment {
     /**
      * Sets up the listeners for the navigation buttons
      */
-    private void setupButtonListeners(){
+    private void setupButtonListeners() {
         mApp.buttonNext.setOnClickListener(v -> {
 
             //Set the project's details from the inputs
@@ -162,16 +206,16 @@ public class CreateProjectDetailsFragment extends Fragment {
             mNewProject.setManager(mUser);
 
             //Set the project's logo image
-            if(mProjectLogo!=null){
+            if (mProjectLogo != null) {
 
                 //Transform the selected profile picture bitmap into a ParseFile
-                ParseFile logoImage  = Tools.bitmapToParseFile(mProjectLogo);
+                ParseFile logoImage = Tools.bitmapToParseFile(mProjectLogo);
 
                 //Save the logo image into the database
                 logoImage.saveInBackground((SaveCallback) fe -> {
 
                     //If the image was saved correctly
-                    if(fe==null){
+                    if (fe == null) {
 
                         //Set the image as the user's profile picture
                         mNewProject.setLogoImage(logoImage);
@@ -191,8 +235,8 @@ public class CreateProjectDetailsFragment extends Fragment {
     /**
      * Sets the listener for uploading the logo image
      */
-    private void setupImageListener(){
-        mApp.constraintLayoutPicture.setOnClickListener(v ->{
+    private void setupImageListener() {
+        mApp.constraintLayoutPicture.setOnClickListener(v -> {
 
             Intent chooserIntent = Tools.createChooserIntent();
 
@@ -208,7 +252,7 @@ public class CreateProjectDetailsFragment extends Fragment {
         final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         Fragment fragment = new CreateProjectTagsFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("project",Parcels.wrap(mNewProject));
+        bundle.putParcelable("project", Parcels.wrap(mNewProject));
         fragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
     }
@@ -221,32 +265,4 @@ public class CreateProjectDetailsFragment extends Fragment {
         Fragment fragment = new CreateProjectImportFragment();
         fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
     }
-
-    /**
-     * Activity launcher for choosing a picture from the user's files
-     */
-    ActivityResultLauncher<Intent> chooseProjectLogoActivityLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        try {
-                            //Get the selected profile picture from the data stream
-                            assert data != null;
-                            InputStream inputStream = mContext.getContentResolver().openInputStream(data.getData());
-                            mProjectLogo = BitmapFactory.decodeStream(inputStream);
-
-                            //Load the profile picture into the placeholder
-                            Glide.with(mContext)
-                                    .load(mProjectLogo)
-                                    .into(mApp.imageViewProjectLogo);
-
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
 }

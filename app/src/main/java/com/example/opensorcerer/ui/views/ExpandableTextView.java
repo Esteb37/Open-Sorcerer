@@ -9,10 +9,10 @@ import android.widget.TextView;
 /**
  * Custom Text view that expands and retracts on click
  * Code fragments taken from:
- *      Title: Android - Expandable TextView with Animation
- *      Author: Bazlur Rahman Rokon
- *      Date: September 7, 2013
- *      Availability: https://stackoverflow.com/questions/15627530/android-expandable-textview-with-animation
+ * Title: Android - Expandable TextView with Animation
+ * Author: Bazlur Rahman Rokon
+ * Date: September 7, 2013
+ * Availability: https://stackoverflow.com/questions/15627530/android-expandable-textview-with-animation
  */
 @SuppressWarnings("unused")
 public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextView {
@@ -39,7 +39,7 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
         });
     }
 
-    private boolean isEllipsized(TextView textView){
+    private boolean isEllipsized(TextView textView) {
         Layout layout = textView.getLayout();
         if (layout != null) {
             int lines = layout.getLineCount();
@@ -49,11 +49,12 @@ public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextV
         return false;
     }
 
-    public void setMoreMessage(TextView moreMessage){
+    public void setMoreMessage(TextView moreMessage) {
         mMoreMessage = moreMessage;
         moreMessage.setVisibility(isEllipsized(this) ? View.VISIBLE : View.GONE);
     }
-    public boolean isTrimmed(){
+
+    public boolean isTrimmed() {
         return trim;
     }
 }

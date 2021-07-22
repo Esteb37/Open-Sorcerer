@@ -35,34 +35,54 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class HomeFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "ProjectsFragment";
 
-    /**Amount of items to query per call*/
+    /**
+     * Amount of items to query per call
+     */
     private static final int QUERY_LIMIT = 5;
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding
+     */
     private FragmentHomeBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Current logged in user*/
+    /**
+     * Current logged in user
+     */
     private User mUser;
 
-    /**GitHub API handler*/
+    /**
+     * GitHub API handler
+     */
     private GitHub mGitHub;
 
-    /**Adapter for the Recycler View*/
+    /**
+     * Adapter for the Recycler View
+     */
     private ProjectsCardAdapter mAdapter;
 
-    /**Layout manager for the Recycler View*/
+    /**
+     * Layout manager for the Recycler View
+     */
     private LinearLayoutManager mLayoutManager;
 
-    /**Snap helper for the Recycler View*/
+    /**
+     * Snap helper for the Recycler View
+     */
     private PagerSnapHelper mSnapHelper;
 
-    /**The list of projects to display*/
+    /**
+     * The list of projects to display
+     */
     private List<Project> mProjects;
 
     public HomeFragment() {
@@ -78,7 +98,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mApp = FragmentHomeBinding.inflate(inflater,container,false);
+        mApp = FragmentHomeBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -125,7 +145,7 @@ public class HomeFragment extends Fragment {
                 mUser.toggleLike(mProjects.get(position));
 
         //Set adapter
-        mAdapter = new ProjectsCardAdapter(mProjects,mContext, clickListener,doubleTapListener);
+        mAdapter = new ProjectsCardAdapter(mProjects, mContext, clickListener, doubleTapListener);
         mApp.recyclerViewProjects.setAdapter(mAdapter);
 
         //Set snap helper
@@ -133,7 +153,7 @@ public class HomeFragment extends Fragment {
         mSnapHelper.attachToRecyclerView(mApp.recyclerViewProjects);
 
         //Set layout manager
-        mLayoutManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
+        mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         mApp.recyclerViewProjects.setLayoutManager(mLayoutManager);
 
         //Sets up the endless scroller listener
@@ -152,7 +172,7 @@ public class HomeFragment extends Fragment {
     /**
      * Gets the list of projects from the developer's timeline
      */
-    private void queryProjects(int page){
+    private void queryProjects(int page) {
 
         //Get a query in descending order
         ParseQuery<Project> query = ParseQuery.getQuery(Project.class);
@@ -160,16 +180,16 @@ public class HomeFragment extends Fragment {
 
         //Setup pagination
         query.setLimit(QUERY_LIMIT);
-        query.setSkip(page*QUERY_LIMIT);
+        query.setSkip(page * QUERY_LIMIT);
 
         query.findInBackground((projects, e) -> {
-            if(e==null){
-                if(projects.size()>0){
+            if (e == null) {
+                if (projects.size() > 0) {
                     mAdapter.addAll(projects);
                 }
                 mApp.progressBar.setVisibility(View.GONE);
             } else {
-                Log.d(TAG,"Unable to load projects.");
+                Log.d(TAG, "Unable to load projects.");
             }
         });
     }
@@ -189,7 +209,7 @@ public class HomeFragment extends Fragment {
     /**
      * @return The project currently being displayed to the user
      */
-    public Project getCurrentProject(){
+    public Project getCurrentProject() {
         View snapView = mSnapHelper.findSnapView(mLayoutManager);
         assert snapView != null;
         return mProjects.get(mLayoutManager.getPosition(snapView));

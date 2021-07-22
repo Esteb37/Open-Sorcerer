@@ -2,21 +2,20 @@ package com.example.opensorcerer.ui.main.projects;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
+import com.example.opensorcerer.adapters.ProjectsGridAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreatedProjectsBinding;
 import com.example.opensorcerer.models.Project;
-import com.example.opensorcerer.adapters.ProjectsGridAdapter;
 import com.example.opensorcerer.models.User;
 import com.parse.ParseQuery;
 
@@ -29,25 +28,39 @@ import java.util.List;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class CreatedProjectsFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "MyProjectsFragment";
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding
+     */
     private FragmentCreatedProjectsBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Current logged in user*/
+    /**
+     * Current logged in user
+     */
     private User mUser;
 
-    /**GitHub API handler*/
+    /**
+     * GitHub API handler
+     */
     private GitHub mGitHub;
 
-    /**Adapter for the RecyclerView*/
+    /**
+     * Adapter for the RecyclerView
+     */
     private ProjectsGridAdapter mAdapter;
 
-    /**The user's created project list to display*/
+    /**
+     * The user's created project list to display
+     */
     private List<Project> mProjects;
 
     public CreatedProjectsFragment() {
@@ -64,8 +77,8 @@ public class CreatedProjectsFragment extends Fragment {
      * Inflates the fragment's layout
      */
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        mApp = FragmentCreatedProjectsBinding.inflate(inflater,container,false);
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mApp = FragmentCreatedProjectsBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -96,28 +109,27 @@ public class CreatedProjectsFragment extends Fragment {
      */
     private void setupRecyclerView() {
         mProjects = new ArrayList<>();
-        mAdapter = new ProjectsGridAdapter(mProjects,mContext);
+        mAdapter = new ProjectsGridAdapter(mProjects, mContext);
         mApp.recyclerViewProjects.setAdapter(mAdapter);
-        mApp.recyclerViewProjects.setLayoutManager(new GridLayoutManager(mContext,2));
+        mApp.recyclerViewProjects.setLayoutManager(new GridLayoutManager(mContext, 2));
     }
-
 
     /**
      * Gets the list of projects created by the user
      */
-    public void queryProjects(){
-        ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContains("manager",mUser.getObjectId());
+    public void queryProjects() {
+        ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContains("manager", mUser.getObjectId());
         query.addDescendingOrder("createdAt");
         query.findInBackground((projects, e) -> {
-            if(e==null){
-                if(projects.size()>0){
+            if (e == null) {
+                if (projects.size() > 0) {
                     mAdapter.addAll(projects);
                 } else {
                     mApp.textViewNoProjects.setVisibility(View.VISIBLE);
                 }
                 mApp.progressBar.setVisibility(View.GONE);
             } else {
-                Log.d(TAG,"Unable to load projects.");
+                Log.d(TAG, "Unable to load projects.");
             }
         });
     }

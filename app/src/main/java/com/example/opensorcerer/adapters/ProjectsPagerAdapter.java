@@ -12,6 +12,9 @@ import com.example.opensorcerer.ui.main.projects.FavoritesGridFragment;
  */
 public class ProjectsPagerAdapter extends FragmentStateAdapter {
 
+    /**
+     * Number of pages in this pager view
+     */
     private static final int PAGE_COUNT = 2;
 
     public ProjectsPagerAdapter(Fragment fragment) {

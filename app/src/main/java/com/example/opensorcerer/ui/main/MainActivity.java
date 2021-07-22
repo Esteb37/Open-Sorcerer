@@ -14,9 +14,9 @@ import com.example.opensorcerer.databinding.ActivityHomeBinding;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.conversations.ConversationsFragment;
 import com.example.opensorcerer.ui.main.create.CreateProjectImportFragment;
-import com.example.opensorcerer.ui.main.projects.ProjectsFragment;
-import com.example.opensorcerer.ui.main.profile.ProfileFragment;
 import com.example.opensorcerer.ui.main.home.HomeFragment;
+import com.example.opensorcerer.ui.main.profile.ProfileFragment;
+import com.example.opensorcerer.ui.main.projects.ProjectsFragment;
 import com.parse.ParseUser;
 
 import org.kohsuke.github.GitHub;
@@ -26,21 +26,31 @@ import org.kohsuke.github.GitHub;
  * Main activity
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "MainActivity";
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding
+     */
     private ActivityHomeBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Current logged in user*/
+    /**
+     * Current logged in user
+     */
     private User mUser;
 
-    /**GitHub API handler*/
+    /**
+     * GitHub API handler
+     */
     private GitHub mGitHub;
 
     /**
@@ -104,11 +114,11 @@ public class MainActivity extends AppCompatActivity{
             mApp.constraintLayout2.setVisibility(View.GONE);
             fragmentManager.findFragmentByTag("details");
             Fragment detailsFragment = fragmentManager.findFragmentByTag("details");
-            if(detailsFragment != null)
+            if (detailsFragment != null)
                 fragmentManager.beginTransaction().remove(detailsFragment).commit();
 
             //Navigate to a different fragment depending on the item selected
-            switch(item.getItemId()){
+            switch (item.getItemId()) {
 
                 //Home Item selected
                 case actionHome:
@@ -141,7 +151,7 @@ public class MainActivity extends AppCompatActivity{
             }
 
             //Open the selected fragment
-            fragmentManager.beginTransaction().replace(mApp.flContainer.getId(),fragment).commit();
+            fragmentManager.beginTransaction().replace(mApp.flContainer.getId(), fragment).commit();
             return true;
         });
 

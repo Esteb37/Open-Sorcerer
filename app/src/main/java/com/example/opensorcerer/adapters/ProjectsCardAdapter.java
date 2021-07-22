@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.opensorcerer.databinding.ItemCardProjectBinding;
 import com.example.opensorcerer.models.Project;
 
@@ -20,39 +19,37 @@ import java.util.List;
  * RecyclerView Adapter class for Projects in linear Card format
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>{
-
-    /**Binder object for ViewBinding*/
-    private ItemCardProjectBinding mApp;
-
-    /**The adapter's current context*/
-    private final Context mContext;
-
-    /**The list of projects to display*/
-    private final List<Project> mProjects;
-
-    /**The ViewHolder for the project items*/
-    private ProjectCardHolder mHolder;
+public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder> {
 
     /**
-     * Interface for detecting clicks on the project
+     * The adapter's current context
      */
-    public interface OnClickListener{
-        void onItemClicked(int position);
-    }
+    private final Context mContext;
 
-    /**Click listener*/
+    /**
+     * The list of projects to display
+     */
+    private final List<Project> mProjects;
+
+    /**
+     * Click listener
+     */
     private final OnClickListener mClickListener;
 
     /**
-     * Interface for detecting double taps on the project
+     * Double tap listener
      */
-    public interface OnDoubleTapListener{
-        void onItemDoubleTap(int position);
-    }
-
     private final OnDoubleTapListener mDoubleTapListener;
 
+    /**
+     * Binder object for ViewBinding
+     */
+    private ItemCardProjectBinding mApp;
+
+    /**
+     * The ViewHolder for the project items
+     */
+    private ProjectCardHolder mHolder;
 
     public ProjectsCardAdapter(List<Project> projects, Context context, OnClickListener clickListener, OnDoubleTapListener doubleTapListener) {
         mProjects = projects;
@@ -72,7 +69,7 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
     public ProjectCardHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         mApp = ItemCardProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = mApp.getRoot();
-        return new ProjectCardHolder(view,mContext,mApp,mClickListener,mDoubleTapListener);
+        return new ProjectCardHolder(view, mContext, mApp, mClickListener, mDoubleTapListener);
     }
 
     /**
@@ -85,7 +82,9 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
 
     }
 
-    /**Project list item count getter*/
+    /**
+     * Project list item count getter
+     */
     @Override
     public int getItemCount() {
         return mProjects.size();
@@ -101,6 +100,7 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
 
     /**
      * Adds a list of projects to the adapter
+     *
      * @param list A list of projects
      */
     public void addAll(List<Project> list) {
@@ -110,9 +110,24 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
 
     /**
      * Gets the project that is currently on the user's screen
+     *
      * @return The currently viewed project
      */
-    public Project getCurrentProject(){
-       return  mHolder.getAdapterPosition()>0 ? mProjects.get(mHolder.getAdapterPosition()-1) : mProjects.get(0);
+    public Project getCurrentProject() {
+        return mHolder.getAdapterPosition() > 0 ? mProjects.get(mHolder.getAdapterPosition() - 1) : mProjects.get(0);
+    }
+
+    /**
+     * Interface for detecting clicks on the project
+     */
+    public interface OnClickListener {
+        void onItemClicked(int position);
+    }
+
+    /**
+     * Interface for detecting double taps on the project
+     */
+    public interface OnDoubleTapListener {
+        void onItemDoubleTap(int position);
     }
 }

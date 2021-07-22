@@ -2,14 +2,13 @@ package com.example.opensorcerer.ui.main.details;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentGitHubBinding;
@@ -104,7 +103,7 @@ public class GitHubFragment extends Fragment {
     /**
      * Loads the GitHub repository into the WebViewer
      */
-    private void loadWebsite(){
+    private void loadWebsite() {
         mApp.webView.loadUrl(mProject.getWebsite());
         mApp.progressBar.setVisibility(View.GONE);
     }

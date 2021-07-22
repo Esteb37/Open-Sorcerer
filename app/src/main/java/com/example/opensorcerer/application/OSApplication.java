@@ -1,8 +1,8 @@
 package com.example.opensorcerer.application;
 
 import android.app.Application;
-import com.example.opensorcerer.R;
 
+import com.example.opensorcerer.R;
 import com.example.opensorcerer.models.Conversation;
 import com.example.opensorcerer.models.Project;
 import com.parse.Parse;
@@ -14,12 +14,14 @@ import org.kohsuke.github.GitHubBuilder;
 import java.io.IOException;
 
 /**
-    Class for hosting the application and handling the Parse database and the GitHub API
+ * Class for hosting the application and handling the Parse database and the GitHub API
  */
 @SuppressWarnings("unused")
 public class OSApplication extends Application {
 
-    /**The GitHub API handler*/
+    /**
+     * The GitHub API handler
+     */
     GitHub mGitHub;
 
     @Override
@@ -29,7 +31,7 @@ public class OSApplication extends Application {
     }
 
     /**
-     Sets up the Parse Application
+     * Sets up the Parse Application
      */
     private void setupParse() {
 
@@ -48,15 +50,17 @@ public class OSApplication extends Application {
                 .build());
     }
 
-    /**GitHub API handler getter*/
-    public GitHub getGitHub(){
+    /**
+     * GitHub API handler getter
+     */
+    public GitHub getGitHub() {
         return mGitHub;
     }
 
     /**
      * Builds the GitHub application in the background with the user's OAuth token
      */
-    public void buildGitHub(String token){
+    public void buildGitHub(String token) {
         new Thread(() -> {
             try {
                 mGitHub = new GitHubBuilder().withJwtToken(token).build();

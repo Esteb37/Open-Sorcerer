@@ -33,28 +33,39 @@ import java.util.Objects;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class CreateProjectImportFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "CreateProjectImportFragment";
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding
+     */
     private FragmentCreateImportBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Current logged in user*/
+    /**
+     * Current logged in user
+     */
     private User mUser;
 
-    /**GitHub API handler*/
+    /**
+     * GitHub API handler
+     */
     private GitHub mGitHub;
 
-    /**The project being created*/
+    /**
+     * The project being created
+     */
     private Project mNewProject;
 
     public CreateProjectImportFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +77,7 @@ public class CreateProjectImportFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mApp = FragmentCreateImportBinding.inflate(inflater,container,false);
+        mApp = FragmentCreateImportBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -93,7 +104,7 @@ public class CreateProjectImportFragment extends Fragment {
 
             Looper.prepare();
 
-            try{
+            try {
                 //Get the repo in user/repo format
                 String repoLink = Objects.requireNonNull(mApp.editTextRepo.getText()).toString().split("github.com/")[1];
 
@@ -107,19 +118,18 @@ public class CreateProjectImportFragment extends Fragment {
 
                     navigateForward();
                 } catch (IOException e) {
-                    requireActivity().runOnUiThread(()->
+                    requireActivity().runOnUiThread(() ->
                             Toast.makeText(mContext, "Invalid Repo Link", Toast.LENGTH_SHORT).show());
                     e.printStackTrace();
                 }
 
-            } catch (ArrayIndexOutOfBoundsException e){
-                requireActivity().runOnUiThread(()->
-                                Toast.makeText(mContext, "Link must have the format 'github.com/user/project'", Toast.LENGTH_SHORT).show()
-                        );
+            } catch (ArrayIndexOutOfBoundsException e) {
+                requireActivity().runOnUiThread(() ->
+                        Toast.makeText(mContext, "Link must have the format 'github.com/user/project'", Toast.LENGTH_SHORT).show()
+                );
             }
         }).start());
     }
-
 
     /**
      * Navigates to the Create Project details Fragment
@@ -128,7 +138,7 @@ public class CreateProjectImportFragment extends Fragment {
         final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         Fragment fragment = new CreateProjectDetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("project",Parcels.wrap(mNewProject));
+        bundle.putParcelable("project", Parcels.wrap(mNewProject));
         fragment.setArguments(bundle);
         fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
     }

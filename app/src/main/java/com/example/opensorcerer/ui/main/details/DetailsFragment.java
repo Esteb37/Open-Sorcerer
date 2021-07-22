@@ -5,16 +5,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.fragment.app.Fragment;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentDetailsBinding;
 import com.example.opensorcerer.models.Project;
-
 import com.example.opensorcerer.models.User;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,24 +25,36 @@ import org.parceler.Parcels;
  * Fragment for displaying a project's details
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class DetailsFragment extends Fragment{
+public class DetailsFragment extends Fragment {
 
-    /**Tag for logging*/
+    /**
+     * Tag for logging
+     */
     private static final String TAG = "DetailsFragment";
 
-    /**Binder object for ViewBinding*/
+    /**
+     * Binder object for ViewBinding
+     */
     private FragmentDetailsBinding mApp;
 
-    /**Fragment's context*/
+    /**
+     * Fragment's context
+     */
     private Context mContext;
 
-    /**Current logged in user*/
+    /**
+     * Current logged in user
+     */
     private User mUser;
 
-    /**GitHub API handler*/
+    /**
+     * GitHub API handler
+     */
     private GitHub mGitHub;
 
-    /**Project being displayed*/
+    /**
+     * Project being displayed
+     */
     private Project mProject;
 
     @Override
@@ -56,7 +68,7 @@ public class DetailsFragment extends Fragment{
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mApp = FragmentDetailsBinding.inflate(inflater,container,false);
+        mApp = FragmentDetailsBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
@@ -101,10 +113,10 @@ public class DetailsFragment extends Fragment{
             Fragment fragment;
 
             Bundle bundle = new Bundle();
-            bundle.putParcelable("project",Parcels.wrap(mProject));
+            bundle.putParcelable("project", Parcels.wrap(mProject));
 
             //Navigate to a different fragment depending on the item selected
-            switch(item.getItemId()){
+            switch (item.getItemId()) {
                 case actionDetails:
                     fragment = new InformationFragment();
                     break;
@@ -120,7 +132,7 @@ public class DetailsFragment extends Fragment{
             fragment.setArguments(bundle);
 
             //Open the selected fragment
-            fragmentManager.beginTransaction().replace(mApp.flContainerDetailsInternal.getId(),fragment).commit();
+            fragmentManager.beginTransaction().replace(mApp.flContainerDetailsInternal.getId(), fragment).commit();
             return true;
         });
 
