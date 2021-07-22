@@ -52,8 +52,6 @@ public class SignupActivity extends AppCompatActivity {
         setupViewBinding();
 
         setupNavController();
-
-        loadFirstFragment();
     }
 
     /**
@@ -72,14 +70,6 @@ public class SignupActivity extends AppCompatActivity {
         mAppBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
     }
 
-    /**
-     * Load the first fragment from the Signup Process
-     */
-    private void loadFirstFragment() {
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = new SignupRoleFragment();
-        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
-    }
 
     /**
      * Setup the navigation behavior with the nav controller
