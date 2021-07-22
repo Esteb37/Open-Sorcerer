@@ -37,7 +37,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/ivImage"
+                    android:id="@+id/imageViewLogo"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_marginTop="20dp"
@@ -59,13 +59,13 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/ivImage"
-                    app:layout_constraintEnd_toStartOf="@+id/ivImage"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageViewLogo"
+                    app:layout_constraintEnd_toStartOf="@+id/imageViewLogo"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/ivImage">
+                    app:layout_constraintTop_toTopOf="@+id/imageViewLogo">
 
                     <TextView
-                        android:id="@+id/tvTitle"
+                        android:id="@+id/textViewTitle"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginStart="0dp"
@@ -82,7 +82,7 @@
                         tools:text="Open Sorcerer" />
 
                     <TextView
-                        android:id="@+id/tvAuthor"
+                        android:id="@+id/textViewAuthor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -177,7 +177,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
 
                 <TextView
-                    android:id="@+id/tvLikes"
+                    android:id="@+id/textViewLikes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -187,7 +187,7 @@
                     tools:text="60" />
 
                 <TextView
-                    android:id="@+id/tvViews"
+                    android:id="@+id/textViewViews"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -197,7 +197,7 @@
                     tools:text="120" />
 
                 <TextView
-                    android:id="@+id/tvShares"
+                    android:id="@+id/textViewShares"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -220,7 +220,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
             <TextView
-                android:id="@+id/tvTags"
+                android:id="@+id/textViewTags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -242,10 +242,10 @@
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTags" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewTags" />
 
             <TextView
-                android:id="@+id/tvLanguages"
+                android:id="@+id/textViewLanguages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -265,12 +265,12 @@
                 android:text="README"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/tvLanguages"
-                app:layout_constraintStart_toStartOf="@+id/tvLanguages"
-                app:layout_constraintTop_toBottomOf="@+id/tvLanguages" />
+                app:layout_constraintEnd_toEndOf="@+id/textViewLanguages"
+                app:layout_constraintStart_toStartOf="@+id/textViewLanguages"
+                app:layout_constraintTop_toBottomOf="@+id/textViewLanguages" />
 
             <com.mukesh.MarkdownView
-                android:id="@+id/markdown_view"
+                android:id="@+id/markdownViewReadme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -288,9 +288,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="@+id/markdown_view"
+                app:layout_constraintEnd_toEndOf="@+id/markdownViewReadme"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/markdown_view" />
+                app:layout_constraintTop_toTopOf="@+id/markdownViewReadme" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

@@ -28,7 +28,7 @@
                 android:layout_height="200dp"
                 android:paddingBottom="0dp"
                 android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="@+id/ivImage"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewLogo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
                 tools:srcCompat="@drawable/card_background" />
 
             <ImageView
-                android:id="@+id/ivImage"
+                android:id="@+id/imageViewLogo"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="20dp"
@@ -50,7 +50,7 @@
                 tools:srcCompat="@drawable/placeholder2" />
 
             <TextView
-                android:id="@+id/tvTitle"
+                android:id="@+id/textViewTitle"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="20dp"
@@ -76,9 +76,9 @@
                 android:layout_weight="1"
                 android:background="#00FFFFFF"
                 android:scaleType="fitCenter"
-                app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewTitle"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvTitle"
+                app:layout_constraintTop_toTopOf="@+id/textViewTitle"
                 app:srcCompat="@drawable/ufi_heart_active" />
 
             <ImageButton
@@ -94,7 +94,7 @@
                 app:srcCompat="@drawable/ufi_heart_active" />
 
             <TextView
-                android:id="@+id/tvDescription"
+                android:id="@+id/textViewDescription"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="20dp"
@@ -105,8 +105,8 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/divider"
                 app:layout_constraintEnd_toEndOf="@+id/buttonLike"
-                app:layout_constraintStart_toStartOf="@+id/tvTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+                app:layout_constraintStart_toStartOf="@+id/textViewTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
             <View
                 android:id="@+id/divider"
@@ -129,10 +129,10 @@
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/divider2"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tvDescription">
+                app:layout_constraintStart_toStartOf="@+id/textViewDescription">
 
                 <TextView
-                    android:id="@+id/tvLanguage1"
+                    android:id="@+id/textViewLanguage1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -143,7 +143,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvLanguage2"
+                    android:id="@+id/textViewLanguage2"
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -154,7 +154,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvLanguage3"
+                    android:id="@+id/textViewLanguage3"
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -187,10 +187,10 @@
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tvDescription">
+                app:layout_constraintStart_toStartOf="@+id/textViewDescription">
 
                 <TextView
-                    android:id="@+id/tvTag1"
+                    android:id="@+id/textViewTag1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -201,7 +201,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvTag2"
+                    android:id="@+id/textViewTag2"
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -212,7 +212,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvTag3"
+                    android:id="@+id/textViewTag3"
                     android:layout_width="1dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"

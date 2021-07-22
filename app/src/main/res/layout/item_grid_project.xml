@@ -27,7 +27,7 @@
 
 
             <ImageView
-                android:id="@+id/ivImage"
+                android:id="@+id/imageViewLogo"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center_horizontal"
@@ -41,7 +41,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvTitle"
+                android:id="@+id/textViewTitle"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="10dp"
@@ -67,10 +67,10 @@
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ivImage" />
+                app:layout_constraintTop_toBottomOf="@id/imageViewLogo" />
 
             <TextView
-                android:id="@+id/tvDescription"
+                android:id="@+id/textViewDescription"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="5dp"
@@ -83,9 +83,9 @@
                 android:textAlignment="viewStart"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tvTitle"
-                app:layout_constraintStart_toStartOf="@+id/tvTitle"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+                app:layout_constraintEnd_toEndOf="@+id/textViewTitle"
+                app:layout_constraintStart_toStartOf="@+id/textViewTitle"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
                 tools:text="Mobile app dedicated to matching developers with open source projects through a browsing system with recommendations based on skills and interests." />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
