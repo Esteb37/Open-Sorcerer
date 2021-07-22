@@ -46,26 +46,37 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
 
     /**Current Project*/
     private Project mProject;
-    
+
+    /**
+     * Sets up the item's methods
+     */
     public ProjectCardHolder(View view, Context context, ItemCardProjectBinding binder, ProjectsCardAdapter.OnClickListener clickListener, ProjectsCardAdapter.OnDoubleTapListener doubleTapListener) {
         super(view);
+
         app = binder;
-        
+
         mContext = context;
 
         mUser = User.getCurrentUser();
 
-        
+        //Set the listener for clicking on the card
         view.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
 
+        //Set the listener for double tapping on the card
         view.setOnTouchListener(new View.OnTouchListener() {
 
+            //Create a gesture detector
             private final GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
                 @Override
+
+                //Like the project on double tap
                 public boolean onDoubleTap(MotionEvent e){
                     doubleTapListener.onItemDoubleTap(getAdapterPosition());
+
+                    //Animate the project like
                     setLikeButton();
                     showLikeAnimation(e.getX(),e.getY());
+
                     return super.onDoubleTap(e);
                 }
             });
@@ -87,13 +98,13 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
         mProject = project;
         
         //Set text details
-        app.tvTitle.setText(mProject.getTitle());
-        app.tvDescription.setText(mProject.getDescription());
-        app.tvTitle.setMaxLines(mProject.getTitle().split(" ").length);
+        app.textViewTitle.setText(mProject.getTitle());
+        app.textViewDescription.setText(mProject.getDescription());
+        app.textViewTitle.setMaxLines(mProject.getTitle().split(" ").length);
         
 
         //Show the first three tags
-        TextView[] tagViews = {app.tvTag1,app.tvTag2,app.tvTag3};
+        TextView[] tagViews = {app.textViewTag1,app.textViewTag2,app.textViewTag3};
         List<String> tags = mProject.getTags();
         for(int i = 0;i<3;i++){
             try {
@@ -104,7 +115,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
         }
 
         //Show the first three languages
-        TextView[] languageViews = {app.tvLanguage1,app.tvLanguage2,app.tvLanguage3};
+        TextView[] languageViews = {app.textViewLanguage1,app.textViewLanguage2,app.textViewLanguage3};
         List<String> languages = mProject.getLanguages();
         for(int i = 0;i<3;i++){
             try {
@@ -120,7 +131,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
             Glide.with(mContext)
                     .load(image.getUrl())
                     .transform(new RoundedCorners(1000))
-                    .into(app.ivImage);
+                    .into(app.imageViewLogo);
         }
         
         setLikeButton();
@@ -138,13 +149,21 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
         app.buttonLikeAnimator.setImageDrawable(wrappedDrawable);
     }
 
+    /**
+     * Shows a growing and fading animation to notify the user that the project was liked
+     */
     private void showLikeAnimation(float posX, float posY) {
+
+        //Setup the animated icon
         app.buttonLikeAnimator.clearAnimation();
         app.buttonLikeAnimator.setVisibility(View.VISIBLE);
+
+        //Set the fade animation
         Animation fadeOut = new AlphaAnimation(1, 0);
         fadeOut.setInterpolator(new DecelerateInterpolator()); //and this
         fadeOut.setDuration(500);
 
+        //Set the scale animation
         Animation growOut= new ScaleAnimation(
                 1f, 2f, // Start and end values for the X axis scaling
                 1f, 2f, // Start and end values for the Y axis scaling
@@ -153,11 +172,15 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
         growOut.setFillAfter(true); // Needed to keep the result of the animation
         growOut.setDuration(500);
 
+        //Combine the scale and fade animations
         AnimationSet animation = new AnimationSet(false); //change to false
         animation.addAnimation(fadeOut);
         animation.addAnimation(growOut);
+
+        //Set the animation on the animated icon
         app.buttonLikeAnimator.setAnimation(animation);
 
+        //Listen for the icon's animation end
         animation.setAnimationListener(new Animation.AnimationListener(){
             @Override
             public void onAnimationStart(Animation animation) {

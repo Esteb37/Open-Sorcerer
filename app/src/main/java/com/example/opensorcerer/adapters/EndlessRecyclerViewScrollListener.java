@@ -7,36 +7,67 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import org.jetbrains.annotations.NotNull;
 
+ /**
+ * Scroll listener for handling endless scrolling in recyclerviews
+ * Retrieved from:
+ *      Title: Endless Scrolling with AdapterViews and RecyclerView
+ *      Author: CodePath
+ *      Availability: https://guides.codepath.org/android/Endless-Scrolling-with-AdapterViews-and-RecyclerView
+ */
 @SuppressWarnings("unused")
 public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
-    // The minimum amount of items to have below your current scroll position
-    // before loading more.
+
+    /**
+     * The minimum amount of items to have below the current scroll position
+     * before loading more.
+     */
     private int visibleThreshold = 5;
-    // The current offset index of data you have loaded
+
+    /** The current offset index of loaded data*/
     private int currentPage = 0;
-    // The total number of items in the dataset after the last load
+
+    /** The total number of items in the dataset after the last load*/
+
     private int previousTotalItemCount = 0;
-    // True if we are still waiting for the last set of data to load.
+
+    /** True if we are still waiting for the last set of data to load.*/
     private boolean loading = true;
-    // Sets the starting page index
+
+    /** Sets the starting page index */
     private final int startingPageIndex = 0;
 
-    RecyclerView.LayoutManager mLayoutManager;
+    /** Layout manager of the listened recyclerview*/
+    private final RecyclerView.LayoutManager mLayoutManager;
 
+    /**
+     * Constructor for RecyclerViews with Linear Layouts
+     * @param layoutManager The recyclerview's linear layout manager
+     */
     public EndlessRecyclerViewScrollListener(LinearLayoutManager layoutManager) {
         this.mLayoutManager = layoutManager;
     }
 
+    /**
+     * Constructor for RecyclerViews with Grid Layouts
+     * @param layoutManager The recyclerview's grid layout manager
+     */
     public EndlessRecyclerViewScrollListener(GridLayoutManager layoutManager) {
         this.mLayoutManager = layoutManager;
         visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
     }
 
+    /**
+     * Constructor for RecyclerViews with Staggered Grid Layouts
+     * @param layoutManager The recyclerview's staggered grid layout manager
+     */
     public EndlessRecyclerViewScrollListener(StaggeredGridLayoutManager layoutManager) {
         this.mLayoutManager = layoutManager;
         visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
     }
 
+    /**
+     * @return The last item visible to the user
+     */
     public int getLastVisibleItem(int[] lastVisibleItemPositions) {
         int maxSize = 0;
         for (int i = 0; i < lastVisibleItemPositions.length; i++) {
@@ -50,9 +81,8 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         return maxSize;
     }
 
-    // This happens many times a second during a scroll, so be wary of the code you place here.
-    // We are given a few useful parameters to help us work out if we need to load some more data,
-    // but first we check if we are waiting for the previous load to finish.
+
+
     @Override
     public void onScrolled(@NotNull RecyclerView view, int dx, int dy) {
         int lastVisibleItemPosition = 0;
@@ -96,14 +126,14 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         }
     }
 
-    // Call this method whenever performing new searches
+    /**Resets the state of the endless scroll listener*/
     public void resetState() {
         this.currentPage = this.startingPageIndex;
         this.previousTotalItemCount = 0;
         this.loading = true;
     }
 
-    // Defines the process for actually loading more data based on page
+    /** Defines the process for actually loading more data based on page*/
     public abstract void onLoadMore(int page, int totalItemsCount, RecyclerView view);
 
 }

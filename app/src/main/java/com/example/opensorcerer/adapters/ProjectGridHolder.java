@@ -36,11 +36,11 @@ public class ProjectGridHolder extends RecyclerView.ViewHolder{
     public void bind(Project project) {
 
         //Set text details
-        app.tvTitle.setText(project.getTitle());
-        app.tvDescription.setText(project.getDescription());
+        app.textViewTitle.setText(project.getTitle());
+        app.textViewDescription.setText(project.getDescription());
 
         //Dynamically set the title's max lines to avoid word breaking
-        app.tvTitle.setMaxLines(project.getTitle().split(" ").length);
+        app.textViewTitle.setMaxLines(project.getTitle().split(" ").length);
 
         //Load the project's image
         ParseFile image = project.getLogoImage();
@@ -49,7 +49,7 @@ public class ProjectGridHolder extends RecyclerView.ViewHolder{
                     .load(image.getUrl())
                     .centerInside()
                     .transform(new RoundedCorners(500))
-                    .into(app.ivImage);
+                    .into(app.imageViewLogo);
         }
     }
 }

@@ -69,7 +69,6 @@ public class SignupSecondFragment extends Fragment {
         //Setup "Finish" button listener
         app.buttonFinish.setOnClickListener(v -> {
 
-
             //Get credentials
             mNewUser.setGithubToken(Objects.requireNonNull(app.editTextToken.getText()).toString());
 
@@ -95,7 +94,7 @@ public class SignupSecondFragment extends Fragment {
     }
 
     /**
-     * Goes to the Details  fragment
+     * Goes to the Details fragment
      */
     private void navigateForward() {
         SignupSecondFragmentDirections.SecondToDetailsAction secondToDetailsAction = SignupSecondFragmentDirections.secondToDetailsAction(mNewUser);

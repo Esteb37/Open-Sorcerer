@@ -20,6 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.example.opensorcerer.databinding.FragmentSignupDetailsBinding;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.HomeActivity;
 import com.parse.ParseFile;
@@ -27,7 +28,6 @@ import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Objects;
@@ -39,24 +39,16 @@ import java.util.Objects;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupDetailsFragment extends Fragment {
 
-    /**
-     * Tag for logging
-     */
+    /**Tag for logging*/
     private static final String TAG = "SignupDetailsFragment";
 
-    /**
-     * Binder for View Binding
-     */
+    /**Binder for View Binding*/
     private FragmentSignupDetailsBinding app;
 
-    /**
-     * Fragment's context
-     */
+    /**Fragment's context*/
     private Context mContext;
 
-    /**
-     * Newly created user for signup
-     */
+    /**Newly created user for signup*/
     private User mNewUser;
 
     /**User's selected profile picture*/
@@ -96,16 +88,17 @@ public class SignupDetailsFragment extends Fragment {
     private void setupButtonListeners() {
 
         app.buttonNext.setOnClickListener(v -> {
+
+            //Set the imputed text into the user's details
             mNewUser.setBio(Objects.requireNonNull(app.editTextBio.getText()).toString());
             mNewUser.setExperience(Objects.requireNonNull(app.editTextExperience.getText()).toString());
             mNewUser.setName(Objects.requireNonNull(app.editTextName.getText()).toString());
 
+            //Set the user's profile picture
             if(mProfilePicture!=null){
+
                 //Transform the selected profile picture bitmap into a ParseFile
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                mProfilePicture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                byte[] image = stream.toByteArray();
-                ParseFile profilePicture  = new ParseFile("profile_picture.jpeg", image);
+                ParseFile profilePicture  = Tools.bitmapToParseFile(mProfilePicture);
 
                 //Save the profile picture into the database
                 profilePicture.saveInBackground((SaveCallback) fe -> {
@@ -124,26 +117,6 @@ public class SignupDetailsFragment extends Fragment {
         });
 
         app.buttonSkip.setOnClickListener(v -> navigateToMain());
-    }
-
-    /**
-     * Navigates to the corresponding home activity depending on the user's role
-     */
-    private void navigateToMain() {
-        Intent i =  new Intent(mContext, HomeActivity.class);
-
-        //Navigate to the selected home activity
-        startActivity(i);
-        requireActivity().finish();
-    }
-
-    /**
-     * Goes to the account tags fragment
-     */
-    private void navigateForward() {
-        SignupDetailsFragmentDirections.DetailsToTagsAction detailsToTagsAction = SignupDetailsFragmentDirections.detailsToTagsAction(mNewUser);
-        NavHostFragment.findNavController(this)
-                .navigate(detailsToTagsAction);
     }
 
     /**
@@ -184,17 +157,7 @@ public class SignupDetailsFragment extends Fragment {
     private void setupProfilePictureListener(){
         app.constraintLayoutPicture.setOnClickListener(v ->{
 
-            //Prompt the user to pick a file from their device
-            Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
-            getIntent.setType("image/*");
-
-            //Prompt the user to pick the folder with the desired image
-            Intent pickIntent = new Intent(Intent.ACTION_PICK);
-            pickIntent.setDataAndType(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
-
-            //Prompt the user to select the image
-            Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+            Intent chooserIntent = Tools.createChooserIntent();
 
             //Load the pick image process
             chooseProfilePictureActivityLauncher.launch(chooserIntent);
@@ -212,7 +175,7 @@ public class SignupDetailsFragment extends Fragment {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         try {
-                            //Get the selected profile picture from the datastream
+                            //Get the selected profile picture from the data stream
                             assert data != null;
                             InputStream inputStream = mContext.getContentResolver().openInputStream(data.getData());
                             mProfilePicture = BitmapFactory.decodeStream(inputStream);
@@ -228,6 +191,26 @@ public class SignupDetailsFragment extends Fragment {
                     }
                 }
             });
+
+    /**
+     * Navigates to the home activity
+     */
+    private void navigateToMain() {
+        Intent i =  new Intent(mContext, HomeActivity.class);
+
+        //Navigate to the selected home activity
+        startActivity(i);
+        requireActivity().finish();
+    }
+
+    /**
+     * Goes to the account tags fragment
+     */
+    private void navigateForward() {
+        SignupDetailsFragmentDirections.DetailsToTagsAction detailsToTagsAction = SignupDetailsFragmentDirections.detailsToTagsAction(mNewUser);
+        NavHostFragment.findNavController(this)
+                .navigate(detailsToTagsAction);
+    }
 
     /**
      * Resets the ViewBinder

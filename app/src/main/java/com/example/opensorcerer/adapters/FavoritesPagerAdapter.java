@@ -27,6 +27,7 @@ public class FavoritesPagerAdapter extends FragmentStateAdapter {
                 : new FavoritesFragmentLinear();
     }
 
+    /**Getter for amount of pages in pager view*/
     @Override
     public int getItemCount() {
         return 2;

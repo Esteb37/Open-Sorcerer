@@ -17,7 +17,7 @@ import android.widget.TextView;
 @SuppressWarnings("unused")
 public class ExpandableTextView extends androidx.appcompat.widget.AppCompatTextView {
 
-    TextView mMoreMessage;
+    private TextView mMoreMessage;
 
     private boolean trim = true;
 

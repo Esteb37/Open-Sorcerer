@@ -65,10 +65,12 @@ public class SignupRoleFragment extends Fragment {
             mNewUser.setRole("developer");
             navigateToSignup();
         });
+
         app.buttonManager.setOnClickListener(v -> {
             mNewUser.setRole("manager");
             navigateToSignup();
         });
+
         app.buttonSignin.setOnClickListener(v -> {
             Intent i = new Intent(mContext, LoginActivity.class);
             startActivity(i);

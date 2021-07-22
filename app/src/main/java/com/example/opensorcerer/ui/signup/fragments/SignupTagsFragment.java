@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,16 +17,15 @@ import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.FragmentSignupTagsBinding;
-import com.example.opensorcerer.models.Tags;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.HomeActivity;
-import com.google.android.material.chip.ChipDrawable;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Fragment for adding interested categories and languages
@@ -59,8 +56,6 @@ public class SignupTagsFragment extends Fragment {
     /**User's selected profile picture*/
     private Bitmap mProfilePicture;
 
-
-
     /**
      * Inflates the fragment's layout
      */
@@ -84,9 +79,9 @@ public class SignupTagsFragment extends Fragment {
 
         setupButtonListeners();
 
-        setupLanguagesChip();
+        setupChipInput(app.chipInputLanguages, Arrays.asList(Tools.getLanguages()));
 
-        setupTagsChip();
+        setupChipInput(app.chipInputTags, Arrays.asList(Tools.getLanguages()));
     }
 
 
@@ -131,49 +126,43 @@ public class SignupTagsFragment extends Fragment {
 
     private int spannedLengthTags = 0;
 
-    private void setupLanguagesChip(){
+    /**
+     * Sets up the text input to behave like a chip group
+     */
+    private void setupChipInput(AppCompatMultiAutoCompleteTextView chipInput, List<String> recommendationItems){
+
+        //Set the adapter
         ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
-                android.R.layout.simple_dropdown_item_1line, Tags.getLanguages());
+                android.R.layout.simple_dropdown_item_1line, recommendationItems);
+        chipInput.setAdapter(adapter);
 
-        app.chipInputLanguages.setAdapter(adapter);
-        app.chipInputLanguages.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        //Set the tokenizer to separate items by commas
+        chipInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
-        app.chipInputLanguages.setOnItemClickListener((parent, arg1, pos, id) -> tokenize(app.chipInputLanguages));
+        //Create a new token when a recommended item is selected
+        chipInput.setOnItemClickListener((parent, arg1, pos, id) -> tokenize(chipInput));
 
-        app.chipInputLanguages.setOnKeyListener((v, keyCode, event) -> {
+        //Create a new token when a comma is typed
+        chipInput.setOnKeyListener((v, keyCode, event) -> {
             if (keyCode == KeyEvent.KEYCODE_COMMA) {
-                tokenize(app.chipInputLanguages);
+                tokenize(chipInput);
             }
             return true;
         });
     }
 
-    private void setupTagsChip() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext,
-                android.R.layout.simple_dropdown_item_1line, Tags.getLanguages());
-
-        app.chipInputTags.setAdapter(adapter);
-        app.chipInputTags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-
-        app.chipInputTags.setOnItemClickListener((parent, arg1, pos, id) -> tokenize(app.chipInputTags));
-
-        app.chipInputTags.setOnKeyListener((v, keyCode, event) -> {
-            if (keyCode == KeyEvent.KEYCODE_COMMA) {
-                tokenize(app.chipInputTags);
-            }
-            return true;
-        });
-    }
-
+    /**
+     * Creates a new chip from the last imputed word and adds it to the group
+     */
     private void tokenize(AppCompatMultiAutoCompleteTextView chipInput) {
+
+        //Get the spanned length depending on which chip input is being tokenized
         int spannedLength = chipInput == app.chipInputLanguages ? spannedLengthLanguages : spannedLengthTags;
 
-        Editable editable = chipInput.getEditableText();
-        ChipDrawable chip = ChipDrawable.createFromResource(mContext, R.xml.chip);
-        chip.setText(editable.subSequence(spannedLength,editable.length()).toString().replace(",",""));
-        chip.setBounds(0, 0, chip.getIntrinsicWidth(), chip.getIntrinsicHeight());
-        ImageSpan span = new ImageSpan(chip);
-        editable.setSpan(span, spannedLength, editable.length(),Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //Add a new chip to the input
+        Editable editable = Tools.addChip(mContext,chipInput.getEditableText(),spannedLength);
+
+        //Update the current length of the selected input
         if(chipInput == app.chipInputLanguages){
             spannedLengthLanguages = editable.length();
         } else {

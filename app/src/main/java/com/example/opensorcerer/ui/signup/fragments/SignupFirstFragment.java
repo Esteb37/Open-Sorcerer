@@ -2,8 +2,6 @@ package com.example.opensorcerer.ui.signup.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +26,7 @@ import java.util.Objects;
 public class SignupFirstFragment extends Fragment {
 
     /**Tag for logging*/
-    private static final String TAG = "SignupRoleFragment";
+    private static final String TAG = "SignupFirstFragment";
 
     /**Binder for View Binding*/
     private FragmentSignupFirstBinding app;
@@ -72,7 +70,7 @@ public class SignupFirstFragment extends Fragment {
         app.buttonNext.setOnClickListener(v -> {
 
             //Verify that the email is valid and the passwords match
-            if(inputsAreValid()){
+            if(passwordsMatch()){
 
                 //Set the credentials into the user
                 mNewUser.setUsername(Objects.requireNonNull(app.editTextUsername.getText()).toString());
@@ -108,7 +106,7 @@ public class SignupFirstFragment extends Fragment {
     /**
      * @return If the passwords match
      */
-    private boolean inputsAreValid() {
+    private boolean passwordsMatch() {
         String password = Objects.requireNonNull(app.editTextPassword.getText()).toString();
         String confirm = Objects.requireNonNull(app.editTextConfirm.getText()).toString();
         if(! (password.equals(confirm))){
@@ -116,13 +114,6 @@ public class SignupFirstFragment extends Fragment {
             return false;
         }
         return true;
-    }
-
-    /**
-     * @return If an email address has the correct format
-     */
-    public static boolean isValidEmail(CharSequence target) {
-        return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
     /**
