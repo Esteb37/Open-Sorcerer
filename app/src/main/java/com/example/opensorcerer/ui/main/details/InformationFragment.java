@@ -24,6 +24,7 @@ import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentInformationBinding;
 import com.example.opensorcerer.models.Project;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -101,6 +102,8 @@ public class InformationFragment extends Fragment {
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
 
+        mUser = User.getCurrentUser();
+
         assert getArguments() != null;
         mProject = Parcels.unwrap(getArguments().getParcelable("project"));
     }
@@ -117,8 +120,13 @@ public class InformationFragment extends Fragment {
             app.textViewTitle.setMaxLines(mProject.getTitle().split(" ").length);
             app.textViewViews.setText(String.valueOf(mProject.getViewCount()));
             app.textViewLikes.setText(String.valueOf(mProject.getLikeCount()));
-            app.textViewTags.setText(mProject.getTags().toString().replace("[", "").replace("]", ""));
-            app.textViewLanguages.setText(mProject.getLanguages().toString().replace("[", "").replace("]", ""));
+
+            app.textViewTags.setText(Tools.listToString(mProject.getTags()));
+            app.textViewTags.post(() -> app.textViewTags.setMoreMessage(app.textViewMoreTags));
+
+            //Load the list of languages to an expandable view
+            app.textViewLanguages.setText(Tools.listToString(mProject.getLanguages()));
+            app.textViewLanguages.post(() -> app.textViewLanguages.setMoreMessage(app.textViewMoreLanguages));
 
             //Load Manager's name
             try {

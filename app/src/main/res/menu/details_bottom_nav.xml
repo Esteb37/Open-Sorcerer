@@ -11,9 +11,9 @@
     <item
         android:id="@+id/actionGithub"
         android:enabled="true"
-        android:icon="@drawable/github_icon"
+        android:icon="@drawable/website"
         android:iconTint="#FFFFFF"
-        android:title="GitHub"
+        android:title="Homepage"
         app:showAsAction="always" />
     <item
         android:id="@+id/actionFork"

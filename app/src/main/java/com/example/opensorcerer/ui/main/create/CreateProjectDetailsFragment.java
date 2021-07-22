@@ -22,7 +22,7 @@ import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.Glide;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentCreateSecondBinding;
+import com.example.opensorcerer.databinding.FragmentCreateDetailsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
@@ -38,16 +38,16 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
- * Second fragment for creating a new project and adding it to the database
+ * Fragment for adding primary details to the created project
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class CreateProjectSecondFragment extends Fragment {
+public class CreateProjectDetailsFragment extends Fragment {
 
     /**Tag for logging*/
-    private static final String TAG = "CreateProjectSecondFragment";
+    private static final String TAG = "CreateProjectDetailsFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentCreateSecondBinding app;
+    private FragmentCreateDetailsBinding app;
 
     /**Fragment's context*/
     private Context mContext;
@@ -67,7 +67,7 @@ public class CreateProjectSecondFragment extends Fragment {
     /**New project's logo image*/
     private Bitmap mProjectLogo;
 
-    public CreateProjectSecondFragment() {
+    public CreateProjectDetailsFragment() {
         // Required empty public constructor
     }
 
@@ -82,7 +82,7 @@ public class CreateProjectSecondFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentCreateSecondBinding.inflate(inflater,container,false);
+        app = FragmentCreateDetailsBinding.inflate(inflater,container,false);
         return app.getRoot();
     }
 
@@ -130,7 +130,7 @@ public class CreateProjectSecondFragment extends Fragment {
 
         //Get the website or set the website to the project's github page
         String website = mRepo.getHomepage();
-        if(website.equals("")){
+        if(website == null || website.equals("")){
             website = repo;
         }
         String finalWebsite = website;
@@ -202,11 +202,11 @@ public class CreateProjectSecondFragment extends Fragment {
     }
 
     /**
-     * Navigates to the third Create Project Fragment
+     * Navigates to the create project tags Fragment
      */
     private void navigateForward() {
         final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        Fragment fragment = new CreateProjectThirdFragment();
+        Fragment fragment = new CreateProjectTagsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("project",Parcels.wrap(mNewProject));
         fragment.setArguments(bundle);
@@ -214,11 +214,11 @@ public class CreateProjectSecondFragment extends Fragment {
     }
 
     /**
-     * Navigates to the first Create Project Fragment
+     * Navigates to the Create Project import Fragment
      */
     private void navigateBackward() {
         final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        Fragment fragment = new CreateProjectFirstFragment();
+        Fragment fragment = new CreateProjectImportFragment();
         fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
     }
 

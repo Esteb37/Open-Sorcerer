@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentCreateFirstBinding;
+import com.example.opensorcerer.databinding.FragmentCreateImportBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
 
@@ -28,16 +28,16 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * First fragment for creating a new project and adding it to the database
+ * Fragment for importing a project from github
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class CreateProjectFirstFragment extends Fragment {
+public class CreateProjectImportFragment extends Fragment {
 
     /**Tag for logging*/
-    private static final String TAG = "CreateProjectFirstFragment";
+    private static final String TAG = "CreateProjectImportFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentCreateFirstBinding app;
+    private FragmentCreateImportBinding app;
 
     /**Fragment's context*/
     private Context mContext;
@@ -51,7 +51,7 @@ public class CreateProjectFirstFragment extends Fragment {
     /**The project being created*/
     private Project mNewProject;
 
-    public CreateProjectFirstFragment() {
+    public CreateProjectImportFragment() {
         // Required empty public constructor
     }
 
@@ -66,7 +66,7 @@ public class CreateProjectFirstFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentCreateFirstBinding.inflate(inflater,container,false);
+        app = FragmentCreateImportBinding.inflate(inflater,container,false);
         return app.getRoot();
     }
 
@@ -122,11 +122,11 @@ public class CreateProjectFirstFragment extends Fragment {
 
 
     /**
-     * Navigates to the second Create Project Fragment
+     * Navigates to the Create Project details Fragment
      */
     private void navigateForward() {
         final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        Fragment fragment = new CreateProjectSecondFragment();
+        Fragment fragment = new CreateProjectDetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("project",Parcels.wrap(mNewProject));
         fragment.setArguments(bundle);

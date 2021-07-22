@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.opensorcerer.databinding.FragmentSignupSecondBinding;
+import com.example.opensorcerer.databinding.FragmentSignupGithubBinding;
 import com.example.opensorcerer.models.User;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,13 +21,13 @@ import java.util.Objects;
  * Fragment for linking a user to their GitHub account
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class SignupSecondFragment extends Fragment {
+public class SignupGithubFragment extends Fragment {
 
     /**Tag for logging*/
-    private static final String TAG = "SignupSecondFragment";
+    private static final String TAG = "SignupGithubFragment";
 
     /**Binder for ViewBinding*/
-    private FragmentSignupSecondBinding app;
+    private FragmentSignupGithubBinding app;
 
     /**Fragment's context*/
     private Context mContext;
@@ -40,7 +40,7 @@ public class SignupSecondFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentSignupSecondBinding.inflate(inflater, container, false);
+        app = FragmentSignupGithubBinding.inflate(inflater, container, false);
         return app.getRoot();
     }
 
@@ -52,8 +52,8 @@ public class SignupSecondFragment extends Fragment {
 
         mContext = getContext();
 
-        //Get the user created in the First signup fragment
-        mNewUser = SignupSecondFragmentArgs.fromBundle(getArguments()).getUser();
+        //Get the user created in the credentials signup fragment
+        mNewUser = SignupGithubFragmentArgs.fromBundle(getArguments()).getUser();
 
         setupButtonListeners();
     }
@@ -85,21 +85,21 @@ public class SignupSecondFragment extends Fragment {
     }
 
     /**
-     * Navigates back to the First signup fragment
+     * Navigates back to the credentials signup fragment
      */
     private void navigateBack() {
-        SignupSecondFragmentDirections.SecondToFirstAction secondToFirstAction = SignupSecondFragmentDirections.secondToFirstAction(mNewUser);
+        SignupGithubFragmentDirections.GithubToCredentialsAction githubToCredentialsAction = SignupGithubFragmentDirections.githubToCredentialsAction(mNewUser);
         NavHostFragment.findNavController(this)
-                .navigate(secondToFirstAction);
+                .navigate(githubToCredentialsAction);
     }
 
     /**
      * Goes to the Details fragment
      */
     private void navigateForward() {
-        SignupSecondFragmentDirections.SecondToDetailsAction secondToDetailsAction = SignupSecondFragmentDirections.secondToDetailsAction(mNewUser);
+        SignupGithubFragmentDirections.GithubToDetailsAction githubToDetailsAction = SignupGithubFragmentDirections.githubToDetailsAction(mNewUser);
         NavHostFragment.findNavController(this)
-                .navigate(secondToDetailsAction);
+                .navigate(githubToDetailsAction);
     }
 
     /**

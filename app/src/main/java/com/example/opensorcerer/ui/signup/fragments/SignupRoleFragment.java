@@ -78,12 +78,12 @@ public class SignupRoleFragment extends Fragment {
     }
 
     /**
-     * Navigates forward to the first signup screen
+     * Navigates forward to the credentials signup screen
      */
     private void navigateToSignup() {
-        SignupRoleFragmentDirections.RoleToFirstAction roleToFirstAction = SignupRoleFragmentDirections.roleToFirstAction(mNewUser);
+        SignupRoleFragmentDirections.RoleToCredentialsAction roleToCredentialsAction = SignupRoleFragmentDirections.roleToCredentialsAction(mNewUser);
         NavHostFragment.findNavController(this)
-                .navigate(roleToFirstAction);
+                .navigate(roleToCredentialsAction);
     }
 
     /**

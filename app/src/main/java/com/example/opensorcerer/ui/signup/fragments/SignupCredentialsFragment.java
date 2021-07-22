@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.opensorcerer.databinding.FragmentSignupFirstBinding;
+import com.example.opensorcerer.databinding.FragmentSignupCredentialsBinding;
 import com.example.opensorcerer.models.User;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,13 +23,13 @@ import java.util.Objects;
  * Fragment for choosing email and password when signing up.
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class SignupFirstFragment extends Fragment {
+public class SignupCredentialsFragment extends Fragment {
 
     /**Tag for logging*/
-    private static final String TAG = "SignupFirstFragment";
+    private static final String TAG = "SignupCredentialsFragment";
 
     /**Binder for View Binding*/
-    private FragmentSignupFirstBinding app;
+    private FragmentSignupCredentialsBinding app;
 
     /**Fragment's context*/
     private Context mContext;
@@ -42,7 +42,7 @@ public class SignupFirstFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentSignupFirstBinding .inflate(inflater, container, false);
+        app = FragmentSignupCredentialsBinding .inflate(inflater, container, false);
         return app.getRoot();
 
     }
@@ -56,7 +56,7 @@ public class SignupFirstFragment extends Fragment {
         mContext = getContext();
 
         //Get the user created in the Role fragment
-        mNewUser = SignupFirstFragmentArgs.fromBundle(getArguments()).getUser();
+        mNewUser = SignupCredentialsFragmentArgs.fromBundle(getArguments()).getUser();
 
         setupButtonListeners();
     }
@@ -89,18 +89,18 @@ public class SignupFirstFragment extends Fragment {
      * Goes back to the "role" fragment
      */
     private void navigateBackward() {
-        NavDirections firstToRoleAction = SignupFirstFragmentDirections.firstToRoleAction();
+        NavDirections credentialsToRoleAction = SignupCredentialsFragmentDirections.credentialsToRoleAction();
         NavHostFragment.findNavController(this)
-                .navigate(firstToRoleAction);
+                .navigate(credentialsToRoleAction);
     }
 
     /**
      * Goes to the GitHub user fragment
      */
     private void navigateForward() {
-        SignupFirstFragmentDirections.FirstToSecondAction firstToSecondAction = SignupFirstFragmentDirections.firstToSecondAction(mNewUser);
+        SignupCredentialsFragmentDirections.CredentialsToGithubAction credentialsToGithubAction = SignupCredentialsFragmentDirections.credentialsToGithubAction(mNewUser);
         NavHostFragment.findNavController(this)
-                .navigate(firstToSecondAction);
+                .navigate(credentialsToGithubAction);
     }
 
     /**

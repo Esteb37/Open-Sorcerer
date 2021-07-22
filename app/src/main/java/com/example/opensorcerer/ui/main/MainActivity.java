@@ -13,7 +13,7 @@ import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.ActivityHomeBinding;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.conversations.ConversationsFragment;
-import com.example.opensorcerer.ui.main.create.CreateProjectFirstFragment;
+import com.example.opensorcerer.ui.main.create.CreateProjectImportFragment;
 import com.example.opensorcerer.ui.main.projects.ProjectsFragment;
 import com.example.opensorcerer.ui.main.profile.ProfileFragment;
 import com.example.opensorcerer.ui.main.home.HomeFragment;
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity{
 
                 //Create item selected
                 case actionCreate:
-                    fragment = new CreateProjectFirstFragment();
+                    fragment = new CreateProjectImportFragment();
                     break;
 
                 //Profile item selected

@@ -2,6 +2,7 @@ package com.example.opensorcerer.ui.main.home;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,11 +162,15 @@ public class HomeFragment extends Fragment {
         query.setLimit(QUERY_LIMIT);
         query.setSkip(page*QUERY_LIMIT);
 
-        //Get the projects
         query.findInBackground((projects, e) -> {
-            mAdapter.addAll(projects);
-            app.progressBar.setVisibility(View.GONE);
-            app.swipeContainer.setRefreshing(false);
+            if(e==null){
+                if(projects.size()>0){
+                    mAdapter.addAll(projects);
+                }
+                app.progressBar.setVisibility(View.GONE);
+            } else {
+                Log.d(TAG,"Unable to load projects.");
+            }
         });
     }
 

@@ -12,24 +12,23 @@
         tools:layout="@layout/fragment_signup_role">
 
         <action
-            android:id="@+id/roleToFirstAction"
-            app:destination="@id/FirstFragment"
+            android:id="@+id/roleToCredentialsAction"
+            app:destination="@id/CredentialsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.opensorcerer.ui.signup.fragments.SignupFirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_signup_first">
+        android:id="@+id/CredentialsFragment"
+        android:name="com.example.opensorcerer.ui.signup.fragments.SignupCredentialsFragment"
+        tools:layout="@layout/fragment_signup_credentials">
         <action
-            android:id="@+id/firstToSecondAction"
-            app:destination="@id/SecondFragment"
+            android:id="@+id/credentialsToGithubAction"
+            app:destination="@id/GithubFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
              />
         <action
-            android:id="@+id/firstToRoleAction"
+            android:id="@+id/credentialsToRoleAction"
             app:destination="@id/RoleFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right" />
@@ -38,21 +37,20 @@
             app:argType="com.example.opensorcerer.models.User" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.opensorcerer.ui.signup.fragments.SignupSecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_signup_second">
+        android:id="@+id/GithubFragment"
+        android:name="com.example.opensorcerer.ui.signup.fragments.SignupGithubFragment"
+        tools:layout="@layout/fragment_signup_github">
 
         <action
-            android:id="@+id/secondToDetailsAction"
+            android:id="@+id/githubToDetailsAction"
             app:destination="@id/DetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             />
 
         <action
-            android:id="@+id/secondToFirstAction"
-            app:destination="@id/FirstFragment"
+            android:id="@+id/githubToCredentialsAction"
+            app:destination="@id/CredentialsFragment"
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"  />
 
@@ -64,7 +62,6 @@
     <fragment
         android:id="@+id/DetailsFragment"
         android:name="com.example.opensorcerer.ui.signup.fragments.SignupDetailsFragment"
-        android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_signup_details">
 
         <action
@@ -82,7 +79,6 @@
     <fragment
         android:id="@+id/TagsFragment"
         android:name="com.example.opensorcerer.ui.signup.fragments.SignupTagsFragment"
-        android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_signup_tags">
 
         <action

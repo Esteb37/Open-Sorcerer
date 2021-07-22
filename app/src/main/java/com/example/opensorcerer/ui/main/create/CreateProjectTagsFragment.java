@@ -20,7 +20,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentCreateThirdBinding;
+import com.example.opensorcerer.databinding.FragmentCreateTagsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
@@ -37,16 +37,16 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Second fragment for creating a new project and adding it to the database
+ * Fragment for adding tags to the created project
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class CreateProjectThirdFragment extends Fragment {
+public class CreateProjectTagsFragment extends Fragment {
 
     /**Tag for logging*/
-    private static final String TAG = "CreateProjectSecondFragment";
+    private static final String TAG = "CreateProjectTagsFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentCreateThirdBinding app;
+    private FragmentCreateTagsBinding app;
 
     /**Fragment's context*/
     private Context mContext;
@@ -63,7 +63,7 @@ public class CreateProjectThirdFragment extends Fragment {
     /**The newly created project*/
     private Project mNewProject;
 
-    public CreateProjectThirdFragment() {
+    public CreateProjectTagsFragment() {
         // Required empty public constructor
     }
 
@@ -78,7 +78,7 @@ public class CreateProjectThirdFragment extends Fragment {
      */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app = FragmentCreateThirdBinding.inflate(inflater,container,false);
+        app = FragmentCreateTagsBinding.inflate(inflater,container,false);
         return app.getRoot();
     }
 
@@ -233,7 +233,7 @@ public class CreateProjectThirdFragment extends Fragment {
     }
 
     /**
-     * Navigates to the third Create Project Fragment
+     * Navigates back to the home timeline
      */
     private void navigateToHome() {
         final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -242,11 +242,11 @@ public class CreateProjectThirdFragment extends Fragment {
     }
 
     /**
-     * Navigates to the first Create Project Fragment
+     * Navigates to the  Create Project details Fragment
      */
     private void navigateBackward() {
         final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        Fragment fragment = new CreateProjectSecondFragment();
+        Fragment fragment = new CreateProjectDetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("project",Parcels.wrap(mNewProject));
         fragment.setArguments(bundle);
