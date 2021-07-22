@@ -1,24 +1,41 @@
 package com.example.opensorcerer.ui.main.create;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
+import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreateSecondBinding;
 import com.example.opensorcerer.models.Project;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
+import com.parse.ParseFile;
+import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 import org.parceler.Parcels;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 /**
  * Second fragment for creating a new project and adding it to the database
@@ -41,9 +58,14 @@ public class CreateProjectSecondFragment extends Fragment {
     /**GitHub API handler*/
     private GitHub mGitHub;
 
+    /**The new project's repo object*/
     private GHRepository mRepo;
 
+    /**The newly created project*/
     private Project mNewProject;
+
+    /**New project's logo image*/
+    private Bitmap mProjectLogo;
 
     public CreateProjectSecondFragment() {
         // Required empty public constructor
@@ -74,6 +96,10 @@ public class CreateProjectSecondFragment extends Fragment {
         getState();
 
         loadRepoDetails();
+
+        setupButtonListeners();
+
+        setupImageListener();
     }
 
     /**
@@ -109,8 +135,6 @@ public class CreateProjectSecondFragment extends Fragment {
         }
         String finalWebsite = website;
 
-
-
         //Go back to the main thread
         requireActivity().runOnUiThread(() -> {
 
@@ -122,94 +146,107 @@ public class CreateProjectSecondFragment extends Fragment {
         });
     }
 
+    /**
+     * Sets up the listeners for the navigation buttons
+     */
+    private void setupButtonListeners(){
+        app.buttonNext.setOnClickListener(v -> {
 
+            //Set the project's details from the inputs
+            mNewProject.setTitle(app.editTextTitle.getText().toString());
+            mNewProject.setDescription(app.editTextDescription.getText().toString());
+            mNewProject.setRepository(app.editTextRepository.getText().toString());
+            mNewProject.setWebsite(app.editTextWebsite.getText().toString());
 
-    /*private void setupCreateProjectButtonListener() {
+            //Set the project's manager to this user
+            mNewProject.setManager(mUser);
 
-        app.btnCreate.setOnClickListener(v -> {
+            //Set the project's logo image
+            if(mProjectLogo!=null){
 
-            //Create a new project
-            Project project = new Project();
+                //Transform the selected profile picture bitmap into a ParseFile
+                ParseFile logoImage  = Tools.bitmapToParseFile(mProjectLogo);
 
-            //Set the project up with the imputed information
-            project.setTitle(app.etTitle.getText().toString());
-            project.setDescription(app.etShortDescription.getText().toString());
-            project.setReadme(app.etReadme.getText().toString());
-            project.setManager(mUser);
-            project.setRepository(app.etRepo.getText().toString());
+                //Save the logo image into the database
+                logoImage.saveInBackground((SaveCallback) fe -> {
 
-            //Set the tags and languages as lists
-            List<String> languages = Arrays.asList(app.etLanguages.getText().toString().split(","));
-            project.setLanguages(languages);
-            List<String> tags = Arrays.asList(app.etTags.getText().toString().split(","));
-            project.setTags(tags);
+                    //If the image was saved correctly
+                    if(fe==null){
 
-            //Create a new background thread
-            new Thread(() -> {
-
-                //Download the selected image from the internet
-                ParseFile logoImage = bitmapToParseFile(getBitmapFromURL(app.etImage.getText().toString()));
-
-                //Set the downloaded image into the project's logo image
-                project.setLogoImage(logoImage);
-
-                //Save the project
-                project.saveInBackground(e -> {
-                    if(e==null){
-
-                        //Add the project to the user's list of projects
-                        mUser.addProject(project);
-
-                        //Go back to the projects fragment
-                        final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.flContainer,new MyProjectsFragment()).commit();
+                        //Set the image as the user's profile picture
+                        mNewProject.setLogoImage(logoImage);
+                        navigateForward();
                     } else {
-                        Toast.makeText(mContext, "There was an error creating your project.", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
+                        fe.printStackTrace();
                     }
                 });
-            }).start();
+            } else {
+                navigateForward();
+            }
         });
-    }*/
 
+        app.buttonBack.setOnClickListener(v -> navigateBackward());
+    }
 
+    /**
+     * Sets the listener for uploading the logo image
+     */
+    private void setupImageListener(){
+        app.constraintLayoutPicture.setOnClickListener(v ->{
 
-    /*private void setupImageEditorListener() {
-       (app.etImage).setOnEditorActionListener(
-                (v, actionId, event) -> {
+            Intent chooserIntent = Tools.createChooserIntent();
 
-                    //If the user has finished typing, typed enter or down
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                            actionId == EditorInfo.IME_ACTION_DONE ||
-                            event != null &&
-                                    event.getAction() == KeyEvent.ACTION_DOWN &&
-                                    event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                        if (event == null || !event.isShiftPressed()) {
+            //Load the pick image process
+            chooseProjectLogoActivityLauncher.launch(chooserIntent);
+        });
+    }
 
-                            //Load the image into the preview
+    /**
+     * Navigates to the third Create Project Fragment
+     */
+    private void navigateForward() {
+        final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        Fragment fragment = new CreateProjectThirdFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("project",Parcels.wrap(mNewProject));
+        fragment.setArguments(bundle);
+        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+    }
+
+    /**
+     * Navigates to the first Create Project Fragment
+     */
+    private void navigateBackward() {
+        final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        Fragment fragment = new CreateProjectFirstFragment();
+        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+    }
+
+    /**
+     * Activity launcher for choosing a picture from the user's files
+     */
+    ActivityResultLauncher<Intent> chooseProjectLogoActivityLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        try {
+                            //Get the selected profile picture from the data stream
+                            assert data != null;
+                            InputStream inputStream = mContext.getContentResolver().openInputStream(data.getData());
+                            mProjectLogo = BitmapFactory.decodeStream(inputStream);
+
+                            //Load the profile picture into the placeholder
                             Glide.with(mContext)
-                                    .load(app.etImage.getText().toString())
-                                    .fitCenter()
-                                    .transform(new RoundedCorners(1000))
-                                    .into(app.ivLogo);
+                                    .load(mProjectLogo)
+                                    .into(app.imageViewProjectLogo);
 
-                            return true; // consume.
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
                         }
                     }
-                    return false; // pass on to other listeners.
                 }
-        );
-    }*/
-
-      /*//Get the tags and languages in comma separated list form
-        try {
-            String tags = mRepo.listTopics().toString().replace("[","").replace("]","");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            String languages = mRepo.listLanguages().keySet().toString().replace("[","").replace("]","");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+            });
 }
