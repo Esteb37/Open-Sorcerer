@@ -97,7 +97,6 @@ public class DetailsFragment extends Fragment{
         final int actionDetails = R.id.actionDetails;
         final int actionGithub = R.id.actionGithub;
 
-
         app.bottomNavDetails.setOnItemSelectedListener(item -> {
             Fragment fragment;
 

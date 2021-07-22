@@ -47,10 +47,16 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     /**Fragment pager adapter*/
     FavoritesPagerAdapter mPagerAdapter;
 
+    /**Fragment for the profile details*/
     private Fragment profileContentFragment = null;
+
+    /**Fragment for the menu drawer*/
     private Fragment profileDrawerFragment = null;
 
 
+    /**
+     * Listener for the profile menu's interaction to open and close the drawer
+     */
     private final ProfileContentFragment.OnFragmentInteractionListener
             mDrawerListener = new ProfileContentFragment.OnFragmentInteractionListener() {
         @Override
@@ -68,11 +74,9 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
+    /**
+     * Inflates the layout and sets up view binding
+     */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,26 +84,18 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
         return app.getRoot();
     }
 
+    /**
+     * Sets up the fragment's methods
+     */
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         getState();
 
+        setupProfileContent();
+
         setupDrawer();
-    }
-
-    private void setupDrawer() {
-
-        FragmentManager fm = requireActivity().getSupportFragmentManager();
-        profileContentFragment = new ProfileContentFragment(mDrawerListener);
-        FragmentTransaction t = fm.beginTransaction();
-        t.replace(R.id.content_frame, profileContentFragment);
-        t.commit();
-        profileDrawerFragment = new ProfileDrawerFragment();
-        FragmentTransaction r = fm.beginTransaction();
-        r.replace(R.id.right_drawer, profileDrawerFragment);
-        r.commit();
     }
 
     /**
@@ -111,5 +107,27 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
         mUser = User.getCurrentUser();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
+    }
+
+    /**
+     * Sets up the profile's details content fragment
+     */
+    private void setupProfileContent(){
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        profileContentFragment = new ProfileContentFragment(mDrawerListener);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.content_frame, profileContentFragment);
+        transaction.commit();
+    }
+
+    /**
+     * Sets up the profile view's menu drawer
+     */
+    private void setupDrawer() {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        profileDrawerFragment = new ProfileDrawerFragment();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.right_drawer, profileDrawerFragment);
+        transaction.commit();
     }
 }

@@ -28,6 +28,9 @@ import org.kohsuke.github.GitHub;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment for displaying the user's timeline of projects
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class ProjectsFragment extends Fragment {
 
@@ -94,16 +97,6 @@ public class ProjectsFragment extends Fragment {
         setupSwipeRefresh();
     }
 
-    private void setupSwipeRefresh() {
-        app.swipeContainer.setOnRefreshListener(() -> queryProjects(0));
-
-        app.swipeContainer.setColorSchemeResources(R.color.darker_blue,
-                R.color.dark_blue,
-                R.color.light_blue,
-                android.R.color.holo_red_light);
-    }
-
-
     /**
      * Gets the current state for the member variables.
      */
@@ -142,12 +135,14 @@ public class ProjectsFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(mContext,RecyclerView.VERTICAL,false);
         app.rvProjects.setLayoutManager(mLayoutManager);
 
+        //Sets up the endless scroller listener
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 queryProjects(page);
             }
         };
+
         // Adds the scroll listener to RecyclerView
         app.rvProjects.addOnScrollListener(scrollListener);
     }
@@ -158,15 +153,32 @@ public class ProjectsFragment extends Fragment {
      */
     private void queryProjects(int page){
 
+        //Get a query in descending order
         ParseQuery<Project> query = ParseQuery.getQuery(Project.class);
         query.addDescendingOrder("createdAt");
+
+        //Setup pagination
         query.setLimit(QUERY_LIMIT);
         query.setSkip(page*QUERY_LIMIT);
+
+        //Get the projects
         query.findInBackground((projects, e) -> {
             mAdapter.addAll(projects);
             app.progressBar.setVisibility(View.GONE);
             app.swipeContainer.setRefreshing(false);
         });
+    }
+
+    /**
+     * Sets up the swipe down to refresh interaction
+     */
+    private void setupSwipeRefresh() {
+        app.swipeContainer.setOnRefreshListener(() -> queryProjects(0));
+
+        app.swipeContainer.setColorSchemeResources(R.color.darker_blue,
+                R.color.dark_blue,
+                R.color.light_blue,
+                android.R.color.holo_red_light);
     }
 
     /**

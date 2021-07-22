@@ -1,14 +1,9 @@
 package com.example.opensorcerer.ui.main;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -17,9 +12,8 @@ import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.ActivityHomeBinding;
 import com.example.opensorcerer.models.User;
-import com.example.opensorcerer.ui.login.LoginActivity;
 import com.example.opensorcerer.ui.main.conversations.ConversationsFragment;
-import com.example.opensorcerer.ui.main.create.CreateProjectFragment;
+import com.example.opensorcerer.ui.main.create.CreateProjectFirstFragment;
 import com.example.opensorcerer.ui.main.favorites.FavoritesFragment;
 import com.example.opensorcerer.ui.main.profile.ProfileFragment;
 import com.example.opensorcerer.ui.main.projects.ProjectsFragment;
@@ -29,7 +23,7 @@ import org.kohsuke.github.GitHub;
 
 
 /**
- * Main activity for the Developer users
+ * Main activity
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class HomeActivity extends AppCompatActivity{
@@ -128,9 +122,9 @@ public class HomeActivity extends AppCompatActivity{
                     fragment = new FavoritesFragment();
                     break;
 
-                //Profile item selected
+                //Create item selected
                 case actionCreate:
-                    fragment = new CreateProjectFragment();
+                    fragment = new CreateProjectFirstFragment();
                     break;
 
                 //Profile item selected
@@ -153,44 +147,5 @@ public class HomeActivity extends AppCompatActivity{
 
         //Set the default window to be the Home
         app.bottomNav.setSelectedItemId(R.id.actionHome);
-    }
-
-
-
-    /**
-     * Inflates the options menu
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
-
-    /**
-     * Detects the Options Menu item that was clicked and responds accordingly
-     */
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        //If the logout button was clicked
-        if(item.getItemId() == R.id.btnLogout){
-
-            //Log the user out
-            ParseUser.logOutInBackground(e -> {
-
-                //Go to the login activity
-                if(e == null){
-                    Intent i = new Intent(mContext, LoginActivity.class);
-                    startActivity(i);
-                    finish();
-                } else { //Notify error
-                    Toast.makeText(mContext, "Unable to log out.", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                }
-            });
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -14,13 +14,12 @@ import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.FavoritesPagerAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProfileContentBinding;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
-
-import java.util.List;
 
 /**
  * Fragment for displaying a user's profile.
@@ -30,7 +29,7 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
 
 
     /**Tag for logging*/
-    private static final String TAG = "ProfileFragment";
+    private static final String TAG = "ProfileContentFragment";
 
     /**Binder object for ViewBinding*/
     private FragmentProfileContentBinding app;
@@ -47,29 +46,25 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
     /**Fragment pager adapter*/
     FavoritesPagerAdapter mPagerAdapter;
 
-    // create nested interface in ContentFragment
+    /**Interface for listening to the drawer*/
     public interface OnFragmentInteractionListener {
         void openDrawer();
         void closeDrawer();
     }
 
-    private OnFragmentInteractionListener mListener;
+    /**Listener for the drawer*/
+    private final OnFragmentInteractionListener mListener;
 
-
+    /**
+     * Sets up the listener for the drawer
+     */
     public ProfileContentFragment(OnFragmentInteractionListener listener) {
         mListener = listener;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onAttach(@NotNull Context context) {
-        super.onAttach(context);
-    }
-
+    /**
+     * Inflates the fragment's layout and sets up view binding
+     */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,6 +72,9 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
         return app.getRoot();
     }
 
+    /**
+     * Sets up the fragment's methods
+     */
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -90,10 +88,42 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
         setDrawerButtonListener();
     }
 
-    private void setDrawerButtonListener() {
-        app.buttonDrawer.setOnClickListener(v -> mListener.openDrawer());
+    /**
+     * Gets the current state for the member variables.
+     */
+    private void getState() {
+        mContext = getContext();
+
+        mUser = User.getCurrentUser();
+
+        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }
 
+    /**Loads the user's information into the profile*/
+    private void loadProfileDetails() {
+
+        //Load text information
+        app.textViewName.setText(mUser.getName());
+        app.textViewUsername.setText(String.format("@%s", mUser.getUsername()));
+        app.textViewBio.setText(mUser.getBio());
+
+        //Load the list of languages to an expandable view
+        app.textViewLanguages.setText(Tools.listToString(mUser.getLanguages()));
+        app.textViewLanguages.post(() -> app.textViewLanguages.setMoreMessage(app.textViewMoreLanguages));
+
+        //Load the list of tags to an expandable view
+        app.textViewInterests.setText(Tools.listToString(mUser.getInterests()));
+        app.textViewInterests.post(() -> app.textViewInterests.setMoreMessage(app.textViewMoreInterests));
+
+        //Load the user's profile picture
+        Glide.with(mContext)
+                .load(mUser.getProfilePicture().getUrl())
+                .into(app.imageViewProfilePicture);
+    }
+
+    /**
+     * Sets up the pager view for the profile's projects
+     */
     private void setupPagerView() {
 
         //Set the adapter
@@ -108,47 +138,11 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment  {
         ).attach();
     }
 
-    private void loadProfileDetails() {
-        app.textViewName.setText(mUser.getName());
-        app.textViewUsername.setText(String.format("@%s", mUser.getUsername()));
-        app.textViewBio.setText(mUser.getBio());
-
-        app.textViewLanguages.setText(listToString(mUser.getLanguages()));
-        app.textViewLanguages.post(() -> app.textViewLanguages.setMoreMessage(app.textViewMoreLanguages));
-
-        app.textViewInterests.setText(listToString(mUser.getInterests()));
-        app.textViewInterests.post(() -> app.textViewInterests.setMoreMessage(app.textViewMoreInterests));
-
-        Glide.with(mContext)
-                .load(mUser.getProfilePicture().getUrl())
-                .into(app.imageViewProfilePicture);
-    }
-
-
-
-
-
-    private String listToString(List<String> list) {
-        StringBuilder str = new StringBuilder();
-        for(int i = 0;i<list.size();i++){
-            String item = list.get(i).trim();
-            if(!item.equals("")){
-                str.append(item).append(", ");
-            }
-        }
-        return str.substring(0,str.length()-2);
-    }
-
-
     /**
-     * Gets the current state for the member variables.
+     * Sets the listener for the menu button
      */
-    private void getState() {
-        mContext = getContext();
-
-        mUser = User.getCurrentUser();
-
-        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
-
+    private void setDrawerButtonListener() {
+        app.buttonDrawer.setOnClickListener(v -> mListener.openDrawer());
     }
+
 }

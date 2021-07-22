@@ -113,16 +113,16 @@ public class InformationFragment extends Fragment {
         if(mProject!=null) {
 
             //Load text details
-            app.tvTitle.setText(mProject.getTitle());
-            app.tvTitle.setMaxLines(mProject.getTitle().split(" ").length);
-            app.tvViews.setText(String.valueOf(mProject.getViewCount()));
-            app.tvLikes.setText(String.valueOf(mProject.getLikeCount()));
-            app.tvTags.setText(mProject.getTags().toString().replace("[", "").replace("]", ""));
-            app.tvLanguages.setText(mProject.getLanguages().toString().replace("[", "").replace("]", ""));
+            app.textViewTitle.setText(mProject.getTitle());
+            app.textViewTitle.setMaxLines(mProject.getTitle().split(" ").length);
+            app.textViewViews.setText(String.valueOf(mProject.getViewCount()));
+            app.textViewLikes.setText(String.valueOf(mProject.getLikeCount()));
+            app.textViewTags.setText(mProject.getTags().toString().replace("[", "").replace("]", ""));
+            app.textViewLanguages.setText(mProject.getLanguages().toString().replace("[", "").replace("]", ""));
 
             //Load Manager's name
             try {
-                app.tvAuthor.setText(String.format("by %s", mProject.getManager().fetchIfNeeded().getUsername()));
+                app.textViewAuthor.setText(String.format("by %s", mProject.getManager().fetchIfNeeded().getUsername()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -133,7 +133,7 @@ public class InformationFragment extends Fragment {
                 Glide.with(mContext)
                         .load(image.getUrl())
                         .transform(new RoundedCorners(1000))
-                        .into(app.ivImage);
+                        .into(app.imageViewLogo);
                 app.progressBar.setVisibility(View.GONE);
             }
 
@@ -141,8 +141,6 @@ public class InformationFragment extends Fragment {
 
             //Load the project's ReadMe file
             loadReadme();
-
-
         }
     }
 
@@ -168,7 +166,7 @@ public class InformationFragment extends Fragment {
 
                 //Load the content into the markdown viewer
                 ((Activity) mContext).runOnUiThread(() -> {
-                    app.markdownView.setMarkDownText(content);
+                    app.markdownViewReadme.setMarkDownText(content);
                     app.progressBarReadme.setVisibility(View.GONE);
                 });
             } catch (IOException e) {
@@ -177,6 +175,9 @@ public class InformationFragment extends Fragment {
         }).start();
     }
 
+    /**
+     * Sets the like button's color depending on if the user has liked the project
+     */
     private void setLikeButton() {
         Drawable unwrappedDrawable = AppCompatResources.getDrawable(mContext, R.drawable.ufi_heart_active);
         assert unwrappedDrawable != null;

@@ -106,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
      * Sets up the "Setup" button listener
      */
     private void setupSignupButtonListener() {
-
         app.buttonSignup.setOnClickListener(v -> {
             Intent i = new Intent(mContext, SignupActivity.class);
             startActivity(i);
