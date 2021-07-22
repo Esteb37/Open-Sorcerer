@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.databinding.ItemProjectBinding;
+import com.example.opensorcerer.databinding.ItemCardProjectBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
 import com.parse.ParseFile;
@@ -36,7 +36,7 @@ import java.util.List;
 public class ProjectCardHolder extends RecyclerView.ViewHolder{
 
     /**Binder object for ViewBinding*/
-    private final ItemProjectBinding app;
+    private final ItemCardProjectBinding app;
 
     /**The Holder's context*/
     private final Context mContext;
@@ -47,7 +47,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder{
     /**Current Project*/
     private Project mProject;
     
-    public ProjectCardHolder(View view, Context context, ItemProjectBinding binder, ProjectsCardAdapter.OnClickListener clickListener, ProjectsCardAdapter.OnDoubleTapListener doubleTapListener) {
+    public ProjectCardHolder(View view, Context context, ItemCardProjectBinding binder, ProjectsCardAdapter.OnClickListener clickListener, ProjectsCardAdapter.OnDoubleTapListener doubleTapListener) {
         super(view);
         app = binder;
         

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/actionHome"
         android:enabled="true"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_home_black_24dp"
         android:iconTint="#FFFFFF"
         android:title="Home"
         app:showAsAction="always" />
@@ -16,9 +16,14 @@
         android:title="Favorites"
         app:showAsAction="always" />
     <item
+        android:id="@+id/actionCreate"
+        android:icon="@drawable/add"
+        android:title="Item"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/actionChats"
         android:icon="@drawable/chat"
-        android:title="Conversations"
+        android:title="Messages"
         app:showAsAction="always" />
     <item
         android:id="@+id/actionProfile"

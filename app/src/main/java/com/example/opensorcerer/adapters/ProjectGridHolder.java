@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.example.opensorcerer.databinding.ItemManagerProjectBinding;
+import com.example.opensorcerer.databinding.ItemGridProjectBinding;
 import com.example.opensorcerer.models.Project;
 import com.parse.ParseFile;
 
@@ -18,12 +18,12 @@ import com.parse.ParseFile;
 public class ProjectGridHolder extends RecyclerView.ViewHolder{
 
     /**Binder object for ViewBinding*/
-    private final ItemManagerProjectBinding app;
+    private final ItemGridProjectBinding app;
 
     /**The Holder's context*/
     private final Context mContext;
 
-    public ProjectGridHolder(View view, Context context, ItemManagerProjectBinding binder) {
+    public ProjectGridHolder(View view, Context context, ItemGridProjectBinding binder) {
         super(view);
         app = binder;
         mContext = context;

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.opensorcerer.databinding.ItemManagerProjectBinding;
+import com.example.opensorcerer.databinding.ItemGridProjectBinding;
 import com.example.opensorcerer.models.Project;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +24,7 @@ public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder>
     /**
      * Binder object for ViewBinding
      */
-    private ItemManagerProjectBinding app;
+    private ItemGridProjectBinding app;
 
     /**
      * The adapter's current context
@@ -55,7 +55,7 @@ public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder>
     @NotNull
     @Override
     public ProjectGridHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        app = ItemManagerProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        app = ItemGridProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = app.getRoot();
         return new ProjectGridHolder(view, mContext, app);
     }

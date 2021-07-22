@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.FavoritesPagerAdapter;
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentDeveloperProfileBinding;
+import com.example.opensorcerer.databinding.FragmentProfileBinding;
 import com.example.opensorcerer.models.User;
 
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +33,7 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     private static final String TAG = "ProfileFragment";
 
     /**Binder object for ViewBinding*/
-    private FragmentDeveloperProfileBinding app;
+    private FragmentProfileBinding app;
 
     /**Fragment's context*/
     private Context mContext;
@@ -76,7 +76,7 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        app = FragmentDeveloperProfileBinding.inflate(inflater,container,false);
+        app = FragmentProfileBinding.inflate(inflater,container,false);
         return app.getRoot();
     }
 
@@ -96,7 +96,7 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
         FragmentTransaction t = fm.beginTransaction();
         t.replace(R.id.content_frame, profileContentFragment);
         t.commit();
-        profileDrawerFragment = new RightDrawerFragment();
+        profileDrawerFragment = new ProfileDrawerFragment();
         FragmentTransaction r = fm.beginTransaction();
         r.replace(R.id.right_drawer, profileDrawerFragment);
         r.commit();

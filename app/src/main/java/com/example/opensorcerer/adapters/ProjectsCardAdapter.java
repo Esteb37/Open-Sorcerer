@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.opensorcerer.databinding.ItemProjectBinding;
+import com.example.opensorcerer.databinding.ItemCardProjectBinding;
 import com.example.opensorcerer.models.Project;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +23,7 @@ import java.util.List;
 public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>{
 
     /**Binder object for ViewBinding*/
-    private ItemProjectBinding app;
+    private ItemCardProjectBinding app;
 
     /**The adapter's current context*/
     private final Context mContext;
@@ -70,7 +70,7 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
     @NotNull
     @Override
     public ProjectCardHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        app = ItemProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        app = ItemCardProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = app.getRoot();
         return new ProjectCardHolder(view,mContext,app,mClickListener,mDoubleTapListener);
     }
