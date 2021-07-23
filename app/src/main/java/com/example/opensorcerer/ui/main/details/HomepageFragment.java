@@ -20,15 +20,15 @@ import org.kohsuke.github.GitHub;
 import org.parceler.Parcels;
 
 /**
- * Fragment for displaying a project's GitHub repository page
+ * Fragment for displaying a project's homepage
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class GitHubFragment extends Fragment {
+public class HomepageFragment extends Fragment {
 
     /**
      * Tag for logging
      */
-    private static final String TAG = "InformationFragment";
+    private static final String TAG = "HomepageFragment";
 
     /**
      * Binder object for ViewBinding
@@ -55,8 +55,8 @@ public class GitHubFragment extends Fragment {
      */
     private Project mProject;
 
-    public GitHubFragment() {
-        // Required empty public constructor
+    public HomepageFragment(Project project) {
+        mProject = project;
     }
 
 
