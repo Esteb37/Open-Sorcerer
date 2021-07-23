@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -19,13 +20,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="200dp"
+            <ImageButton
+                android:id="@+id/buttonBack"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/tight_name_transparent_white"
+                android:background="#00FFFFFF"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="?attr/homeAsUpIndicator"
+                app:tint="@color/white"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/textViewUsername"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/buttonDrawer"
+                app:layout_constraintHorizontal_bias="0.34"
+                app:layout_constraintStart_toEndOf="@id/buttonBack"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="\@Esteb37" />
 
             <ImageButton
                 android:id="@+id/buttonDrawer"
@@ -38,6 +59,21 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/menu"
                 app:tint="@color/white" />
+
+            <ImageButton
+                android:id="@+id/buttonMessage"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="#00FFFFFF"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/chat"
+                app:tint="@color/white"
+                tools:visibility="visible" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -69,51 +105,36 @@
                     android:id="@+id/imageViewProfilePicture"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:layout_marginStart="20dp"
                     android:layout_marginTop="30dp"
                     android:src="@drawable/placeholder"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:id="@+id/linearLayout8"
-                    android:layout_width="0dp"
+                <Button
+                    android:id="@+id/buttonAction"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageViewProfilePicture"
+                    android:insetLeft="20dp"
+                    android:insetTop="20dp"
+                    android:insetRight="20dp"
+                    android:insetBottom="20dp"
+                    android:text="Edit Profile"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewProfilePicture"
-                    app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicture">
-
-                    <TextView
-                        android:id="@+id/textViewUsername"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="28sp"
-                        android:textStyle="bold"
-                        tools:text="\@Esteb37" />
-
-                    <Button
-                        android:id="@+id/buttonAction"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:insetLeft="20dp"
-                        android:insetTop="20dp"
-                        android:insetRight="20dp"
-                        android:text="Edit Profile" />
-                </LinearLayout>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewMoreInterests" />
 
                 <TextView
                     android:id="@+id/textViewName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@+id/linearLayout8"
-                    app:layout_constraintStart_toStartOf="@+id/imageViewProfilePicture"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageViewProfilePicture"
                     tools:text="Esteban" />
 
@@ -123,8 +144,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="@+id/linearLayout8"
-                    app:layout_constraintStart_toStartOf="@+id/imageViewProfilePicture"
+                    app:layout_constraintEnd_toEndOf="@+id/textViewName"
+                    app:layout_constraintStart_toStartOf="@+id/textViewName"
                     app:layout_constraintTop_toBottomOf="@+id/textViewName"
                     tools:text="This is my bio!" />
 
@@ -224,7 +245,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/constraint1">
+                app:layout_constraintTop_toBottomOf="@+id/constraint1">
 
 
                 <com.google.android.material.tabs.TabLayout

@@ -10,14 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.FavoritesPagerAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProfileBinding;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
@@ -28,7 +28,6 @@ import org.kohsuke.github.GitHub;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ProfileFragment extends androidx.fragment.app.Fragment {
 
-
     /**
      * Tag for logging
      */
@@ -37,7 +36,7 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     /**
      * Fragment pager adapter
      */
-    FavoritesPagerAdapter mPagerAdapter;
+    private FavoritesPagerAdapter mPagerAdapter;
 
     /**
      * Binder object for ViewBinding
@@ -71,6 +70,11 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     private User mUser;
 
     /**
+     * User to view profile
+     */
+    private User mProfileUser;
+
+    /**
      * GitHub API handler
      */
     private GitHub mGitHub;
@@ -83,10 +87,14 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     /**
      * Fragment for the menu drawer
      */
-    private Fragment profileDrawerFragment = null;
+    private final Fragment profileDrawerFragment = null;
 
     public ProfileFragment() {
         // Required empty public constructor
+    }
+
+    public ProfileFragment(User profileUser) {
+        mProfileUser = profileUser;
     }
 
     /**
@@ -122,27 +130,22 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
         mUser = User.getCurrentUser();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
+
+        ((MainActivity) mContext).hideDetailsFragment();
     }
 
     /**
      * Sets up the profile's details content fragment
      */
     private void setupProfileContent() {
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        profileContentFragment = new ProfileContentFragment(mDrawerListener);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.content_frame, profileContentFragment);
-        transaction.commit();
+        profileContentFragment = new ProfileContentFragment(mDrawerListener, mProfileUser);
+        Tools.loadFragment(mContext, profileContentFragment, R.id.content_frame);
     }
 
     /**
      * Sets up the profile view's menu drawer
      */
     private void setupDrawer() {
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        profileDrawerFragment = new ProfileDrawerFragment();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.right_drawer, profileDrawerFragment);
-        transaction.commit();
+        Tools.loadFragment(mContext, new ProfileDrawerFragment(), R.id.right_drawer);
     }
 }

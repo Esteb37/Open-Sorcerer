@@ -27,7 +27,6 @@ import org.kohsuke.github.GitHub;
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ProfileContentFragment extends androidx.fragment.app.Fragment {
 
-
     /**
      * Tag for logging
      */
@@ -37,37 +36,45 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
      * Listener for the drawer
      */
     private final OnFragmentInteractionListener mListener;
-
+    /**
+     * User to show in profile
+     */
+    private final User mProfileUser;
     /**
      * Fragment pager adapter
      */
-    ProjectsPagerAdapter mPagerAdapter;
-
+    private ProjectsPagerAdapter mPagerAdapter;
     /**
      * Binder object for ViewBinding
      */
     private FragmentProfileContentBinding mApp;
-
     /**
      * Fragment's context
      */
     private Context mContext;
-
     /**
      * Current logged in user
      */
     private User mUser;
-
     /**
      * GitHub API handler
      */
     private GitHub mGitHub;
 
     /**
-     * Sets up the listener for the drawer
+     * Sets up the listener for the drawer and the user to show
+     */
+    public ProfileContentFragment(OnFragmentInteractionListener listener, User profileUser) {
+        mListener = listener;
+        mProfileUser = profileUser;
+    }
+
+    /**
+     * Sets up the listener for the drawer and the user to show
      */
     public ProfileContentFragment(OnFragmentInteractionListener listener) {
         mListener = listener;
+        mProfileUser = User.getCurrentUser();
     }
 
     /**
@@ -113,22 +120,31 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
     private void loadProfileDetails() {
 
         //Load text information
-        mApp.textViewName.setText(mUser.getName());
-        mApp.textViewUsername.setText(String.format("@%s", mUser.getUsername()));
-        mApp.textViewBio.setText(mUser.getBio());
+        mApp.textViewName.setText(mProfileUser.getName());
+        mApp.textViewUsername.setText(String.format("@%s", mProfileUser.getUsername()));
+        mApp.textViewBio.setText(mProfileUser.getBio());
 
         //Load the list of languages to an expandable view
-        mApp.textViewLanguages.setText(Tools.listToString(mUser.getLanguages()));
+        mApp.textViewLanguages.setText(Tools.listToString(mProfileUser.getLanguages()));
         mApp.textViewLanguages.post(() -> mApp.textViewLanguages.setMoreMessage(mApp.textViewMoreLanguages));
 
         //Load the list of tags to an expandable view
-        mApp.textViewInterests.setText(Tools.listToString(mUser.getInterests()));
+        mApp.textViewInterests.setText(Tools.listToString(mProfileUser.getInterests()));
         mApp.textViewInterests.post(() -> mApp.textViewInterests.setMoreMessage(mApp.textViewMoreInterests));
 
         //Load the user's profile picture
         Glide.with(mContext)
-                .load(mUser.getProfilePicture().getUrl())
+                .load(mProfileUser.getProfilePicture().getUrl())
                 .into(mApp.imageViewProfilePicture);
+
+        if (!mProfileUser.getObjectId().equals(mUser.getObjectId())) {
+            mApp.buttonDrawer.setVisibility(View.GONE);
+            mApp.buttonAction.setVisibility(View.GONE);
+            mApp.buttonMessage.setVisibility(View.VISIBLE);
+            mApp.buttonBack.setVisibility(View.VISIBLE);
+
+            mApp.buttonBack.setOnClickListener(v -> requireActivity().getSupportFragmentManager().popBackStack());
+        }
     }
 
     /**

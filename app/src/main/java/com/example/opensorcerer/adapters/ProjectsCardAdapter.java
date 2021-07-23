@@ -79,7 +79,6 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
     public void onBindViewHolder(@NonNull @NotNull ProjectCardHolder holder, int position) {
         mHolder = holder;
         mHolder.bind(mProjects.get(position));
-
     }
 
     /**

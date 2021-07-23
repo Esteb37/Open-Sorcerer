@@ -23,7 +23,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.ItemCardProjectBinding;
 import com.example.opensorcerer.models.Project;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.profile.ProfileFragment;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 
@@ -115,6 +117,18 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
 
         mProject = project;
 
+        loadProjectDetails();
+
+        loadManagerInformation();
+
+        setLikeButton();
+    }
+
+    /**
+     * Loads the project's details into the card
+     */
+    private void loadProjectDetails() {
+
         // Set text details
         mApp.textViewTitle.setText(mProject.getTitle());
         mApp.textViewDescription.setText(mProject.getDescription());
@@ -150,24 +164,37 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
                     .transform(new RoundedCorners(1000))
                     .into(mApp.imageViewLogo);
         }
+    }
+
+    /**
+     * Loads the project manager's details
+     */
+    private void loadManagerInformation() {
 
         // Load the project manager's information
         User manager;
         try {
+
+            //Get the manager object
             manager = mProject.getManager().fetchIfNeeded();
+
+            //Set the manager's username
             assert manager != null;
             mApp.textViewAuthor.setText(manager.getUsername());
+
+            //Set the manager's profile picture
             ParseFile profilePicture = manager.getProfilePicture();
             if (profilePicture != null) {
                 Glide.with(mContext)
                         .load(profilePicture.getUrl())
                         .into(mApp.imageViewProfilePicture);
             }
+
+            //Set the listener to navigate to the user's profile
+            mApp.constraintLayoutUser.setOnClickListener(v -> Tools.loadFragment(mContext, new ProfileFragment(manager), R.id.flContainer));
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        setLikeButton();
     }
 
     /**
