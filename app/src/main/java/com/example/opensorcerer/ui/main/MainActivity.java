@@ -22,6 +22,9 @@ import com.parse.ParseUser;
 
 import org.kohsuke.github.GitHub;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * Main activity
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
      * GitHub API handler
      */
     private GitHub mGitHub;
+
+    private int mLastPosition = 0;
 
     /**
      * Sets up the activity's methods
@@ -106,8 +111,11 @@ public class MainActivity extends AppCompatActivity {
         final int actionChats = R.id.actionChats;
         final int actionCreate = R.id.actionCreate;
 
+        List<Integer> itemOrder = Arrays.asList(actionHome,actionProjects,actionCreate,actionChats,actionProfile);
+
         mApp.bottomNav.setOnItemSelectedListener(
                 item -> {
+
                     Fragment fragment;
 
                     // Eliminate the Details fragment
@@ -146,9 +154,18 @@ public class MainActivity extends AppCompatActivity {
                             throw new IllegalStateException("Unexpected value: " + item.getItemId());
                     }
 
-                    // Open the selected fragment
-                    Tools.loadFragment(mContext, fragment, mApp.flContainer.getId());
+                    int itemPosition = itemOrder.indexOf(item.getItemId());
 
+                    // Open the selected fragment
+                    if(itemPosition > mLastPosition) {
+                        Tools.navigateToFragment(mContext, fragment, mApp.flContainer.getId(),"right_to_left");
+                    } else if (itemPosition < mLastPosition) {
+                        Tools.navigateToFragment(mContext, fragment, mApp.flContainer.getId(), "left_to_right");
+                    } else {
+                        Tools.loadFragment(mContext, fragment, mApp.flContainer.getId());
+                    }
+
+                    mLastPosition = itemPosition;
                     return true;
                 });
 
@@ -163,5 +180,9 @@ public class MainActivity extends AppCompatActivity {
         Fragment detailsFragment = fragmentManager.findFragmentByTag("details");
         if (detailsFragment != null)
             fragmentManager.beginTransaction().remove(detailsFragment).commit();
+    }
+
+    public void showDetailsFragment() {
+        mApp.constraintLayoutDetails.setVisibility(View.VISIBLE);
     }
 }
