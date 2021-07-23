@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.projects.FavoritesFragmentLinear;
 import com.example.opensorcerer.ui.main.projects.FavoritesGridFragment;
 
@@ -28,7 +29,7 @@ public class FavoritesPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         return position == 0
-                ? new FavoritesGridFragment()
+                ? new FavoritesGridFragment(User.getCurrentUser())
                 : new FavoritesFragmentLinear();
     }
 

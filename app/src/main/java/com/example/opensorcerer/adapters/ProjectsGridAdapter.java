@@ -41,9 +41,15 @@ public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder>
      */
     private ProjectCardHolder mHolder;
 
-    public ProjectsGridAdapter(List<Project> projects, Context context) {
+    /**
+     * Click listener
+     */
+    private final OnClickListener mClickListener;
+
+    public ProjectsGridAdapter(List<Project> projects, Context context, OnClickListener clickListener) {
         mProjects = projects;
         mContext = context;
+        mClickListener = clickListener;
     }
 
     /**
@@ -57,7 +63,7 @@ public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder>
     public ProjectGridHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         mApp = ItemGridProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = mApp.getRoot();
-        return new ProjectGridHolder(view, mContext, mApp);
+        return new ProjectGridHolder(view, mContext, mApp ,mClickListener);
     }
 
     /**
@@ -92,5 +98,12 @@ public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder>
     public void addAll(List<Project> list) {
         mProjects.addAll(list);
         notifyDataSetChanged();
+    }
+
+    /**
+     * Interface for detecting clicks on the project
+     */
+    public interface OnClickListener {
+        void onItemClicked(int position);
     }
 }

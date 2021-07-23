@@ -27,10 +27,11 @@ public class ProjectGridHolder extends RecyclerView.ViewHolder {
      */
     private final Context mContext;
 
-    public ProjectGridHolder(View view, Context context, ItemGridProjectBinding binder) {
+    public ProjectGridHolder(View view, Context context, ItemGridProjectBinding binder, ProjectsGridAdapter.OnClickListener clickListener) {
         super(view);
         mApp = binder;
         mContext = context;
+        view.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
     }
 
     /**

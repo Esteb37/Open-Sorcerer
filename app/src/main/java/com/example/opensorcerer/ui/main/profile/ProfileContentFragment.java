@@ -153,7 +153,7 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
     private void setupPagerView() {
 
         //Set the adapter
-        mPagerAdapter = new ProjectsPagerAdapter(this);
+        mPagerAdapter = new ProjectsPagerAdapter(this, mProfileUser);
         mApp.viewPager.setAdapter(mPagerAdapter);
 
         //Set the tab icons

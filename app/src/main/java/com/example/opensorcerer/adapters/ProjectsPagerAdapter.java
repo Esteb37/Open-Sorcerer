@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.projects.CreatedProjectsFragment;
 import com.example.opensorcerer.ui.main.projects.FavoritesGridFragment;
 
@@ -17,8 +18,14 @@ public class ProjectsPagerAdapter extends FragmentStateAdapter {
      */
     private static final int PAGE_COUNT = 2;
 
-    public ProjectsPagerAdapter(Fragment fragment) {
+    /**
+     * The user whose projects to show
+     */
+    private final User mUser;
+
+    public ProjectsPagerAdapter(Fragment fragment, User user) {
         super(fragment);
+        mUser = user;
     }
 
     /**
@@ -28,8 +35,8 @@ public class ProjectsPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         return position == 0
-                ? new CreatedProjectsFragment()
-                : new FavoritesGridFragment();
+                ? new CreatedProjectsFragment(mUser)
+                : new FavoritesGridFragment(mUser);
 
     }
 

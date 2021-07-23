@@ -13,12 +13,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.adapters.ProjectsGridAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentFavoritesGridBinding;
 import com.example.opensorcerer.models.Project;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.MainActivity;
+import com.example.opensorcerer.ui.main.home.HomeFragment;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
@@ -79,8 +83,15 @@ public class FavoritesGridFragment extends Fragment {
      */
     private List<Project> mProjects;
 
-    public FavoritesGridFragment() {
-        // Required empty public constructor
+    /**
+     * The user whose projects to show
+     */
+    public final User mProfileUser;
+
+
+
+    public FavoritesGridFragment(User profileUser) {
+        mProfileUser = profileUser;
     }
 
     @Override
@@ -129,8 +140,13 @@ public class FavoritesGridFragment extends Fragment {
     private void setupRecyclerView() {
         mProjects = new ArrayList<>();
 
+        ProjectsGridAdapter.OnClickListener clickListener = position -> {
+            Tools.loadFragment(mContext, new HomeFragment(mProjects, position), R.id.flContainer, R.anim.slide_in_right, R.anim.slide_out_left);
+            ((MainActivity) requireActivity()).showDetailsFragment();
+        };
+
         //Set the adapter
-        mAdapter = new ProjectsGridAdapter(mProjects, mContext);
+        mAdapter = new ProjectsGridAdapter(mProjects, mContext, clickListener);
         mApp.recyclerViewFavorites.setAdapter(mAdapter);
 
         //Set the layout
@@ -156,7 +172,7 @@ public class FavoritesGridFragment extends Fragment {
     public void queryProjects(int page) {
 
         mApp.progressBar.setVisibility(View.VISIBLE);
-        List<String> favorites = mUser.getFavorites();
+        List<String> favorites = mProfileUser.getFavorites();
         if (favorites != null) {
 
             //Get a query from the user's favorites
@@ -172,8 +188,6 @@ public class FavoritesGridFragment extends Fragment {
                 if (e == null) {
                     if (projects.size() > 0) {
                         mAdapter.addAll(projects);
-                    } else {
-                        mApp.textViewNoProjects.setVisibility(View.VISIBLE);
                     }
                     mApp.progressBar.setVisibility(View.GONE);
                 } else {
@@ -181,6 +195,7 @@ public class FavoritesGridFragment extends Fragment {
                 }
             });
         } else {
+            mApp.textViewNoProjects.setVisibility(View.VISIBLE);
             mApp.progressBar.setVisibility(View.GONE);
         }
     }

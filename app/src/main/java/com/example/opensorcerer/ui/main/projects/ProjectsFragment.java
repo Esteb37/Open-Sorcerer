@@ -109,7 +109,7 @@ public class ProjectsFragment extends Fragment {
     private void setupPagerView() {
 
         //Set the adapter
-        mPagerAdapter = new ProjectsPagerAdapter(this);
+        mPagerAdapter = new ProjectsPagerAdapter(this, mUser);
         mApp.viewPager.setAdapter(mPagerAdapter);
 
         //Set the tab icons

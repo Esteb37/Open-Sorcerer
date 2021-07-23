@@ -26,6 +26,7 @@ import com.parse.ParseQuery;
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,8 +86,18 @@ public class HomeFragment extends Fragment {
      */
     private List<Project> mProjects;
 
+    /**
+     * The position to scroll to
+     */
+    private int mPosition  = -1;
+
     public HomeFragment() {
         // Required empty public constructor
+    }
+
+    public HomeFragment(List<Project> projects, int position) {
+        mProjects = projects;
+        mPosition = position;
     }
 
 
@@ -113,10 +124,16 @@ public class HomeFragment extends Fragment {
 
         setupRecyclerView();
 
-        queryProjects(0);
+        if(mPosition == -1) {
+            queryProjects(0);
+        } else {
+            loadProjects();
+        }
 
         setupSwipeRefresh();
     }
+
+
 
     /**
      * Gets the current state for the member variables.
@@ -134,8 +151,9 @@ public class HomeFragment extends Fragment {
      */
     private void setupRecyclerView() {
 
-        //Prepare list of projects
-        mProjects = new ArrayList<>();
+        if(mProjects == null){
+            mProjects = new ArrayList<>();
+        }
 
         ProjectsCardAdapter.OnClickListener clickListener = position -> {
 
@@ -194,6 +212,14 @@ public class HomeFragment extends Fragment {
         });
     }
 
+
+    private void loadProjects() {
+        mAdapter.notifyDataSetChanged();
+        mApp.recyclerViewProjects.scrollToPosition(mPosition);
+        mApp.swipeContainer.setRefreshing(false);
+        mApp.swipeContainer.setEnabled(false);
+    }
+
     /**
      * Sets up the swipe down to refresh interaction
      */
@@ -202,8 +228,7 @@ public class HomeFragment extends Fragment {
 
         mApp.swipeContainer.setColorSchemeResources(R.color.darker_blue,
                 R.color.dark_blue,
-                R.color.light_blue,
-                android.R.color.holo_red_light);
+                R.color.light_blue);
     }
 
     /**
@@ -212,6 +237,7 @@ public class HomeFragment extends Fragment {
     public Project getCurrentProject() {
         View snapView = mSnapHelper.findSnapView(mLayoutManager);
         assert snapView != null;
+        Log.d("Test", String.valueOf(mLayoutManager.getPosition(snapView)));
         return mProjects.get(mLayoutManager.getPosition(snapView));
     }
 

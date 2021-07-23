@@ -141,7 +141,8 @@ public abstract class Tools {
      */
     public static void loadFragment(FragmentActivity activity, Fragment fragment, int containerId) {
         final FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction().replace(containerId, fragment);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(containerId, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -152,4 +153,17 @@ public abstract class Tools {
     public static void loadFragment(Context context, Fragment fragment, int containerId) {
         loadFragment((FragmentActivity) context, fragment, containerId);
     }
+    /**
+
+     * Replace the specified layout with the specified fragment with animation
+     */
+    public static void loadFragment(Context context, Fragment fragment, int containerId, int inAnimation, int outAnimation) {
+        final FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setCustomAnimations(inAnimation, outAnimation);
+        transaction.replace(containerId, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
 }

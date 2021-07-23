@@ -12,11 +12,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.ProjectsGridAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreatedProjectsBinding;
 import com.example.opensorcerer.models.Project;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.MainActivity;
+import com.example.opensorcerer.ui.main.home.HomeFragment;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
@@ -63,8 +67,14 @@ public class CreatedProjectsFragment extends Fragment {
      */
     private List<Project> mProjects;
 
-    public CreatedProjectsFragment() {
-        // Required empty public constructor
+    /**
+     * The user whose projects to show
+     */
+    private final User mProfileUser;
+
+
+    public CreatedProjectsFragment(User projectUser) {
+        mProfileUser = projectUser;
     }
 
 
@@ -109,7 +119,13 @@ public class CreatedProjectsFragment extends Fragment {
      */
     private void setupRecyclerView() {
         mProjects = new ArrayList<>();
-        mAdapter = new ProjectsGridAdapter(mProjects, mContext);
+
+        ProjectsGridAdapter.OnClickListener clickListener = position -> {
+            Tools.loadFragment(mContext, new HomeFragment(mProjects, position), R.id.flContainer, R.anim.slide_in_right, R.anim.slide_out_left);
+            ((MainActivity) requireActivity()).showDetailsFragment();
+        };
+
+        mAdapter = new ProjectsGridAdapter(mProjects, mContext, clickListener);
         mApp.recyclerViewProjects.setAdapter(mAdapter);
         mApp.recyclerViewProjects.setLayoutManager(new GridLayoutManager(mContext, 2));
     }
@@ -118,7 +134,7 @@ public class CreatedProjectsFragment extends Fragment {
      * Gets the list of projects created by the user
      */
     public void queryProjects() {
-        ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContains("manager", mUser.getObjectId());
+        ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContains("manager", mProfileUser.getObjectId());
         query.addDescendingOrder("createdAt");
         query.findInBackground((projects, e) -> {
             if (e == null) {
