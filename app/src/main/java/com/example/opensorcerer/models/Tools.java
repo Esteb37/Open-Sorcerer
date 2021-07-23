@@ -3,21 +3,21 @@ package com.example.opensorcerer.models;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
 
 import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.opensorcerer.R;
 import com.google.android.material.chip.ChipDrawable;
 import com.parse.ParseFile;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.util.List;
 
 /**
@@ -74,31 +74,6 @@ public abstract class Tools {
         return str.substring(0, str.length() - 2);
     }
 
-
-    /**
-     * Fetches an image from a URL source and turns it to bitmap
-     */
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-
-            //Setup the request for the image
-            java.net.URL url = new java.net.URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-
-            //Get the image as an input stream
-            InputStream input = connection.getInputStream();
-
-            //Get the bipmap from the input stream
-            return BitmapFactory.decodeStream(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     /**
      * Turns a bitmap image into a parse file
      */
@@ -146,7 +121,7 @@ public abstract class Tools {
     /**
      * Creates a new chip token from the last inputed item in an editable
      */
-    public static Editable addChip(Context context, String item, AppCompatMultiAutoCompleteTextView chipInput) {
+    public static void addChip(Context context, String item, AppCompatMultiAutoCompleteTextView chipInput) {
 
         Editable editable = chipInput.getText();
         String inputString = editable.toString();
@@ -159,7 +134,22 @@ public abstract class Tools {
         ImageSpan span = new ImageSpan(chip);
 
         editable.setSpan(span, spannedLength, spannedLength + item.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
 
-        return editable;
+    /**
+     * Replaces the specified layout with the specified fragment
+     */
+    public static void loadFragment(FragmentActivity activity, Fragment fragment, int containerId) {
+        final FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction().replace(containerId, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    /**
+     * Replaces the specified layout with the specified fragment
+     */
+    public static void loadFragment(Context context, Fragment fragment, int containerId) {
+        loadFragment((FragmentActivity) context, fragment, containerId);
     }
 }

@@ -32,7 +32,6 @@ import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GHContent;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
-import org.parceler.Parcels;
 
 import java.io.IOException;
 
@@ -70,10 +69,10 @@ public class InformationFragment extends Fragment {
     /**
      * Project being displayed
      */
-    private Project mProject;
+    private final Project mProject;
 
-    public InformationFragment() {
-        // Required empty public constructor
+    public InformationFragment(Project project) {
+        mProject = project;
     }
 
     @Override
@@ -114,11 +113,7 @@ public class InformationFragment extends Fragment {
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
 
         mUser = User.getCurrentUser();
-
-        assert getArguments() != null;
-        mProject = Parcels.unwrap(getArguments().getParcelable("project"));
     }
-
 
     /**
      * Populates the fragment with the project's details

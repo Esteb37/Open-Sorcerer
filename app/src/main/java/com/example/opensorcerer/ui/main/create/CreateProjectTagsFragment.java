@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
@@ -29,7 +28,6 @@ import com.example.opensorcerer.ui.main.home.HomeFragment;
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
-import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,12 +73,12 @@ public class CreateProjectTagsFragment extends Fragment {
     /**
      * The newly created project
      */
-    private Project mNewProject;
+    private final Project mNewProject;
     private int spannedLengthLanguages = 0;
     private int spannedLengthTags = 0;
 
-    public CreateProjectTagsFragment() {
-        // Required empty public constructor
+    public CreateProjectTagsFragment(Project project) {
+        mNewProject = project;
     }
 
     @Override
@@ -124,8 +122,6 @@ public class CreateProjectTagsFragment extends Fragment {
         mUser = User.getCurrentUser();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
-
-        mNewProject = Parcels.unwrap(requireArguments().getParcelable("project"));
     }
 
     /**
@@ -248,20 +244,13 @@ public class CreateProjectTagsFragment extends Fragment {
      * Navigates back to the home timeline
      */
     private void navigateToHome() {
-        final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        Fragment fragment = new HomeFragment();
-        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+        Tools.loadFragment(mContext, new HomeFragment(), R.id.flContainer);
     }
 
     /**
      * Navigates to the  Create Project details Fragment
      */
     private void navigateBackward() {
-        final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        Fragment fragment = new CreateProjectDetailsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("project", Parcels.wrap(mNewProject));
-        fragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+        requireActivity().getSupportFragmentManager().popBackStack();
     }
 }

@@ -9,17 +9,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentDetailsBinding;
 import com.example.opensorcerer.models.Project;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
-import org.parceler.Parcels;
 
 /**
  * Fragment for displaying a project's details
@@ -31,31 +30,30 @@ public class DetailsFragment extends Fragment {
      * Tag for logging
      */
     private static final String TAG = "DetailsFragment";
-
+    /**
+     * Project being displayed
+     */
+    private final Project mProject;
     /**
      * Binder object for ViewBinding
      */
     private FragmentDetailsBinding mApp;
-
     /**
      * Fragment's context
      */
     private Context mContext;
-
     /**
      * Current logged in user
      */
     private User mUser;
-
     /**
      * GitHub API handler
      */
     private GitHub mGitHub;
 
-    /**
-     * Project being displayed
-     */
-    private Project mProject;
+    public DetailsFragment(Project project) {
+        mProject = project;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,9 +90,6 @@ public class DetailsFragment extends Fragment {
         mContext = getContext();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
-
-        assert getArguments() != null;
-        mProject = Parcels.unwrap(getArguments().getParcelable("project"));
     }
 
 
@@ -103,8 +98,6 @@ public class DetailsFragment extends Fragment {
      */
     private void setupBottomNavigation() {
 
-        final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-
         //Ensure that the id's of the navigation items are final for the switch
         final int actionDetails = R.id.actionDetails;
         final int actionGithub = R.id.actionGithub;
@@ -112,27 +105,22 @@ public class DetailsFragment extends Fragment {
         mApp.bottomNavDetails.setOnItemSelectedListener(item -> {
             Fragment fragment;
 
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("project", Parcels.wrap(mProject));
-
-            //Navigate to a different fragment depending on the item selected
+            // Navigate to a different fragment depending on the item selected
             switch (item.getItemId()) {
                 case actionDetails:
-                    fragment = new InformationFragment();
+                    fragment = new InformationFragment(mProject);
                     break;
 
                 case actionGithub:
-                    fragment = new GitHubFragment();
+                    fragment = new HomepageFragment(mProject);
                     break;
 
                 default:
                     throw new IllegalStateException("Unexpected value: " + item.getItemId());
             }
 
-            fragment.setArguments(bundle);
-
-            //Open the selected fragment
-            fragmentManager.beginTransaction().replace(mApp.flContainerDetailsInternal.getId(), fragment).commit();
+            // Open the selected fragment
+            Tools.loadFragment(mContext, fragment, mApp.flContainerDetailsInternal.getId());
             return true;
         });
 

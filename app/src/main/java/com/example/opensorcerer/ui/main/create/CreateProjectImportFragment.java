@@ -11,18 +11,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreateImportBinding;
 import com.example.opensorcerer.models.Project;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
-import org.parceler.Parcels;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -135,12 +135,8 @@ public class CreateProjectImportFragment extends Fragment {
      * Navigates to the Create Project details Fragment
      */
     private void navigateForward() {
-        final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        Fragment fragment = new CreateProjectDetailsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("project", Parcels.wrap(mNewProject));
-        fragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+        Fragment fragment = new CreateProjectDetailsFragment(mNewProject);
+        Tools.loadFragment(mContext, fragment, R.id.flContainer);
     }
 
     /**
@@ -152,6 +148,8 @@ public class CreateProjectImportFragment extends Fragment {
         mUser = User.getCurrentUser();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
+
+        ((MainActivity) mContext).hideDetailsFragment();
     }
 
 }

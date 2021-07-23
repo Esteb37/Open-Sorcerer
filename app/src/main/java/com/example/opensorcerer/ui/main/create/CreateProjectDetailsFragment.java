@@ -17,7 +17,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.bumptech.glide.Glide;
 import com.example.opensorcerer.R;
@@ -32,7 +31,6 @@ import com.parse.SaveCallback;
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
-import org.parceler.Parcels;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -76,7 +74,7 @@ public class CreateProjectDetailsFragment extends Fragment {
     /**
      * The newly created project
      */
-    private Project mNewProject;
+    private final Project mNewProject;
 
     /**
      * New project's logo image
@@ -112,8 +110,8 @@ public class CreateProjectDetailsFragment extends Fragment {
             });
 
 
-    public CreateProjectDetailsFragment() {
-        // Required empty public constructor
+    public CreateProjectDetailsFragment(Project project) {
+        mNewProject = project;
     }
 
     @Override
@@ -155,8 +153,6 @@ public class CreateProjectDetailsFragment extends Fragment {
         mUser = User.getCurrentUser();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
-
-        mNewProject = Parcels.unwrap(requireArguments().getParcelable("project"));
     }
 
     /**
@@ -249,20 +245,14 @@ public class CreateProjectDetailsFragment extends Fragment {
      * Navigates to the create project tags Fragment
      */
     private void navigateForward() {
-        final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        Fragment fragment = new CreateProjectTagsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("project", Parcels.wrap(mNewProject));
-        fragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+        Fragment fragment = new CreateProjectTagsFragment(mNewProject);
+        Tools.loadFragment(mContext, fragment, R.id.flContainer);
     }
 
     /**
      * Navigates to the Create Project import Fragment
      */
     private void navigateBackward() {
-        final FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        Fragment fragment = new CreateProjectImportFragment();
-        fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
+        requireActivity().getSupportFragmentManager().popBackStack();
     }
 }

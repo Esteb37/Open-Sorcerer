@@ -15,6 +15,7 @@ import com.example.opensorcerer.adapters.ProjectsPagerAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProjectsBinding;
 import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.MainActivity;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +36,7 @@ public class ProjectsFragment extends Fragment {
     /**
      * Fragment pager adapter
      */
-    ProjectsPagerAdapter mPagerAdapter;
+    private ProjectsPagerAdapter mPagerAdapter;
 
     /**
      * Binder object for ViewBinding
@@ -98,6 +99,8 @@ public class ProjectsFragment extends Fragment {
         mUser = User.getCurrentUser();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
+
+        ((MainActivity) mContext).hideDetailsFragment();
     }
 
     /**

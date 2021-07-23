@@ -1,7 +1,6 @@
 package com.example.opensorcerer.ui.views;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -13,10 +12,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.ui.main.details.DetailsFragment;
 import com.example.opensorcerer.ui.main.home.HomeFragment;
-
-import org.parceler.Parcels;
 
 /**
  * Custom Horizontal Scrolling View to display a project's details when swiped left
@@ -73,12 +71,8 @@ public class HorizontalScroller extends HorizontalScrollView {
     }
 
     private void startDetails() {
-        FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
-        DetailsFragment mDetailsFragment = new DetailsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("project", Parcels.wrap(mHomeFragment.getCurrentProject()));
-        mDetailsFragment.setArguments(bundle);
-        fragmentManager.beginTransaction().replace(R.id.flContainerDetails, mDetailsFragment, "details").commit();
+        DetailsFragment fragment = new DetailsFragment(mHomeFragment.getCurrentProject());
+        Tools.loadFragment(mContext, fragment, R.id.flContainerDetails);
     }
 
 
@@ -107,7 +101,6 @@ public class HorizontalScroller extends HorizontalScrollView {
     }
 
     class FlingDetector extends GestureDetector.SimpleOnGestureListener {
-
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {

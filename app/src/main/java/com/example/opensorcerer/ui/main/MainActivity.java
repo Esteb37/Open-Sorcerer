@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.ActivityHomeBinding;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.conversations.ConversationsFragment;
 import com.example.opensorcerer.ui.main.create.CreateProjectImportFragment;
@@ -98,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupBottomNavigation() {
 
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-
         //Ensure that the id's of the navigation items are final for the switch
         final int actionHome = R.id.actionHome;
         final int actionProfile = R.id.actionProfile;
@@ -107,55 +106,62 @@ public class MainActivity extends AppCompatActivity {
         final int actionChats = R.id.actionChats;
         final int actionCreate = R.id.actionCreate;
 
-        mApp.bottomNav.setOnItemSelectedListener(item -> {
-            Fragment fragment;
+        mApp.bottomNav.setOnItemSelectedListener(
+                item -> {
+                    Fragment fragment;
 
-            //Eliminate the Details fragment
-            mApp.constraintLayout2.setVisibility(View.GONE);
-            fragmentManager.findFragmentByTag("details");
-            Fragment detailsFragment = fragmentManager.findFragmentByTag("details");
-            if (detailsFragment != null)
-                fragmentManager.beginTransaction().remove(detailsFragment).commit();
+                    // Eliminate the Details fragment
+                    hideDetailsFragment();
 
-            //Navigate to a different fragment depending on the item selected
-            switch (item.getItemId()) {
+                    // Navigate to a different fragment depending on the item selected
+                    switch (item.getItemId()) {
 
-                //Home Item selected
-                case actionHome:
-                    fragment = new HomeFragment();
-                    mApp.constraintLayout2.setVisibility(View.VISIBLE);
-                    mApp.horizontalScroller.setFeatureItems((HomeFragment) fragment);
-                    break;
+                        // Home Item selected
+                        case actionHome:
+                            fragment = new HomeFragment();
+                            mApp.constraintLayoutDetails.setVisibility(View.VISIBLE);
+                            mApp.horizontalScroller.setFeatureItems((HomeFragment) fragment);
+                            break;
 
-                //Favorites item selected
-                case actionProjects:
-                    fragment = new ProjectsFragment();
-                    break;
+                        // Favorites item selected
+                        case actionProjects:
+                            fragment = new ProjectsFragment();
+                            break;
 
-                //Create item selected
-                case actionCreate:
-                    fragment = new CreateProjectImportFragment();
-                    break;
+                        // Create item selected
+                        case actionCreate:
+                            fragment = new CreateProjectImportFragment();
+                            break;
 
-                //Profile item selected
-                case actionProfile:
-                    fragment = new ProfileFragment();
-                    break;
+                        // Profile item selected
+                        case actionProfile:
+                            fragment = new ProfileFragment(mUser);
+                            break;
 
-                //Chats item selected
-                case actionChats:
-                    fragment = new ConversationsFragment();
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + item.getItemId());
-            }
+                        // Chats item selected
+                        case actionChats:
+                            fragment = new ConversationsFragment();
+                            break;
+                        default:
+                            throw new IllegalStateException("Unexpected value: " + item.getItemId());
+                    }
 
-            //Open the selected fragment
-            fragmentManager.beginTransaction().replace(mApp.flContainer.getId(), fragment).commit();
-            return true;
-        });
+                    // Open the selected fragment
+                    Tools.loadFragment(mContext, fragment, mApp.flContainer.getId());
+
+                    return true;
+                });
 
         //Set the default window to be the Home
         mApp.bottomNav.setSelectedItemId(R.id.actionHome);
+    }
+
+    public void hideDetailsFragment() {
+        final FragmentManager fragmentManager = getSupportFragmentManager();
+        mApp.constraintLayoutDetails.setVisibility(View.GONE);
+        fragmentManager.findFragmentByTag("details");
+        Fragment detailsFragment = fragmentManager.findFragmentByTag("details");
+        if (detailsFragment != null)
+            fragmentManager.beginTransaction().remove(detailsFragment).commit();
     }
 }
