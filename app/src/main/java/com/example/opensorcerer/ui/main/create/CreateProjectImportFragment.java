@@ -136,7 +136,7 @@ public class CreateProjectImportFragment extends Fragment {
      */
     private void navigateForward() {
         Fragment fragment = new CreateProjectDetailsFragment(mNewProject);
-        Tools.loadFragment(mContext, fragment, R.id.flContainer);
+        Tools.navigateToFragment(mContext, fragment, R.id.flContainer, "right_to_left");
     }
 
     /**

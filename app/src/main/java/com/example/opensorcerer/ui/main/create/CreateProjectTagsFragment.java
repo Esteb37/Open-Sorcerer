@@ -244,7 +244,7 @@ public class CreateProjectTagsFragment extends Fragment {
      * Navigates back to the home timeline
      */
     private void navigateToHome() {
-        Tools.loadFragment(mContext, new HomeFragment(), R.id.flContainer);
+        Tools.navigateToFragment(mContext, new HomeFragment(), R.id.flContainer, "right_to_left");
     }
 
     /**

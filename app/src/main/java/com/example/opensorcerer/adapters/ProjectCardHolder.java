@@ -191,7 +191,8 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
             }
 
             //Set the listener to navigate to the user's profile
-            mApp.constraintLayoutUser.setOnClickListener(v -> Tools.loadFragment(mContext, new ProfileFragment(manager), R.id.flContainer));
+            mApp.constraintLayoutUser.setOnClickListener(v ->
+                    Tools.navigateToFragment(mContext, new ProfileFragment(manager), R.id.flContainer, "right_to_left"));
         } catch (ParseException e) {
             e.printStackTrace();
         }

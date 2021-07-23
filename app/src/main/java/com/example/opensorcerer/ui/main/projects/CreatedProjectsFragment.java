@@ -121,7 +121,7 @@ public class CreatedProjectsFragment extends Fragment {
         mProjects = new ArrayList<>();
 
         ProjectsGridAdapter.OnClickListener clickListener = position -> {
-            Tools.loadFragment(mContext, new HomeFragment(mProjects, position), R.id.flContainer, R.anim.slide_in_right, R.anim.slide_out_left);
+            Tools.navigateToFragment(mContext, new HomeFragment(mProjects, position), R.id.flContainer, "right_to_left");
             ((MainActivity) requireActivity()).showDetailsFragment();
         };
 

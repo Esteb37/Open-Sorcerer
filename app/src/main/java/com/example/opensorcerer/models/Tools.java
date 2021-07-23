@@ -1,5 +1,6 @@
 package com.example.opensorcerer.models;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -139,28 +140,26 @@ public abstract class Tools {
     /**
      * Replaces the specified layout with the specified fragment
      */
-    public static void loadFragment(FragmentActivity activity, Fragment fragment, int containerId) {
-        final FragmentManager fragmentManager = activity.getSupportFragmentManager();
+    public static void loadFragment(Context context, Fragment fragment, int containerId) {
+        final FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(containerId, fragment);
-        transaction.addToBackStack(null);
         transaction.commit();
-    }
-
-    /**
-     * Replaces the specified layout with the specified fragment
-     */
-    public static void loadFragment(Context context, Fragment fragment, int containerId) {
-        loadFragment((FragmentActivity) context, fragment, containerId);
     }
     /**
 
      * Replace the specified layout with the specified fragment with animation
      */
-    public static void loadFragment(Context context, Fragment fragment, int containerId, int inAnimation, int outAnimation) {
+    public static void navigateToFragment(Context context, Fragment fragment, int containerId, String direction) {
         final FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(inAnimation, outAnimation);
+
+        if(direction.equals("right_to_left")) {
+            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+        } else if (direction.equals("left_to_right")) {
+            transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
+        }
+
         transaction.replace(containerId, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
