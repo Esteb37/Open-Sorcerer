@@ -26,7 +26,6 @@ import com.parse.ParseQuery;
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -155,15 +154,10 @@ public class HomeFragment extends Fragment {
             mProjects = new ArrayList<>();
         }
 
-        ProjectsCardAdapter.OnClickListener clickListener = position -> {
-
-        };
-
-        ProjectsCardAdapter.OnDoubleTapListener doubleTapListener = position ->
-                mUser.toggleLike(mProjects.get(position));
+        ProjectsCardAdapter.OnDoubleTapListener doubleTapListener = position -> mUser.toggleLike(mProjects.get(position));
 
         //Set adapter
-        mAdapter = new ProjectsCardAdapter(mProjects, mContext, clickListener, doubleTapListener);
+        mAdapter = new ProjectsCardAdapter(mProjects, mContext, doubleTapListener);
         mApp.recyclerViewProjects.setAdapter(mAdapter);
 
         //Set snap helper
@@ -205,6 +199,7 @@ public class HomeFragment extends Fragment {
                 if (projects.size() > 0) {
                     mAdapter.addAll(projects);
                 }
+                mApp.swipeContainer.setRefreshing(false);
                 mApp.progressBar.setVisibility(View.GONE);
             } else {
                 Log.d(TAG, "Unable to load projects.");
@@ -237,7 +232,6 @@ public class HomeFragment extends Fragment {
     public Project getCurrentProject() {
         View snapView = mSnapHelper.findSnapView(mLayoutManager);
         assert snapView != null;
-        Log.d("Test", String.valueOf(mLayoutManager.getPosition(snapView)));
         return mProjects.get(mLayoutManager.getPosition(snapView));
     }
 

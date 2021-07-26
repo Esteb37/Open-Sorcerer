@@ -106,7 +106,7 @@ public class CreateProjectImportFragment extends Fragment {
 
             try {
                 //Get the repo in user/repo format
-                String repoLink = Objects.requireNonNull(mApp.editTextRepo.getText()).toString().split("github.com/")[1];
+                String repoLink = Tools.getRepositoryName(Objects.requireNonNull(mApp.editTextRepo.getText()).toString());
 
                 try {
                     //Get the repository

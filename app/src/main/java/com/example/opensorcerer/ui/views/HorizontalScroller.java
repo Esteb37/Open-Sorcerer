@@ -88,7 +88,6 @@ public class HorizontalScroller extends HorizontalScrollView {
                 mActiveFeature = ((scrollX + (featureWidth / 2)) / featureWidth);
                 int scrollTo = mActiveFeature * featureWidth;
                 smoothScrollTo(scrollTo, 0);
-                Log.d("Scrolling", "" + scrollTo);
                 return true;
             } else {
                 return false;
@@ -104,23 +103,25 @@ public class HorizontalScroller extends HorizontalScrollView {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            try {
-                //right to left
-                if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                    int featureWidth = getMeasuredWidth();
-                    mActiveFeature = (mActiveFeature < (getChildCount() - 1)) ? mActiveFeature + 1 : getChildCount() - 1;
-                    smoothScrollTo(mActiveFeature * featureWidth, 0);
-                    return true;
+            if(e1 != null && e2 != null){
+                try {
+                    //right to left
+                    if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                        int featureWidth = getMeasuredWidth();
+                        mActiveFeature = (mActiveFeature < (getChildCount() - 1)) ? mActiveFeature + 1 : getChildCount() - 1;
+                        smoothScrollTo(mActiveFeature * featureWidth, 0);
+                        return true;
+                    }
+                    //left to right
+                    else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                        int featureWidth = getMeasuredWidth();
+                        mActiveFeature = (mActiveFeature > 0) ? mActiveFeature - 1 : 0;
+                        smoothScrollTo(mActiveFeature * featureWidth, 0);
+                        return true;
+                    }
+                } catch (Exception e) {
+                    Log.e("Fling", "There was an error processing the Fling event:" + e.getMessage());
                 }
-                //left to right
-                else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-                    int featureWidth = getMeasuredWidth();
-                    mActiveFeature = (mActiveFeature > 0) ? mActiveFeature - 1 : 0;
-                    smoothScrollTo(mActiveFeature * featureWidth, 0);
-                    return true;
-                }
-            } catch (Exception e) {
-                Log.e("Fling", "There was an error processing the Fling event:" + e.getMessage());
             }
             return false;
         }

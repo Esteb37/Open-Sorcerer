@@ -12,7 +12,6 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.adapters.FavoritesPagerAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProfileBinding;
 import com.example.opensorcerer.models.Tools;
@@ -32,11 +31,6 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
      * Tag for logging
      */
     private static final String TAG = "ProfileFragment";
-
-    /**
-     * Fragment pager adapter
-     */
-    private FavoritesPagerAdapter mPagerAdapter;
 
     /**
      * Binder object for ViewBinding
