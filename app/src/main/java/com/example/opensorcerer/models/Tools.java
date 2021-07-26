@@ -1,9 +1,9 @@
 package com.example.opensorcerer.models;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
@@ -18,8 +18,14 @@ import com.example.opensorcerer.R;
 import com.google.android.material.chip.ChipDrawable;
 import com.parse.ParseFile;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Abstract class for general use static methods
@@ -72,7 +78,7 @@ public abstract class Tools {
         }
 
         //Remove the trailing comma
-        return str.substring(0, str.length() - 2);
+        return str.length() > 1 ? str.substring(0,str.length() - 2) : str.toString();
     }
 
     /**
@@ -165,4 +171,47 @@ public abstract class Tools {
         transaction.commit();
     }
 
+    /**
+     * Fetches an image from a URL source and turns it to bitmap
+     */
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            //Setup the request for the image
+            java.net.URL url = new java.net.URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            //Get the image as an input stream
+            InputStream input = connection.getInputStream();
+            //Get the bipmap from the input stream
+            return BitmapFactory.decodeStream(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ParseFile getParseImageFromUrl(String url){
+        return bitmapToParseFile(Objects.requireNonNull(getBitmapFromURL(url)));
+    }
+
+    /**
+     * Gets the local link for a repo from the URL
+     */
+    public static String getRepositoryName(String repoLink) {
+        return repoLink.split("github.com/")[1];
+    }
+
+    /**
+     * Formats a repository title
+     */
+    @SuppressWarnings("deprecation")
+    public static String formatTitle(String title) {
+        return WordUtils.capitalizeFully(title.replace("-"," "));
+    }
+
+    public static void hasDuplicates(String key, String value) {
+
+    }
 }

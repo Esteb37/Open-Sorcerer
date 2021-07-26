@@ -22,11 +22,13 @@ public class Project extends ParseObject implements Parcelable {
     private static final String KEY_BANNER_IMAGE = "bannerImage";
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_CLICK_COUNT = "clickCount";
+    private static final String KEY_GITHUB_NAME = "githubName";
     private static final String KEY_REPOSITORY = "repository";
     private static final String KEY_LOGO_IMAGE = "logoImage";
     private static final String KEY_LIKE_COUNT = "likeCount";
     private static final String KEY_VIEW_COUNT = "viewCount";
     private static final String KEY_LANGUAGES = "languages";
+    private static final String KEY_LOGO_URL = "logoUrl";
     private static final String KEY_WEBSITE = "website";
     private static final String KEY_MANAGER = "manager";
     private static final String KEY_README = "readme";
@@ -83,6 +85,20 @@ public class Project extends ParseObject implements Parcelable {
      */
     public void setLogoImage(ParseFile logoImage) {
         put(KEY_LOGO_IMAGE, logoImage);
+    }
+
+    /**
+     * Logo image url getter
+     */
+    public String getLogoImageUrl(){
+        return getString(KEY_LOGO_URL);
+    }
+
+    /**
+     * Logo image url setter
+     */
+    public void setLogoImageUrl(String url){
+        put(KEY_LOGO_URL,url);
     }
 
     /**
@@ -212,6 +228,13 @@ public class Project extends ParseObject implements Parcelable {
         put(KEY_WEBSITE, website);
     }
 
+    public String getGithubName(){
+        return getString(KEY_GITHUB_NAME);
+    }
+
+    public void setGithubName(String name){
+        put(KEY_GITHUB_NAME,name);
+    }
     /**
      * Determines if the user has liked this project
      */

@@ -384,4 +384,7 @@ public class User implements Parcelable {
         dest.writeParcelable(mHandler, flags);
     }
 
+    public void setObjectId(String id) {
+        mHandler.setObjectId(id);
+    }
 }

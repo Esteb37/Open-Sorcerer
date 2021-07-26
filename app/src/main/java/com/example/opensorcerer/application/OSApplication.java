@@ -60,14 +60,24 @@ public class OSApplication extends Application {
     /**
      * Builds the GitHub application in the background with the user's OAuth token
      */
-    public void buildGitHub(String token) {
-        new Thread(() -> {
+    public GitHub buildGitHub(String token) {
+        Thread thread = new Thread(() -> {
             try {
                 mGitHub = new GitHubBuilder().withJwtToken(token).build();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }).start();
+        });
+
+        thread.start();
+
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return mGitHub;
     }
 
 }
