@@ -32,11 +32,6 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
     private final List<Project> mProjects;
 
     /**
-     * Click listener
-     */
-    private final OnClickListener mClickListener;
-
-    /**
      * Double tap listener
      */
     private final OnDoubleTapListener mDoubleTapListener;
@@ -51,10 +46,9 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
      */
     private ProjectCardHolder mHolder;
 
-    public ProjectsCardAdapter(List<Project> projects, Context context, OnClickListener clickListener, OnDoubleTapListener doubleTapListener) {
+    public ProjectsCardAdapter(List<Project> projects, Context context, OnDoubleTapListener doubleTapListener) {
         mProjects = projects;
         mContext = context;
-        mClickListener = clickListener;
         mDoubleTapListener = doubleTapListener;
     }
 
@@ -69,7 +63,7 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
     public ProjectCardHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         mApp = ItemCardProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = mApp.getRoot();
-        return new ProjectCardHolder(view, mContext, mApp, mClickListener, mDoubleTapListener);
+        return new ProjectCardHolder(view, mContext, mApp, mDoubleTapListener);
     }
 
     /**
@@ -114,13 +108,6 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
      */
     public Project getCurrentProject() {
         return mHolder.getAdapterPosition() > 0 ? mProjects.get(mHolder.getAdapterPosition() - 1) : mProjects.get(0);
-    }
-
-    /**
-     * Interface for detecting clicks on the project
-     */
-    public interface OnClickListener {
-        void onItemClicked(int position);
     }
 
     /**

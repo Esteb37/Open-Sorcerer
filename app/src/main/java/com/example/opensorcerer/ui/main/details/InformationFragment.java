@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +19,11 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentInformationBinding;
@@ -141,14 +146,27 @@ public class InformationFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            //Load the project's logo
-            ParseFile image = mProject.getLogoImage();
-            if (image != null) {
+            // Load the project's logo from URL if any
+            String imageURL = mProject.getLogoImageUrl();
+            ParseFile imageFile = mProject.getLogoImage();
+            if (imageURL != null) {
                 Glide.with(mContext)
-                        .load(image.getUrl())
+                        .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl() )
                         .transform(new RoundedCorners(1000))
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                mApp.progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                mApp.progressBar.setVisibility(View.GONE);
+                                return false;
+                            }
+                        })
                         .into(mApp.imageViewLogo);
-                mApp.progressBar.setVisibility(View.GONE);
             }
 
             setLikeButton();
@@ -169,8 +187,8 @@ public class InformationFragment extends Fragment {
                 Looper.prepare();
 
                 //Get repository
-                String repoLink = mProject.getRepository().split("github.com/")[1];
-                GHRepository ghRepo = mGitHub.getRepository(repoLink);
+                String repositoryName = Tools.getRepositoryName(mProject.getRepository());
+                GHRepository ghRepo = mGitHub.getRepository(repositoryName);
 
                 //Get ReadMe content
                 GHContent readme = ghRepo.getReadme();

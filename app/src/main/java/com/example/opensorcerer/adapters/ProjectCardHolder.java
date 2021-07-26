@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.webkit.URLUtil;
 import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
@@ -66,7 +67,6 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
      * Sets up the item's methods.
      */
     public ProjectCardHolder(View view, Context context, ItemCardProjectBinding binder,
-                             ProjectsCardAdapter.OnClickListener clickListener,
                              ProjectsCardAdapter.OnDoubleTapListener doubleTapListener) {
         super(view);
 
@@ -76,9 +76,6 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
 
         mUser = User.getCurrentUser();
 
-        // Set the listener for clicking on the card
-        view.setOnClickListener(v -> clickListener.onItemClicked(getAdapterPosition()));
-
         // Set the listener for double tapping on the card
         view.setOnTouchListener(new View.OnTouchListener() {
 
@@ -87,20 +84,20 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
                     new GestureDetector.SimpleOnGestureListener() {
 
                         @Override
-                        // Like the project on double tap
                         public boolean onDoubleTap(MotionEvent e) {
-                            doubleTapListener.onItemDoubleTap(getAdapterPosition());
-
-                            // Animate the project like
-                            setLikeButton();
-                            showLikeAnimation();
 
                             return super.onDoubleTap(e);
+                        }
+
+                        @Override
+                        public void onLongPress(MotionEvent e) {
+                            super.onLongPress(e);
                         }
                     });
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
                 v.performClick();
                 gestureDetector.onTouchEvent(event);
                 return true;
@@ -156,11 +153,13 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
             }
         }
 
-        // Load the project's logo
-        ParseFile image = mProject.getLogoImage();
-        if (image != null) {
+
+        // Load the project's logo from URL if any
+        String imageURL = mProject.getLogoImageUrl();
+        ParseFile imageFile = mProject.getLogoImage();
+        if (imageURL != null) {
             Glide.with(mContext)
-                    .load(image.getUrl())
+                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl() )
                     .transform(new RoundedCorners(1000))
                     .into(mApp.imageViewLogo);
         }

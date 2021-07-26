@@ -2,6 +2,7 @@ package com.example.opensorcerer.adapters;
 
 import android.content.Context;
 import android.view.View;
+import android.webkit.URLUtil;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,14 +49,15 @@ public class ProjectGridHolder extends RecyclerView.ViewHolder {
         //Dynamically set the title's max lines to avoid word breaking
         mApp.textViewTitle.setMaxLines(project.getTitle().split(" ").length);
 
-        //Load the project's image
-        ParseFile image = project.getLogoImage();
-        if (image != null) {
+        // Load the project's logo from URL if any
+        String imageURL = project.getLogoImageUrl();
+        ParseFile imageFile = project.getLogoImage();
+        if (imageURL != null) {
             Glide.with(mContext)
-                    .load(image.getUrl())
-                    .centerInside()
-                    .transform(new RoundedCorners(500))
+                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl() )
+                    .transform(new RoundedCorners(1000))
                     .into(mApp.imageViewLogo);
         }
+
     }
 }

@@ -125,41 +125,4 @@ public class ProjectsFragment extends Fragment {
                 }
         ).attach();
     }
-
-   /* public void setSearchListener(){
-        //Set listener for searchbar input
-        mApp.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-
-            //Whenever a new character is entered
-            public boolean onQueryTextChange(String newText) {
-                if(newText.length()>0) {
-                    searchProject(newText);
-                } else {
-                    queryProjects();
-                }
-
-                return false;
-            }
-        });
-    }*/
-
-    /*private void searchProject(String search) {
-        ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereMatches("title","("+search+")","i");
-        query.addDescendingOrder("createdAt");
-        query.findInBackground((projects, e) -> {
-            if(e==null){
-                mAdapter.clear();
-                mAdapter.addAll(projects);
-                mApp.progressBar.setVisibility(View.GONE);
-            } else {
-                Log.d(TAG,"Unable to load projects.");
-            }
-        });
-    }*/
 }
