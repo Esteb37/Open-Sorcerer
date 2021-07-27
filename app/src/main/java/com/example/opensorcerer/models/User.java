@@ -44,10 +44,11 @@ public class User implements Parcelable {
     private static final String KEY_ROLE = "role";
     private static final String KEY_NAME = "name";
     private static final String KEY_BIO = "bio";
+
     /**
      * The ParseUser object that allows communication with the database
      */
-    protected ParseUser mHandler;
+    private ParseUser mHandler;
 
     /**
      * Constructor that sets the handler as a ParseUser for database communication
@@ -270,15 +271,15 @@ public class User implements Parcelable {
     /**
      * Conversation list getter
      */
-    public ParseRelation<Conversation> getConversations() {
-        return mHandler.getRelation(KEY_CONVERSATIONS);
+    public List<String> getConversations() {
+        return mHandler.getList(KEY_CONVERSATIONS);
     }
 
     /**
      * Conversation list setter
      */
-    public void setConversations(ParseRelation<Conversation> conversation) {
-        mHandler.put(KEY_CONVERSATIONS, conversation);
+    public void setConversations(List<String> conversations) {
+        mHandler.put(KEY_CONVERSATIONS, conversations);
     }
 
     /**

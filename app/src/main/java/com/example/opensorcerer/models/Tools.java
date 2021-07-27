@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
+import android.util.Log;
 
 import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView;
 import androidx.fragment.app.Fragment;
@@ -24,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -211,7 +213,40 @@ public abstract class Tools {
         return WordUtils.capitalizeFully(title.replace("-"," "));
     }
 
-    public static void hasDuplicates(String key, String value) {
+    /**
+     * Creates a relative timestamp from a date object
+     */
+    public static String getRelativeTimeStamp(Date createdAt) {
+        int SECOND_MILLIS = 1000;
+        int MINUTE_MILLIS = 60 * SECOND_MILLIS;
+        int HOUR_MILLIS = 60 * MINUTE_MILLIS;
+        int DAY_MILLIS = 24 * HOUR_MILLIS;
 
+        try {
+            createdAt.getTime();
+            long time = createdAt.getTime();
+            long now = System.currentTimeMillis();
+
+            final long diff = now - time;
+            if (diff < MINUTE_MILLIS) {
+                return "just now";
+            } else if (diff < 2 * MINUTE_MILLIS) {
+                return "a minute ago";
+            } else if (diff < 50 * MINUTE_MILLIS) {
+                return diff / MINUTE_MILLIS + " m";
+            } else if (diff < 90 * MINUTE_MILLIS) {
+                return "an hour ago";
+            } else if (diff < 24 * HOUR_MILLIS) {
+                return diff / HOUR_MILLIS + " h";
+            } else if (diff < 48 * HOUR_MILLIS) {
+                return "yesterday";
+            } else {
+                return diff / DAY_MILLIS + " d";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 }
