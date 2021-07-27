@@ -81,6 +81,30 @@ public class User implements Parcelable {
     }
 
     /**
+     * Transforms a list of ParseUsers into a list of custom user objects
+     */
+    public static List<User> toUserArray(List<ParseUser> parseUsers) {
+        List<User> users = new ArrayList<>();
+        for (ParseUser parseUser : parseUsers) {
+            User user = new User();
+            user.setHandler(parseUser);
+            users.add(user);
+        }
+        return users;
+    }
+
+    /**
+     * Transforms a list of user objects into a list of ParseUser objects
+     */
+    public static Object toParseUserArray(List<User> users) {
+        List<ParseUser> parseUsers = new ArrayList<>();
+        for (User user : users) {
+            parseUsers.add(user.getHandler());
+        }
+        return parseUsers;
+    }
+
+    /**
      * Handler getter
      */
     public ParseUser getHandler() {
@@ -99,6 +123,10 @@ public class User implements Parcelable {
      */
     public String getObjectId() {
         return mHandler.getObjectId();
+    }
+
+    public void setObjectId(String id) {
+        mHandler.setObjectId(id);
     }
 
     /**
@@ -383,9 +411,5 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(mHandler, flags);
-    }
-
-    public void setObjectId(String id) {
-        mHandler.setObjectId(id);
     }
 }

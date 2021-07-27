@@ -44,6 +44,11 @@ public class ConversationsFragment extends Fragment {
     private static final String TAG = "ConversationsFragment";
 
     /**
+     * Amount of conversations to load at a time
+     */
+    private static final int QUERY_LIMIT = 20;
+
+    /**
      * Binder object for ViewBinding
      */
     private FragmentConversationsBinding mApp;
@@ -78,11 +83,6 @@ public class ConversationsFragment extends Fragment {
      */
     private LinearLayoutManager mLayoutManager;
 
-    /**
-     * Amount of conversations to load at a time
-     */
-    private static final int QUERY_LIMIT = 20;
-
     public ConversationsFragment() {
         // Required empty public constructor
     }
@@ -92,6 +92,9 @@ public class ConversationsFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Sets up the fragment's layout
+     */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,18 +103,30 @@ public class ConversationsFragment extends Fragment {
         return mApp.getRoot();
     }
 
+    /**
+     * Sets up the fragment's methods
+     */
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(mApp.toolbar);
+        setupWindowBars();
 
-        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle("Conversations");
         getState();
 
         setupRecyclerView();
 
         queryConversations(0);
+    }
+
+    /**
+     * Sets up the fragment's toolbar and shows the bottom navigation
+     */
+    private void setupWindowBars() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(mApp.toolbar);
+        Objects.requireNonNull(((AppCompatActivity) requireActivity()).getSupportActionBar()).setTitle("Conversations");
+
+        requireActivity().findViewById(R.id.bottomNav).setVisibility(View.VISIBLE);
     }
 
     /**
@@ -130,14 +145,13 @@ public class ConversationsFragment extends Fragment {
      */
     private void setupRecyclerView() {
 
-        if(mConversations == null){
+        if (mConversations == null) {
             mConversations = new ArrayList<>();
         }
 
-        ConversationsAdapter.OnClickListener clickListener = position -> {
-            Tools.navigateToFragment(mContext,new ConversationFragment(mConversations.get(position)),R.id.flContainer,"right_to_left");
-        };
-
+        //Click listener for travelling to a conversation
+        ConversationsAdapter.OnClickListener clickListener = position ->
+                Tools.navigateToFragment(mContext, new ConversationFragment(mConversations.get(position)), R.id.flContainer, "right_to_left");
 
         //Set adapter
         mAdapter = new ConversationsAdapter(mConversations, mContext, clickListener);
@@ -174,7 +188,7 @@ public class ConversationsFragment extends Fragment {
 
         query.findInBackground((conversations, e) -> {
             if (e == null) {
-                if(page == 0 ){
+                if (page == 0) {
                     mAdapter.clear();
                 }
                 if (conversations.size() > 0) {
@@ -186,9 +200,12 @@ public class ConversationsFragment extends Fragment {
         });
     }
 
+    /**
+     * Inflates the toolbar
+     */
     @Override
     public void onCreateOptionsMenu(@NotNull Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.conversations_menu, menu);
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

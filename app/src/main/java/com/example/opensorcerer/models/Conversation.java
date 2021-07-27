@@ -1,48 +1,108 @@
 package com.example.opensorcerer.models;
 
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class for handling Conversation objects for user chats
  */
+@SuppressWarnings("unused")
 @ParseClassName("Conversation")
 public class Conversation extends ParseObject implements Parcelable {
 
-    private static String KEY_MESSAGES = "messages";
-    private static String KEY_SECOND = "second";
-    private static String KEY_FIRST = "first";
+    // Database keys
+    private static final String KEY_PARTICIPANTS = "participants";
+    private static final String KEY_MESSAGES = "messages";
 
-    public List<String> getMessages(){
+    /**
+     * Gets an active conversation between the current user and another, if it exists
+     */
+    public static Conversation findConversationWithUser(User opposite){
+
+        User current = User.getCurrentUser();
+
+        ParseQuery<Conversation> queryFirst = ParseQuery.getQuery(Conversation.class)
+                .whereContainedIn("participants", Arrays.asList(current,opposite));
+        try {
+            return queryFirst.getFirst();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Messages getter
+     */
+    public List<String> getMessages() {
         return getList(KEY_MESSAGES);
     }
 
-    public void setMessages(List<String> messages){
-        put(KEY_MESSAGES,messages);
+    /**
+     * Messages setter
+     */
+    public void setMessages(List<String> messages) {
+        put(KEY_MESSAGES, messages);
+        update();
     }
 
-    public User getFirst(){
-        return User.fromParseUser(getParseUser(KEY_FIRST));
+    /**
+     * Participants getter
+     */
+    public List<User> getParticipants() {
+        return User.toUserArray(Objects.requireNonNull(getList(KEY_PARTICIPANTS)));
     }
 
-    public void setFirst(User first){
-        put(KEY_FIRST,first.getHandler());
+    /**
+     * Participants setter
+     */
+    public void setParticipants(List<User> participants) {
+        put(KEY_PARTICIPANTS,User.toParseUserArray(participants));
     }
 
-    public User getSecond(){
-        return User.fromParseUser(getParseUser(KEY_SECOND));
+    /**
+     * Gets the user that is not the current user in this conversation
+     */
+    public User getOpposite() {
+        List<User> participants = getParticipants();
+        User current = User.getCurrentUser();
+        return participants.get(0).getObjectId().equals(current.getObjectId())
+                ? participants.get(1)
+                : participants.get(0);
     }
 
-    public void setSecond(User second){
-        put(KEY_SECOND,second.getHandler());
+    /**
+     * Adds a single message to the conversation
+     */
+    public void addMessage(Message message){
+        List<String> messages = getMessages();
+        if(messages == null){
+            messages = new ArrayList<>();
+        }
+        messages.add(message.getObjectId());
+        setMessages(messages);
     }
 
-    public User getOpposite(){
-        return User.getCurrentUser().getObjectId().equals(getFirst().getObjectId()) ? getSecond() : getFirst();
+    /**
+     * Saves the conversation into the database
+     */
+    private void update() {
+        saveInBackground(e -> {
+            if (e == null) {
+                Log.d("Conversation", "Conversation updated");
+            } else {
+                e.printStackTrace();
+            }
+        });
     }
-
 }

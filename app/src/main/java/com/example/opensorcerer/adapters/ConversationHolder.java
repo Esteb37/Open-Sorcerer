@@ -46,22 +46,33 @@ public class ConversationHolder extends RecyclerView.ViewHolder {
      */
     public void bind(Conversation conversation) {
 
-
         List<String> messages = conversation.getMessages();
 
-        ParseQuery<Message> query = ParseQuery.getQuery(Message.class).whereContainedIn("objectId",messages);
-        query.addDescendingOrder("createdAt");
+        //Load a preview of the last message
+        if (messages != null) {
 
-        query.getFirstInBackground((lastMessage, e) -> {
-            if(e == null){
-                ((FragmentActivity) mContext).runOnUiThread(() -> {
-                    mApp.textViewContent.setText(lastMessage.getContent());
-                    mApp.textViewTimestamp.setText(Tools.getRelativeTimeStamp(lastMessage.getCreatedAt()));
-                });
-            } else {
-                e.printStackTrace();
-            }
-        });
+            //get the last message
+            ParseQuery<Message> query = ParseQuery.getQuery(Message.class).whereContainedIn("objectId", messages);
+            query.addDescendingOrder("createdAt");
+
+            query.getFirstInBackground((lastMessage, e) -> {
+                if (e == null) {
+                    ((FragmentActivity) mContext).runOnUiThread(() -> {
+
+                        //Load and show the message's information into the conversation preview
+                        mApp.textViewContent.setText(lastMessage.getContent());
+                        mApp.textViewTimestamp.setText(Tools.getRelativeTimeStamp(lastMessage.getCreatedAt()));
+                        mApp.textViewContent.setVisibility(View.VISIBLE);
+                        mApp.textViewTimestamp.setVisibility(View.VISIBLE);
+                    });
+                } else {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            mApp.textViewContent.setVisibility(View.GONE);
+            mApp.textViewTimestamp.setVisibility(View.GONE);
+        }
 
         // Load other user's information
         try {
@@ -69,6 +80,7 @@ public class ConversationHolder extends RecyclerView.ViewHolder {
 
             mApp.textViewUsername.setText(opposite.getUsername());
 
+            //Load the other user's profile picture
             ParseFile oppositeProfilePicture = opposite.getProfilePicture();
             if (oppositeProfilePicture != null) {
                 Glide.with(mContext)
@@ -78,6 +90,5 @@ public class ConversationHolder extends RecyclerView.ViewHolder {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 }

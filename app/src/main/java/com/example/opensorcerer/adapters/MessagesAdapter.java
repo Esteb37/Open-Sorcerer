@@ -1,12 +1,12 @@
 package com.example.opensorcerer.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.opensorcerer.databinding.ItemMessageIncommingBinding;
 import com.example.opensorcerer.databinding.ItemMessageOutgoingBinding;
 import com.example.opensorcerer.models.Message;
@@ -23,6 +23,16 @@ import java.util.List;
 public class MessagesAdapter extends RecyclerView.Adapter<MessageHolder> {
 
     /**
+     * Custom code for identifying incoming messages
+     */
+    public static final int MESSAGE_INCOMING = 0;
+
+    /**
+     * Custom code for identifying outgoing messages
+     */
+    public static final int MESSAGE_OUTGOING = 1;
+
+    /**
      * The adapter's current context
      */
     private final Context mContext;
@@ -36,10 +46,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessageHolder> {
      * The current user
      */
     private final User mUser;
-
-
-    public static final int MESSAGE_INCOMING = 0;
-    public static final int MESSAGE_OUTGOING = 1;
 
     public MessagesAdapter(List<Message> messages, Context context) {
         mMessages = messages;
@@ -56,10 +62,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessageHolder> {
     @NotNull
     @Override
     public MessageHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        if (viewType == MESSAGE_INCOMING){
+        if (viewType == MESSAGE_INCOMING) {
             ItemMessageIncommingBinding app = ItemMessageIncommingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new MessageHolder(app.getRoot(), mContext, app, viewType);
-        } else if (viewType == MESSAGE_OUTGOING){
+        } else if (viewType == MESSAGE_OUTGOING) {
             ItemMessageOutgoingBinding app = ItemMessageOutgoingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new MessageHolder(app.getRoot(), mContext, app, viewType);
         } else {
@@ -101,27 +107,26 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessageHolder> {
         notifyDataSetChanged();
     }
 
+    /**
+     * Adds a single message to the recycler view
+     */
     public void addMessage(Message message) {
-        mMessages.add(0,message);
-        notifyItemInserted(0);;
+        mMessages.add(message);
+        notifyItemInserted(mMessages.size() - 1);
     }
 
     /**
-     * Interface for detecting clicks on the messages
+     * Identifies if the message is incoming or outgoing
      */
-    public interface OnClickListener {
-        void onItemClicked(int position);
-    }
-
     @Override
     public int getItemViewType(int position) {
         Message message = mMessages.get(position);
-        Log.d("Test",mUser.getObjectId() + message.getAuthor().getObjectId());
+
+        //Check if the message's author is the current user
         if (mUser.getObjectId().equals(message.getAuthor().getObjectId())) {
             return MESSAGE_OUTGOING;
         } else {
             return MESSAGE_INCOMING;
         }
     }
-
 }
