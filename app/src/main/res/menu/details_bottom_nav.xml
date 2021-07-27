@@ -9,7 +9,7 @@
         android:title="Details"
         app:showAsAction="always" />
     <item
-        android:id="@+id/actionGithub"
+        android:id="@+id/actionHomepage"
         android:enabled="true"
         android:icon="@drawable/website"
         android:iconTint="#FFFFFF"
@@ -23,7 +23,7 @@
         android:title="Fork"
         app:showAsAction="always" />
     <item
-        android:id="@+id/actionChats"
+        android:id="@+id/actionMessage"
         android:icon="@drawable/chat"
         android:title="Contact Manager"
         app:showAsAction="always" />

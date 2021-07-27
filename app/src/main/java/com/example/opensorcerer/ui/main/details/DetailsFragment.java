@@ -16,6 +16,7 @@ import com.example.opensorcerer.databinding.FragmentDetailsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.conversations.ConversationFragment;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
@@ -106,7 +107,8 @@ public class DetailsFragment extends Fragment {
 
         //Ensure that the id's of the navigation items are final for the switch
         final int actionDetails = R.id.actionDetails;
-        final int actionGithub = R.id.actionGithub;
+        final int actionHomepage = R.id.actionHomepage;
+        final int actionMessage = R.id.actionMessage;
 
         mApp.bottomNavDetails.setOnItemSelectedListener(item -> {
             Fragment fragment;
@@ -117,8 +119,12 @@ public class DetailsFragment extends Fragment {
                     fragment = new InformationFragment(mProject);
                     break;
 
-                case actionGithub:
+                case actionHomepage:
                     fragment = new HomepageFragment(mProject);
+                    break;
+
+                case actionMessage:
+                    fragment = new ConversationFragment(mProject.getManager());
                     break;
 
                 default:

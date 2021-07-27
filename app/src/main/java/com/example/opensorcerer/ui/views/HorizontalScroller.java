@@ -103,6 +103,7 @@ public class HorizontalScroller extends HorizontalScrollView {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
             if(e1 != null && e2 != null){
                 try {
                     //right to left

@@ -30,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -179,7 +180,9 @@ public class ConversationsFragment extends Fragment {
     private void queryConversations(int page) {
 
         //Get a query in descending order
-        ParseQuery<Conversation> query = ParseQuery.getQuery(Conversation.class);
+        ParseQuery<Conversation> query = ParseQuery.getQuery(Conversation.class)
+                .whereContainsAll("participants", Arrays.asList(mUser.getHandler()));
+
         query.addDescendingOrder("createdAt");
 
         //Setup pagination

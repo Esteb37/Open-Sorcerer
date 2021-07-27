@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         final int actionHome = R.id.actionHome;
         final int actionProfile = R.id.actionProfile;
         final int actionProjects = R.id.actionProjects;
-        final int actionChats = R.id.actionChats;
+        final int actionChats = R.id.actionMessage;
         final int actionCreate = R.id.actionCreate;
 
         List<Integer> itemOrder = Arrays.asList(actionHome,actionProjects,actionCreate,actionChats,actionProfile);

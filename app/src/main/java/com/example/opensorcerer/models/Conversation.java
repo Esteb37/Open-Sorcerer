@@ -27,18 +27,27 @@ public class Conversation extends ParseObject implements Parcelable {
     /**
      * Gets an active conversation between the current user and another, if it exists
      */
-    public static Conversation findConversationWithUser(User opposite){
+    private static Conversation findActiveConversation(User opposite){
 
         User current = User.getCurrentUser();
 
-        ParseQuery<Conversation> queryFirst = ParseQuery.getQuery(Conversation.class)
-                .whereContainedIn("participants", Arrays.asList(current,opposite));
+        ParseQuery<Conversation> query = ParseQuery.getQuery(Conversation.class)
+                .whereContainsAll("participants", Arrays.asList(current.getHandler(),opposite.getHandler()));
         try {
-            return queryFirst.getFirst();
+            return query.getFirst();
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static Conversation getConversationWithUser(User opposite){
+        Conversation conversation = findActiveConversation(opposite);
+        if (conversation == null){
+            conversation = new Conversation();
+            conversation.setParticipants(Arrays.asList(User.getCurrentUser(),opposite));
+        }
+        return conversation;
     }
 
     /**

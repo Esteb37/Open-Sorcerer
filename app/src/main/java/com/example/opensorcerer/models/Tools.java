@@ -154,8 +154,8 @@ public abstract class Tools {
         transaction.replace(containerId, fragment);
         transaction.commit();
     }
-    /**
 
+    /**
      * Replace the specified layout with the specified fragment with animation
      */
     public static void navigateToFragment(Context context, Fragment fragment, int containerId, String direction) {

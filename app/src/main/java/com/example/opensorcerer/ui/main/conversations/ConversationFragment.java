@@ -35,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -108,6 +109,10 @@ public class ConversationFragment extends Fragment {
      */
     public ConversationFragment(Conversation conversation) {
         mConversation = conversation;
+    }
+
+    public ConversationFragment(User oppositeUser) {
+        mConversation = Conversation.getConversationWithUser(oppositeUser);
     }
 
     @Override
@@ -227,8 +232,9 @@ public class ConversationFragment extends Fragment {
                 //Save the message in the database and in the conversation
                 newMessage.saveInBackground(e -> {
                     if (e == null) {
-                        Log.d("Conversation", "Message sent");
+
                         mConversation.addMessage(newMessage);
+
                         mApp.editTextCompose.setText("");
                     } else {
                         Toast.makeText(mContext, "Unable to send message", Toast.LENGTH_SHORT).show();
@@ -284,32 +290,36 @@ public class ConversationFragment extends Fragment {
     }
 
     /**
-     * Gets the list of projects from the developer's timeline
+     * Gets the list of messages from this conversation
      */
     private void queryMessages(int page) {
 
-        //Get a query in descending order
-        ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
+        List<String> messages = mConversation.getMessages();
 
+        if(messages != null){
+            //Get a query in descending order
+            ParseQuery<Message> query = ParseQuery.getQuery(Message.class)
+                    .whereContainedIn("objectId", messages);
 
-        //Setup pagination
-        query.setLimit(QUERY_LIMIT);
-        query.setSkip(page * QUERY_LIMIT);
+            //Setup pagination
+            query.setLimit(QUERY_LIMIT);
+            query.setSkip(page * QUERY_LIMIT);
 
-        query.findInBackground((messages, e) -> {
-            if (e == null) {
-                if (page == 0) {
-                    mAdapter.clear();
+            query.findInBackground((newMessages, e) -> {
+                if (e == null) {
+                    if (page == 0) {
+                        mAdapter.clear();
+                    }
+                    if (messages.size() > 0) {
+                        mAdapter.addAll(newMessages);
+                    }
+
+                    mApp.recyclerViewMessages.scrollToPosition(mMessages.size() - 1);
+                } else {
+                    Log.d(TAG, "Unable to load messages.");
                 }
-                if (messages.size() > 0) {
-                    mAdapter.addAll(messages);
-                }
-
-                mApp.recyclerViewMessages.scrollToPosition(mMessages.size() - 1);
-            } else {
-                Log.d(TAG, "Unable to load messages.");
-            }
-        });
+            });
+        }
     }
 
     /**

@@ -297,20 +297,6 @@ public class User implements Parcelable {
     }
 
     /**
-     * Conversation list getter
-     */
-    public List<String> getConversations() {
-        return mHandler.getList(KEY_CONVERSATIONS);
-    }
-
-    /**
-     * Conversation list setter
-     */
-    public void setConversations(List<String> conversations) {
-        mHandler.put(KEY_CONVERSATIONS, conversations);
-    }
-
-    /**
      * Favorites list getter
      */
     public List<String> getFavorites() {

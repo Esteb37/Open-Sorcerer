@@ -2,6 +2,7 @@ package com.example.opensorcerer.ui.main.profile;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.ProjectsPagerAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProfileContentBinding;
+import com.example.opensorcerer.models.Conversation;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.conversations.ConversationFragment;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,26 +39,32 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
      * Listener for the drawer
      */
     private final OnFragmentInteractionListener mListener;
+
     /**
      * User to show in profile
      */
     private final User mProfileUser;
+
     /**
      * Fragment pager adapter
      */
     private ProjectsPagerAdapter mPagerAdapter;
+
     /**
      * Binder object for ViewBinding
      */
     private FragmentProfileContentBinding mApp;
+
     /**
      * Fragment's context
      */
     private Context mContext;
+
     /**
      * Current logged in user
      */
     private User mUser;
+
     /**
      * GitHub API handler
      */
@@ -101,6 +110,8 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
         setupPagerView();
 
         setDrawerButtonListener();
+
+        setupMessageButtonListener();
     }
 
     /**
@@ -169,6 +180,15 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
      */
     private void setDrawerButtonListener() {
         mApp.buttonDrawer.setOnClickListener(v -> mListener.openDrawer());
+    }
+
+    /**
+     * Sets up the listener for the "Send message" button
+     */
+    private void setupMessageButtonListener(){
+        mApp.buttonMessage.setOnClickListener(v -> {
+            Tools.navigateToFragment(mContext, new ConversationFragment(mProfileUser), R.id.flContainer, "right_to_left");
+        });
     }
 
     /**
