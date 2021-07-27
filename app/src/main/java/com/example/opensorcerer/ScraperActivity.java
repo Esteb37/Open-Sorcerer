@@ -50,7 +50,7 @@ public class ScraperActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_web_view);
+        setContentView(R.layout.activity_scraper);
 
         buildGithub();
 

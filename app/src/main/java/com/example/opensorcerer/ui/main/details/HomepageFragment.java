@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentGitHubBinding;
+import com.example.opensorcerer.databinding.FragmentHomepageBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
 
@@ -33,7 +33,7 @@ public class HomepageFragment extends Fragment {
     /**
      * Binder object for ViewBinding
      */
-    private FragmentGitHubBinding mApp;
+    private FragmentHomepageBinding mApp;
 
     /**
      * Fragment's context
@@ -71,7 +71,7 @@ public class HomepageFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mApp = FragmentGitHubBinding.inflate(inflater, container, false);
+        mApp = FragmentHomepageBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
