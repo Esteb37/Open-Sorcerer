@@ -1,4 +1,4 @@
-package com.example.opensorcerer.adapters;
+package com.example.opensorcerer.models;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;

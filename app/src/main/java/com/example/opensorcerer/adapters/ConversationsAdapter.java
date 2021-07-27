@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.opensorcerer.databinding.ItemConversationBinding;
+import com.example.opensorcerer.holders.ConversationHolder;
 import com.example.opensorcerer.models.Conversation;
 
 import org.jetbrains.annotations.NotNull;

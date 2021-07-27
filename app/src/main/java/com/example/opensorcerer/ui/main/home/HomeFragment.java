@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.adapters.EndlessRecyclerViewScrollListener;
+import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.adapters.ProjectsCardAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentHomeBinding;

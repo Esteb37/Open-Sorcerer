@@ -1,10 +1,11 @@
-package com.example.opensorcerer.adapters;
+package com.example.opensorcerer.holders;
 
 import android.content.Context;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.opensorcerer.adapters.MessagesAdapter;
 import com.example.opensorcerer.databinding.ItemMessageIncommingBinding;
 import com.example.opensorcerer.databinding.ItemMessageOutgoingBinding;
 import com.example.opensorcerer.models.Message;

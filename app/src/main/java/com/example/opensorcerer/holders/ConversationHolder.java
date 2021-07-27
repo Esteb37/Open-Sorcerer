@@ -1,4 +1,4 @@
-package com.example.opensorcerer.adapters;
+package com.example.opensorcerer.holders;
 
 import android.content.Context;
 import android.view.View;
@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.opensorcerer.adapters.ConversationsAdapter;
 import com.example.opensorcerer.databinding.ItemConversationBinding;
 import com.example.opensorcerer.models.Conversation;
 import com.example.opensorcerer.models.Message;

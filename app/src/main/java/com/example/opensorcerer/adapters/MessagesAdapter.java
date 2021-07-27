@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.opensorcerer.databinding.ItemMessageIncommingBinding;
 import com.example.opensorcerer.databinding.ItemMessageOutgoingBinding;
+import com.example.opensorcerer.holders.MessageHolder;
 import com.example.opensorcerer.models.Message;
 import com.example.opensorcerer.models.User;
 

@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.opensorcerer.databinding.ItemGridProjectBinding;
+import com.example.opensorcerer.holders.ProjectCardHolder;
+import com.example.opensorcerer.holders.ProjectGridHolder;
 import com.example.opensorcerer.models.Project;
 
 import org.jetbrains.annotations.NotNull;

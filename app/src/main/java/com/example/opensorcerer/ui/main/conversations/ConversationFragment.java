@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.adapters.EndlessRecyclerViewScrollListener;
+import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.adapters.MessagesAdapter;
 import com.example.opensorcerer.databinding.FragmentConversationBinding;
 import com.example.opensorcerer.models.Conversation;

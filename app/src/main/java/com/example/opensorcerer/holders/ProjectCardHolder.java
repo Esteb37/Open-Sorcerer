@@ -1,4 +1,4 @@
-package com.example.opensorcerer.adapters;
+package com.example.opensorcerer.holders;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.opensorcerer.R;
+import com.example.opensorcerer.adapters.ProjectsCardAdapter;
 import com.example.opensorcerer.databinding.ItemCardProjectBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
