@@ -17,7 +17,7 @@ import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.adapters.ProjectsGridAdapter;
 import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.FragmentFavoritesGridBinding;
+import com.example.opensorcerer.databinding.FragmentFavoriteProjectsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
@@ -35,7 +35,7 @@ import java.util.List;
  * Fragment for displaying the user's liked projects in grid format
  */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
-public class FavoritesGridFragment extends Fragment {
+public class FavoriteProjectsFragment extends Fragment {
 
 
     /**
@@ -51,7 +51,7 @@ public class FavoritesGridFragment extends Fragment {
     /**
      * Binder object for ViewBinding
      */
-    private FragmentFavoritesGridBinding mApp;
+    private FragmentFavoriteProjectsBinding mApp;
 
     /**
      * Fragment's context
@@ -88,9 +88,7 @@ public class FavoritesGridFragment extends Fragment {
      */
     public final User mProfileUser;
 
-
-
-    public FavoritesGridFragment(User profileUser) {
+    public FavoriteProjectsFragment(User profileUser) {
         mProfileUser = profileUser;
     }
 
@@ -105,7 +103,7 @@ public class FavoritesGridFragment extends Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mApp = FragmentFavoritesGridBinding.inflate(inflater, container, false);
+        mApp = FragmentFavoriteProjectsBinding.inflate(inflater, container, false);
         return mApp.getRoot();
     }
 
