@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.models.Conversation;
+import com.example.opensorcerer.models.Message;
 import com.example.opensorcerer.models.Project;
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -12,6 +13,9 @@ import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
 
 import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * Class for hosting the application and handling the Parse database and the GitHub API
@@ -39,14 +43,25 @@ public class OSApplication extends Application {
 
         //Register custom objects into the database
         ParseObject.registerSubclass(Conversation.class);
+        ParseObject.registerSubclass(Message.class);
         ParseObject.registerSubclass(Project.class);
 
+        // Use for monitoring Parse network traffic
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+
+        // Can be Level.BASIC, Level.HEADERS, or Level.BODY
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        // any network interceptors must be added with the Configuration Builder given this syntax
+        builder.networkInterceptors().add(httpLoggingInterceptor);
 
         //Initialize the Parse database application
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId(getString(R.string.back4app_app_id))
                 .clientKey(getString(R.string.back4app_client_key))
                 .server(getString(R.string.back4app_server_url))
+                .clientBuilder(builder)
                 .build());
     }
 
