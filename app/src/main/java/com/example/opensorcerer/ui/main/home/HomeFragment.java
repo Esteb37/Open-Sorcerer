@@ -196,6 +196,9 @@ public class HomeFragment extends Fragment {
 
         query.findInBackground((projects, e) -> {
             if (e == null) {
+                if(page == 0 ){
+                    mAdapter.clear();
+                }
                 if (projects.size() > 0) {
                     mAdapter.addAll(projects);
                 }
