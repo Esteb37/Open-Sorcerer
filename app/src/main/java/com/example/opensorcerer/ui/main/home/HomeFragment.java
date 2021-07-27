@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
     /**
      * Tag for logging
      */
-    private static final String TAG = "ProjectsFragment";
+    private static final String TAG = "HomeFragment";
 
     /**
      * Amount of items to query per call
@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
     /**
      * The position to scroll to
      */
-    private int mPosition  = -1;
+    private int mPosition = -1;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -123,16 +123,16 @@ public class HomeFragment extends Fragment {
 
         setupRecyclerView();
 
-        if(mPosition == -1) {
+        if (mPosition == -1) {
             queryProjects(0);
         } else {
             loadProjects();
         }
 
         setupSwipeRefresh();
+
+        requireActivity().findViewById(R.id.bottomNav).setVisibility(View.VISIBLE);
     }
-
-
 
     /**
      * Gets the current state for the member variables.
@@ -150,7 +150,7 @@ public class HomeFragment extends Fragment {
      */
     private void setupRecyclerView() {
 
-        if(mProjects == null){
+        if (mProjects == null) {
             mProjects = new ArrayList<>();
         }
 
@@ -180,7 +180,6 @@ public class HomeFragment extends Fragment {
         mApp.recyclerViewProjects.addOnScrollListener(scrollListener);
     }
 
-
     /**
      * Gets the list of projects from the developer's timeline
      */
@@ -196,7 +195,7 @@ public class HomeFragment extends Fragment {
 
         query.findInBackground((projects, e) -> {
             if (e == null) {
-                if(page == 0 ){
+                if (page == 0) {
                     mAdapter.clear();
                 }
                 if (projects.size() > 0) {
@@ -210,7 +209,9 @@ public class HomeFragment extends Fragment {
         });
     }
 
-
+    /**
+     * Loads the selected list of projects
+     */
     private void loadProjects() {
         mAdapter.notifyDataSetChanged();
         mApp.recyclerViewProjects.scrollToPosition(mPosition);

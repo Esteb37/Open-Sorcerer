@@ -33,6 +33,11 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     private static final String TAG = "ProfileFragment";
 
     /**
+     * Fragment for the menu drawer
+     */
+    private final Fragment profileDrawerFragment = null;
+
+    /**
      * Binder object for ViewBinding
      */
     private FragmentProfileBinding mApp;
@@ -78,11 +83,6 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
      */
     private Fragment profileContentFragment = null;
 
-    /**
-     * Fragment for the menu drawer
-     */
-    private final Fragment profileDrawerFragment = null;
-
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -113,6 +113,8 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
         setupProfileContent();
 
         setupDrawer();
+
+        requireActivity().findViewById(R.id.bottomNav).setVisibility(View.VISIBLE);
     }
 
     /**

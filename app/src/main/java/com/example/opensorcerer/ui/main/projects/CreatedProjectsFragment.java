@@ -11,8 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.opensorcerer.R;
+import com.example.opensorcerer.adapters.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.adapters.ProjectsGridAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreatedProjectsBinding;
@@ -29,13 +31,26 @@ import org.kohsuke.github.GitHub;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment to display a user's created projects
+ */
 @SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class CreatedProjectsFragment extends Fragment {
 
     /**
      * Tag for logging
      */
-    private static final String TAG = "MyProjectsFragment";
+    private static final String TAG = "CreatedProjectsFragment";
+
+    /**
+     * Amount of projects to retrieve at a time
+     */
+    private static final int QUERY_LIMIT = 20;
+
+    /**
+     * The user whose projects to show
+     */
+    private final User mProfileUser;
 
     /**
      * Binder object for ViewBinding
@@ -68,10 +83,9 @@ public class CreatedProjectsFragment extends Fragment {
     private List<Project> mProjects;
 
     /**
-     * The user whose projects to show
+     * The recycler view layout manager
      */
-    private final User mProfileUser;
-
+    private GridLayoutManager mLayoutManager;
 
     public CreatedProjectsFragment(User projectUser) {
         mProfileUser = projectUser;
@@ -92,6 +106,9 @@ public class CreatedProjectsFragment extends Fragment {
         return mApp.getRoot();
     }
 
+    /**
+     * Sets up the fragment's methods
+     */
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -100,7 +117,7 @@ public class CreatedProjectsFragment extends Fragment {
 
         setupRecyclerView();
 
-        queryProjects();
+        queryProjects(0);
     }
 
     /**
@@ -125,23 +142,45 @@ public class CreatedProjectsFragment extends Fragment {
             ((MainActivity) requireActivity()).showDetailsFragment();
         };
 
+        //Set the adapter
         mAdapter = new ProjectsGridAdapter(mProjects, mContext, clickListener);
         mApp.recyclerViewProjects.setAdapter(mAdapter);
-        mApp.recyclerViewProjects.setLayoutManager(new GridLayoutManager(mContext, 2));
+
+        //Set the layout
+        mLayoutManager = new GridLayoutManager(mContext, 2);
+        mApp.recyclerViewProjects.setLayoutManager(mLayoutManager);
+
+        //Setup endless scrolling
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                queryProjects(page);
+            }
+        };
+
+        // Adds the scroll listener to RecyclerView
+        mApp.recyclerViewProjects.addOnScrollListener(scrollListener);
     }
 
     /**
      * Gets the list of projects created by the user
      */
-    public void queryProjects() {
+    public void queryProjects(int page) {
         ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContains("manager", mProfileUser.getObjectId());
         query.addDescendingOrder("createdAt");
+
+
+        //Setup pagination
+        query.setLimit(QUERY_LIMIT);
+        query.setSkip(QUERY_LIMIT * page);
+
         query.findInBackground((projects, e) -> {
             if (e == null) {
                 if (projects.size() > 0) {
                     mAdapter.addAll(projects);
-                } else {
-                    mApp.textViewNoProjects.setVisibility(View.VISIBLE);
+                    if (mProjects.size() == 0) {
+                        mApp.textViewNoProjects.setVisibility(View.VISIBLE);
+                    }
                 }
                 mApp.progressBar.setVisibility(View.GONE);
             } else {

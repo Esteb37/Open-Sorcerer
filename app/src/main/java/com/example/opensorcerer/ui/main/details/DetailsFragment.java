@@ -30,22 +30,27 @@ public class DetailsFragment extends Fragment {
      * Tag for logging
      */
     private static final String TAG = "DetailsFragment";
+
     /**
      * Project being displayed
      */
     private final Project mProject;
+
     /**
      * Binder object for ViewBinding
      */
     private FragmentDetailsBinding mApp;
+
     /**
      * Fragment's context
      */
     private Context mContext;
+
     /**
      * Current logged in user
      */
     private User mUser;
+
     /**
      * GitHub API handler
      */
@@ -92,11 +97,12 @@ public class DetailsFragment extends Fragment {
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }
 
-
     /**
      * Sets up the bottom navigation bar
      */
     private void setupBottomNavigation() {
+
+        requireActivity().findViewById(R.id.bottomNavDetails).setVisibility(View.VISIBLE);
 
         //Ensure that the id's of the navigation items are final for the switch
         final int actionDetails = R.id.actionDetails;
