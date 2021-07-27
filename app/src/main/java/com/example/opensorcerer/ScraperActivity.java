@@ -176,7 +176,7 @@ public class ScraperActivity extends AppCompatActivity {
                 "   var logo = document.getElementsByClassName('logo')[0].querySelector('img').src;" +
                 "}" +
                 "catch(e){" +
-                "   var logo = e.name;" +
+                "   var logo = 'https://opensource.google/assets/static/images/misc/og1.jpg';" +
                 "}" +
                 "return [repo,logo];" +
                 "})());"));
@@ -237,7 +237,7 @@ public class ScraperActivity extends AppCompatActivity {
                 project.update();
 
                 Log.d("Scraper","Created "+project.getTitle());
-            } catch (IOException e) {
+            } catch (IOException | IllegalArgumentException e) {
                 e.printStackTrace();
             }
 
