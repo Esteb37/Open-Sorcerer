@@ -118,6 +118,8 @@ public class InformationFragment extends Fragment {
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
 
         mUser = User.getCurrentUser();
+
+        requireActivity().findViewById(R.id.bottomNavDetails).setVisibility(View.VISIBLE);
     }
 
     /**

@@ -151,7 +151,8 @@ public abstract class Tools {
     public static void loadFragment(Context context, Fragment fragment, int containerId) {
         final FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(containerId, fragment);
+        transaction.replace(containerId, fragment, fragment.getClass().getName());
+        transaction.addToBackStack(fragment.getClass().getSimpleName());
         transaction.commit();
     }
 
@@ -166,10 +167,10 @@ public abstract class Tools {
             transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
         } else if (direction.equals("left_to_right")) {
             transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
-        }
+    }
 
-        transaction.replace(containerId, fragment);
-        transaction.addToBackStack(null);
+        transaction.replace(containerId, fragment, fragment.getClass().getName());
+        transaction.addToBackStack(fragment.getClass().getSimpleName());
         transaction.commit();
     }
 

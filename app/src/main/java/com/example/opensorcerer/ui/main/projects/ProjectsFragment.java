@@ -14,6 +14,7 @@ import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.ProjectsPagerAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProjectsBinding;
+import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.MainActivity;
 import com.google.android.material.tabs.TabLayoutMediator;

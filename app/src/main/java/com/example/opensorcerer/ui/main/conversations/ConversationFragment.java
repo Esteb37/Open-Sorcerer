@@ -282,7 +282,10 @@ public class ConversationFragment extends Fragment {
      * Hides the bottom navigation and details bottom navigation bar if any
      */
     private void hideNavigationBars() {
-        requireActivity().findViewById(R.id.bottomNav).setVisibility(View.GONE);
+
+        if (requireActivity().findViewById(R.id.bottomNav) != null) {
+            requireActivity().findViewById(R.id.bottomNav).setVisibility(View.GONE);
+        }
 
         if (requireActivity().findViewById(R.id.bottomNavDetails) != null) {
             requireActivity().findViewById(R.id.bottomNavDetails).setVisibility(View.GONE);

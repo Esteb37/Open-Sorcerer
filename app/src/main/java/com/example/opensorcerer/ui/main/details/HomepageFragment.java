@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentHomepageBinding;
 import com.example.opensorcerer.models.Project;
@@ -96,8 +97,7 @@ public class HomepageFragment extends Fragment {
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
 
-        assert getArguments() != null;
-        mProject = Parcels.unwrap(getArguments().getParcelable("project"));
+        requireActivity().findViewById(R.id.bottomNavDetails).setVisibility(View.VISIBLE);
     }
 
     /**

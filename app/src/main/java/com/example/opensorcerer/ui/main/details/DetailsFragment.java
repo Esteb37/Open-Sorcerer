@@ -2,6 +2,7 @@ package com.example.opensorcerer.ui.main.details;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
@@ -20,6 +22,8 @@ import com.example.opensorcerer.ui.main.conversations.ConversationFragment;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GitHub;
+
+import java.util.Objects;
 
 /**
  * Fragment for displaying a project's details
@@ -35,7 +39,7 @@ public class DetailsFragment extends Fragment {
     /**
      * Project being displayed
      */
-    private final Project mProject;
+    private Project mProject;
 
     /**
      * Binder object for ViewBinding
@@ -103,7 +107,7 @@ public class DetailsFragment extends Fragment {
      */
     private void setupBottomNavigation() {
 
-        requireActivity().findViewById(R.id.bottomNavDetails).setVisibility(View.VISIBLE);
+
 
         //Ensure that the id's of the navigation items are final for the switch
         final int actionDetails = R.id.actionDetails;
@@ -137,5 +141,18 @@ public class DetailsFragment extends Fragment {
         });
 
         mApp.bottomNavDetails.setSelectedItemId(R.id.actionDetails);
+    }
+
+    public void updateProject(Project project) {
+        mProject = project;
+        Tools.loadFragment(mContext, new DetailsFragment(mProject), mApp.flContainerDetailsInternal.getId());
+    }
+
+    public boolean isInformationFragmentVisible() {
+        int index = requireActivity().getSupportFragmentManager().getBackStackEntryCount() - 1;
+        FragmentManager.BackStackEntry backEntry = requireActivity().getSupportFragmentManager().getBackStackEntryAt(index);
+        String tag = backEntry.getName();
+        assert tag != null;
+        return tag.equals("InformationFragment");
     }
 }

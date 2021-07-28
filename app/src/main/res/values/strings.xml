@@ -107,7 +107,6 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="logo">Logo</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="this_user_has_not_liked_any_projects">This user has not liked any projects.</string>
 
 </resources>

@@ -2,7 +2,6 @@ package com.example.opensorcerer.ui.main.profile;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.ProjectsPagerAdapter;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProfileContentBinding;
-import com.example.opensorcerer.models.Conversation;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.conversations.ConversationFragment;
@@ -186,9 +184,8 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
      * Sets up the listener for the "Send message" button
      */
     private void setupMessageButtonListener(){
-        mApp.buttonMessage.setOnClickListener(v -> {
-            Tools.navigateToFragment(mContext, new ConversationFragment(mProfileUser), R.id.flContainer, "right_to_left");
-        });
+        mApp.buttonMessage.setOnClickListener(v ->
+                Tools.navigateToFragment(mContext, new ConversationFragment(mProfileUser), R.id.flContainer, "right_to_left"));
     }
 
     /**

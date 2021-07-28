@@ -2,28 +2,18 @@ package com.example.opensorcerer.ui.main;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.application.OSApplication;
-import com.example.opensorcerer.databinding.ActivityHomeBinding;
-import com.example.opensorcerer.models.Tools;
+import com.example.opensorcerer.adapters.MainPagerAdapter;
+import com.example.opensorcerer.databinding.ActivityHomeTestBinding;
 import com.example.opensorcerer.models.User;
-import com.example.opensorcerer.ui.main.conversations.ConversationsFragment;
-import com.example.opensorcerer.ui.main.create.CreateProjectImportFragment;
-import com.example.opensorcerer.ui.main.home.HomeFragment;
-import com.example.opensorcerer.ui.main.profile.ProfileFragment;
-import com.example.opensorcerer.ui.main.projects.ProjectsFragment;
 import com.parse.ParseUser;
 
 import org.kohsuke.github.GitHub;
-
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -40,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Binder object for ViewBinding
      */
-    private ActivityHomeBinding mApp;
+    private ActivityHomeTestBinding mApp;
 
     /**
      * Fragment's context
@@ -59,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
     private int mLastPosition = 0;
 
+    private MainPagerAdapter mPagerAdapter;
+
+    private final double MIN_SCROLL_OFFSET = 0.1;
+
     /**
      * Sets up the activity's methods
      */
@@ -70,9 +64,24 @@ public class MainActivity extends AppCompatActivity {
 
         getState();
 
-        gitHubLogin();
+        setupPager();
+    }
 
-        setupBottomNavigation();
+    private void setupPager() {
+        //Set the adapter
+        mPagerAdapter = new MainPagerAdapter(this);
+        mApp.viewPagerMain.setAdapter(mPagerAdapter);
+
+        mApp.viewPagerMain.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                Log.d("Test",""+positionOffset);
+                if(positionOffset > MIN_SCROLL_OFFSET) {
+                    mPagerAdapter.updateProject();
+                }
+            }
+        });
     }
 
     /**
@@ -80,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupLayout() {
         setContentView(R.layout.activity_home);
-        mApp = ActivityHomeBinding.inflate(getLayoutInflater());
+        mApp = ActivityHomeTestBinding.inflate(getLayoutInflater());
         setContentView(mApp.getRoot());
     }
 
@@ -92,97 +101,20 @@ public class MainActivity extends AppCompatActivity {
         mUser = User.fromParseUser(ParseUser.getCurrentUser());
     }
 
-    /**
-     * Initializes the GitHub API handler with the logged in user's OAuth token
-     */
-    private void gitHubLogin() {
-        ((OSApplication) getApplication()).buildGitHub(mUser.getGithubToken());
-    }
-
-    /**
-     * Sets up the bottom navigation bar
-     */
-    private void setupBottomNavigation() {
-
-        //Ensure that the id's of the navigation items are final for the switch
-        final int actionHome = R.id.actionHome;
-        final int actionProfile = R.id.actionProfile;
-        final int actionProjects = R.id.actionProjects;
-        final int actionChats = R.id.actionMessage;
-        final int actionCreate = R.id.actionCreate;
-
-        List<Integer> itemOrder = Arrays.asList(actionHome,actionProjects,actionCreate,actionChats,actionProfile);
-
-        mApp.bottomNav.setOnItemSelectedListener(
-                item -> {
-
-                    Fragment fragment;
-
-                    // Eliminate the Details fragment
-                    hideDetailsFragment();
-
-                    // Navigate to a different fragment depending on the item selected
-                    switch (item.getItemId()) {
-
-                        // Home Item selected
-                        case actionHome:
-                            fragment = new HomeFragment();
-                            mApp.constraintLayoutDetails.setVisibility(View.VISIBLE);
-                            mApp.horizontalScroller.setFeatureItems((HomeFragment) fragment);
-                            break;
-
-                        // Favorites item selected
-                        case actionProjects:
-                            fragment = new ProjectsFragment();
-                            break;
-
-                        // Create item selected
-                        case actionCreate:
-                            fragment = new CreateProjectImportFragment();
-                            break;
-
-                        // Profile item selected
-                        case actionProfile:
-                            fragment = new ProfileFragment(mUser);
-                            break;
-
-                        // Chats item selected
-                        case actionChats:
-                            fragment = new ConversationsFragment();
-                            break;
-                        default:
-                            throw new IllegalStateException("Unexpected value: " + item.getItemId());
-                    }
-
-                    int itemPosition = itemOrder.indexOf(item.getItemId());
-
-                    // Open the selected fragment
-                    if(itemPosition > mLastPosition) {
-                        Tools.navigateToFragment(mContext, fragment, mApp.flContainer.getId(),"right_to_left");
-                    } else if (itemPosition < mLastPosition) {
-                        Tools.navigateToFragment(mContext, fragment, mApp.flContainer.getId(), "left_to_right");
-                    } else {
-                        Tools.loadFragment(mContext, fragment, mApp.flContainer.getId());
-                    }
-
-                    mLastPosition = itemPosition;
-                    return true;
-                });
-
-        //Set the default window to be the Home
-        mApp.bottomNav.setSelectedItemId(R.id.actionHome);
+    @Override
+    public void onBackPressed() {
+        if(mPagerAdapter.isInformationFragmentVisible()){
+            mApp.viewPagerMain.setCurrentItem(0,true);
+        } else {
+            getSupportFragmentManager().popBackStack();
+        }
     }
 
     public void hideDetailsFragment() {
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        mApp.constraintLayoutDetails.setVisibility(View.GONE);
-        fragmentManager.findFragmentByTag("details");
-        Fragment detailsFragment = fragmentManager.findFragmentByTag("details");
-        if (detailsFragment != null)
-            fragmentManager.beginTransaction().remove(detailsFragment).commit();
+        mPagerAdapter.hideDetailsFragment();
     }
 
     public void showDetailsFragment() {
-        mApp.constraintLayoutDetails.setVisibility(View.VISIBLE);
+        mPagerAdapter.showDetailsFragment();
     }
 }
