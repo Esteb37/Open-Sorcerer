@@ -26,16 +26,17 @@
             android:layout_height="match_parent">
 
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageViewLogo"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center_horizontal"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/image_border"
-                android:cropToPadding="false"
-                android:padding="10dp"
+                android:padding="20dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/placeholder"
+                app:border_color="@color/dark_blue"
+                app:border_overlay="false"
+                app:border_width="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

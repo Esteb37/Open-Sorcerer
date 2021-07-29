@@ -36,16 +36,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageViewLogo"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/image_border"
-                    android:padding="20dp"
-                    android:scaleType="fitCenter"
+                    android:src="@drawable/placeholder2"
+                    app:border_color="@color/dark_blue"
+                    app:border_width="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -142,8 +142,7 @@
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ufi_heart_active"
-                    app:tint="@color/darker_blue" />
+                    app:srcCompat="@drawable/ufi_heart_active" />
 
                 <ImageButton
                     android:id="@+id/imageButton4"

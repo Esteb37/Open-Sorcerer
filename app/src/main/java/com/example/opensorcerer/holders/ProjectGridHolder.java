@@ -58,6 +58,11 @@ public class ProjectGridHolder extends RecyclerView.ViewHolder {
                     .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl() )
                     .transform(new RoundedCorners(1000))
                     .into(mApp.imageViewLogo);
+        } else if (imageFile != null){
+            Glide.with(mContext)
+                    .load(imageFile.getUrl() )
+                    .transform(new RoundedCorners(1000))
+                    .into(mApp.imageViewLogo);
         }
 
     }

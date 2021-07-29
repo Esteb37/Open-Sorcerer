@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/holder"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -94,16 +95,17 @@
                 app:srcCompat="@drawable/card_background"
                 tools:srcCompat="@drawable/card_background" />
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageViewLogo"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
                 android:padding="20dp"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="@id/imageView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/imageView"
                 app:layout_constraintTop_toTopOf="@id/imageView"
+                tools:src="@drawable/placeholder2"
                 tools:srcCompat="@drawable/placeholder2" />
 
             <TextView

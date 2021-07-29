@@ -148,33 +148,45 @@ public class InformationFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            // Load the project's logo from URL if any
-            String imageURL = mProject.getLogoImageUrl();
-            ParseFile imageFile = mProject.getLogoImage();
-            if (imageURL != null) {
-                Glide.with(mContext)
-                        .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl() )
-                        .transform(new RoundedCorners(1000))
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                mApp.progressBar.setVisibility(View.GONE);
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                mApp.progressBar.setVisibility(View.GONE);
-                                return false;
-                            }
-                        })
-                        .into(mApp.imageViewLogo);
-            }
+            loadProjectLogo();
 
             setLikeButton();
 
             //Load the project's ReadMe file
             loadReadme();
+        }
+    }
+
+    private void loadProjectLogo() {
+
+        RequestListener<Drawable> requestListener = new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                mApp.progressBar.setVisibility(View.GONE);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                mApp.progressBar.setVisibility(View.GONE);
+                return false;
+            }
+        };
+
+
+        // Load the project's logo from URL if any
+        String imageURL = mProject.getLogoImageUrl();
+        ParseFile imageFile = mProject.getLogoImage();
+        if (imageURL != null) {
+            Glide.with(mContext)
+                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl() )
+                    .listener(requestListener)
+                    .into(mApp.imageViewLogo);
+        } else if (imageFile != null){
+            Glide.with(mContext)
+                    .load(imageFile.getUrl() )
+                    .listener(requestListener)
+                    .into(mApp.imageViewLogo);
         }
     }
 
@@ -216,7 +228,11 @@ public class InformationFragment extends Fragment {
         Drawable unwrappedDrawable = AppCompatResources.getDrawable(mContext, R.drawable.ufi_heart_active);
         assert unwrappedDrawable != null;
         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
-        DrawableCompat.setTint(wrappedDrawable, mProject.isLikedByUser(mUser) ? Color.RED : ContextCompat.getColor(mContext, R.color.darker_blue));
+
+        DrawableCompat.setTint(wrappedDrawable, mProject.isLikedByUser(mUser)
+                ? Color.RED
+                : ContextCompat.getColor(mContext, R.color.darker_blue));
+
         mApp.buttonLike.setImageDrawable(wrappedDrawable);
     }
 }
