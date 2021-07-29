@@ -54,6 +54,8 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
      */
     private final Context mContext;
 
+    private final ProjectsCardAdapter.OnDoubleTapListener mDoubleTapListener;
+
     /**
      * Current user.
      */
@@ -77,32 +79,34 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
 
         mUser = User.getCurrentUser();
 
+        mDoubleTapListener = doubleTapListener;
+
         // Set the listener for double tapping on the card
-        view.setOnTouchListener(new View.OnTouchListener() {
+        /*view.setOnTouchListener(new View.OnTouchListener() {
+            private GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    mDoubleTapListener.onItemDoubleTap(getAdapterPosition());
+                    setLikeButton();
+                    showLikeAnimation();
+                    return super.onDoubleTap(e);
+                }
 
-            // Create a gesture detector
-            private final GestureDetector gestureDetector = new GestureDetector(mContext,
-                    new GestureDetector.SimpleOnGestureListener() {
-
-                        @Override
-                        public boolean onDoubleTap(MotionEvent e) {
-
-                            return super.onDoubleTap(e);
-                        }
-
-                        @Override
-                        public void onLongPress(MotionEvent e) {
-                            super.onLongPress(e);
-                        }
-                    });
+            });
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
-                v.performClick();
                 gestureDetector.onTouchEvent(event);
                 return true;
             }
+        });*/
+
+        //TODO Solve double tap listener issue
+        view.setOnLongClickListener(v -> {
+            mDoubleTapListener.onItemDoubleTap(getAdapterPosition());
+            setLikeButton();
+            showLikeAnimation();
+            return false;
         });
     }
 
@@ -163,6 +167,37 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
                     .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl() )
                     .transform(new RoundedCorners(1000))
                     .into(mApp.imageViewLogo);
+        }
+    }
+
+    class SimpleGestureListener extends GestureDetector.SimpleOnGestureListener{
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            mDoubleTapListener.onItemDoubleTap(getAdapterPosition());
+            setLikeButton();
+            showLikeAnimation();
+            return super.onDoubleTap(e);
+        }
+
+        @Override
+        public boolean onDown(MotionEvent event) {
+            // triggers first for both single tap and long press
+            return true;
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent event) {
+            // triggers after onDown only for single tap
+            return true;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+            mDoubleTapListener.onItemDoubleTap(getAdapterPosition());
+            setLikeButton();
+            showLikeAnimation();
+            super.onLongPress(e);
         }
     }
 

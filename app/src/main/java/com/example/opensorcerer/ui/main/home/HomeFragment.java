@@ -154,7 +154,9 @@ public class HomeFragment extends Fragment {
             mProjects = new ArrayList<>();
         }
 
-        ProjectsCardAdapter.OnDoubleTapListener doubleTapListener = position -> mUser.toggleLike(mProjects.get(position));
+        ProjectsCardAdapter.OnDoubleTapListener doubleTapListener = position -> {
+            mUser.toggleLike(mProjects.get(position));
+        };
 
         //Set adapter
         mAdapter = new ProjectsCardAdapter(mProjects, mContext, doubleTapListener);
