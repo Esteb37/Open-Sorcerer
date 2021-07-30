@@ -154,9 +154,7 @@ public class HomeFragment extends Fragment {
             mProjects = new ArrayList<>();
         }
 
-        ProjectsCardAdapter.OnDoubleTapListener doubleTapListener = position -> {
-            mUser.toggleLike(mProjects.get(position));
-        };
+        ProjectsCardAdapter.OnDoubleTapListener doubleTapListener = position -> mUser.toggleLike(mProjects.get(position));
 
         //Set adapter
         mAdapter = new ProjectsCardAdapter(mProjects, mContext, doubleTapListener);
@@ -186,7 +184,9 @@ public class HomeFragment extends Fragment {
                 Project currentProject = getCurrentProject();
 
                 if(lastProject != currentProject){
+                    mUser.scrolledProject(lastProject);
                     lastProject = currentProject;
+                    currentProject.ignoredByUser(false);
                     currentProject.addView();
                 }
 
@@ -206,25 +206,24 @@ public class HomeFragment extends Fragment {
         //Get a query in descending order
         ParseQuery<Project> query = ParseQuery.getQuery(Project.class);
         query.addDescendingOrder("createdAt");
-
-        //Setup pagination
         query.setLimit(QUERY_LIMIT);
         query.setSkip(page * QUERY_LIMIT);
 
-        query.findInBackground((projects, e) -> {
-            if (e == null) {
-                if (page == 0) {
-                    mAdapter.clear();
+            query.findInBackground((project, e) -> {
+                if (e == null) {
+                    if (page == 0) {
+                        mAdapter.clear();
+                    }
+
+                    mAdapter.addAll(project);
+
+                    mApp.swipeContainer.setRefreshing(false);
+                    mApp.progressBar.setVisibility(View.GONE);
+                } else {
+                    Log.d(TAG, "Unable to load projects.");
                 }
-                if (projects.size() > 0) {
-                    mAdapter.addAll(projects);
-                }
-                mApp.swipeContainer.setRefreshing(false);
-                mApp.progressBar.setVisibility(View.GONE);
-            } else {
-                Log.d(TAG, "Unable to load projects.");
-            }
-        });
+            });
+
     }
 
     /**

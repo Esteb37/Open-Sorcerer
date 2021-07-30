@@ -36,11 +36,16 @@ public class Project extends ParseObject implements Parcelable {
     private static final String KEY_TITLE = "title";
     private static final String KEY_TAGS = "tags";
 
-
     /**
      * If this project has been liked by the user
      */
-    private String likedByUser = null;
+    private String mLikedByUser = null;
+
+    private boolean mSwipedByUser = false;
+
+    private boolean mIgnoredByUser = false;
+
+    private boolean mConversationStarted = false;
 
     /**
      * GitHub repository object linked to this project
@@ -272,21 +277,21 @@ public class Project extends ParseObject implements Parcelable {
     /**
      * Determines if the user has liked this project
      */
-    public boolean isLikedByUser(User user) {
+    public boolean isLikedByUser() {
 
         //If it has not been determined before
-        if (likedByUser == null) {
+        if (mLikedByUser == null) {
 
             //See if the user's liked projects contains this
-            List<String> favorites = user.getFavorites();
+            List<String> favorites = User.getCurrentUser().getFavorites();
             if (favorites != null) {
-                likedByUser = String.valueOf(favorites.contains(getObjectId()));
+                mLikedByUser = String.valueOf(favorites.contains(getObjectId()));
             } else {
-                likedByUser = "false";
+                mLikedByUser = "false";
             }
 
         }
-        return Boolean.parseBoolean(likedByUser);
+        return Boolean.parseBoolean(mLikedByUser);
     }
 
     /**
@@ -294,7 +299,7 @@ public class Project extends ParseObject implements Parcelable {
      */
     public void addLike() {
         setLikeCount(getLikeCount() + 1);
-        likedByUser = "true";
+        mLikedByUser = "true";
     }
 
     /**
@@ -302,7 +307,7 @@ public class Project extends ParseObject implements Parcelable {
      */
     public void removeLike() {
         setLikeCount(getLikeCount() - 1);
-        likedByUser = "false";
+        mLikedByUser = "false";
     }
 
     /**
@@ -320,10 +325,32 @@ public class Project extends ParseObject implements Parcelable {
     }
 
     public void addSwipe() {
+        mSwipedByUser = true;
         setSwipeCount(getSwipeCount()+1);
     }
 
     public void addView() {
         setViewCount(getViewCount()+1);
+    }
+
+    public boolean isSwipedByUser(){
+        return mSwipedByUser;
+    }
+
+    public boolean isIgnoredByUser() {
+        return mIgnoredByUser;
+    }
+
+
+    public void ignoredByUser(boolean ignoredByUser) {
+        mIgnoredByUser = ignoredByUser;
+    }
+
+    public boolean isConversationStarted() {
+        return mConversationStarted;
+    }
+
+    public void startConversation(){
+        mConversationStarted = true;
     }
 }

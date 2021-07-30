@@ -75,6 +75,8 @@ public class MainPagerAdapter extends FragmentStateAdapter {
     }
 
     public void addSwipeToProject() {
-        getCurrentProject().addSwipe();
+        Project currentProject = getCurrentProject();
+        User.getCurrentUser().swipedProject(currentProject);
+        currentProject.addSwipe();
     }
 }

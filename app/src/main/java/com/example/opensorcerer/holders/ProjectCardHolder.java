@@ -246,7 +246,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
         assert unwrappedDrawable != null;
         Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
 
-        DrawableCompat.setTint(wrappedDrawable, mProject.isLikedByUser(mUser)
+        DrawableCompat.setTint(wrappedDrawable, mProject.isLikedByUser()
                 ? Color.RED
                 : ContextCompat.getColor(mContext, R.color.darker_blue));
 

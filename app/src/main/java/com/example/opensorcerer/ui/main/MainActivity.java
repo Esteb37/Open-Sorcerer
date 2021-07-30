@@ -67,7 +67,27 @@ public class MainActivity extends AppCompatActivity {
         getState();
 
         setupPager();
+
+        loadPredictScores();
     }
+
+    /**
+     * Gets the current state of the member variables
+     */
+    private void getState() {
+        mContext = this;
+        mUser = User.fromParseUser(ParseUser.getCurrentUser());
+    }
+    /**
+     * Sets up the activity's layout
+     */
+    private void setupLayout() {
+        setContentView(R.layout.activity_home);
+        mApp = ActivityHomeTestBinding.inflate(getLayoutInflater());
+        setContentView(mApp.getRoot());
+    }
+
+
 
     private void setupPager() {
         //Set the adapter
@@ -88,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (position == 1) {
                     mPagerAdapter.addSwipeToProject();
+
                 }
 
                 super.onPageSelected(position);
@@ -95,21 +116,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Sets up the activity's layout
-     */
-    private void setupLayout() {
-        setContentView(R.layout.activity_home);
-        mApp = ActivityHomeTestBinding.inflate(getLayoutInflater());
-        setContentView(mApp.getRoot());
-    }
+    private void loadPredictScores() {
 
-    /**
-     * Gets the current state of the member variables
-     */
-    private void getState() {
-        mContext = this;
-        mUser = User.fromParseUser(ParseUser.getCurrentUser());
+        mUser.setPredictScores(mUser.getLearnScores());
+
     }
 
     @Override

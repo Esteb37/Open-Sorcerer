@@ -111,6 +111,11 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
         return mHolder.getAdapterPosition() > 0 ? mProjects.get(mHolder.getAdapterPosition() - 1) : mProjects.get(0);
     }
 
+    public void add(Project project) {
+        mProjects.add(project);
+        notifyDataSetChanged();
+    }
+
     /**
      * Interface for detecting double taps on the project
      */

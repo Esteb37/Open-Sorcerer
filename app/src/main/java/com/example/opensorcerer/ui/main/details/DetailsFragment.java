@@ -128,7 +128,7 @@ public class DetailsFragment extends Fragment {
                     break;
 
                 case actionMessage:
-                    fragment = new ConversationFragment(mProject.getManager());
+                    fragment = new ConversationFragment(mProject);
                     break;
 
                 default:

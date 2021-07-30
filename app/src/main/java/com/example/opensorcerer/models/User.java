@@ -9,8 +9,13 @@ import com.parse.ParseFile;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Custom class for handling ParseUser objects without Parse subclass restrictions
@@ -32,7 +37,9 @@ public class User implements Parcelable {
 
     //Database keys
     private static final String KEY_PROFILE_PICTURE = "profilePicture";
+    private static final String KEY_PREDICT_SCORES = "predictScores";
     private static final String KEY_CONVERSATIONS = "conversations";
+    private static final String KEY_LEARN_SCORES = "learnScores";
     private static final String KEY_EXPERIENCE = "experience";
     private static final String KEY_GITHUB_TOKEN = "ghToken";
     private static final String KEY_INTERESTS = "interests";
@@ -44,6 +51,11 @@ public class User implements Parcelable {
     private static final String KEY_ROLE = "role";
     private static final String KEY_NAME = "name";
     private static final String KEY_BIO = "bio";
+
+    private static final int CONVERSATION_SCORE = 3;
+    private static final int FAVORITE_SCORE = 2;
+    private static final int IGNORE_SCORE = -1;
+    private static final int SWIPE_SCORE = 1;
 
     /**
      * The ParseUser object that allows communication with the database
@@ -327,12 +339,42 @@ public class User implements Parcelable {
     }
 
     /**
+     * Learn scores getter
+     */
+    public JSONObject getLearnScores() {
+        return mHandler.getJSONObject(KEY_LEARN_SCORES);
+    }
+
+    /**
+     * Learn scores setter
+     */
+    public void setLearnScores(JSONObject scores) {
+        mHandler.put(KEY_LEARN_SCORES, scores);
+        update();
+    }
+
+    /**
+     * Learn scores getter
+     */
+    public JSONObject getPredictScores() {
+        return mHandler.getJSONObject(KEY_PREDICT_SCORES);
+    }
+
+    /**
+     * Learn scores setter
+     */
+    public void setPredictScores(JSONObject scores) {
+        mHandler.put(KEY_PREDICT_SCORES, scores);
+        update();
+    }
+
+    /**
      * Likes or unlikes the selected project
      *
      * @param project The project to like or unlike
      */
     public void toggleLike(Project project) {
-        if (project.isLikedByUser(this)) {
+        if (project.isLikedByUser()) {
             project.removeLike();
             removeFavorite(project);
         } else {
@@ -351,6 +393,7 @@ public class User implements Parcelable {
         if (favorites == null) favorites = new ArrayList<>();
         favorites.add(project.getObjectId());
         setFavorites(favorites);
+        addScores(project, FAVORITE_SCORE);
     }
 
     /**
@@ -363,6 +406,61 @@ public class User implements Parcelable {
         if (favorites == null) favorites = new ArrayList<>();
         favorites.remove(project.getObjectId());
         setFavorites(favorites);
+        addScores(project, - FAVORITE_SCORE);
+    }
+
+    public void swipedProject(Project project){
+        if(! project.isSwipedByUser()) {
+            addScores(project, SWIPE_SCORE);
+        }
+
+    }
+
+    public void scrolledProject(Project project){
+        if(! (project.isLikedByUser() || project.isSwipedByUser()) && ! project.isIgnoredByUser()) {
+            ignoredProject(project);
+        }
+    }
+    public void ignoredProject(Project project){
+        addScores(project, IGNORE_SCORE);
+        project.ignoredByUser(true);
+    }
+
+    public void createdConversation(Project project){
+        addScores(project, CONVERSATION_SCORE);
+    }
+
+    public void addScores(Project project, int score) {
+        Set<String> scoreKeys = new HashSet<>();
+
+        if(project.getTags() != null)
+            scoreKeys.addAll(project.getTags());
+
+        if(project.getLanguages() != null)
+            scoreKeys.addAll(project.getLanguages());
+
+        JSONObject scores = getLearnScores();
+
+        if (scores == null) {
+            scores = new JSONObject();
+        }
+
+        for(String key : scoreKeys){
+
+            if(!key.isEmpty()) {
+                try {
+                    scores.put(key, scores.getInt(key) + score);
+                } catch (JSONException e) {
+                    try {
+                        scores.put(key, score);
+                    } catch (JSONException jsonException) {
+                        jsonException.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        setLearnScores(scores);
     }
 
     /**
@@ -397,5 +495,10 @@ public class User implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(mHandler, flags);
+    }
+
+    public void startConversation(Project project) {
+        project.startConversation();
+        addScores(project, CONVERSATION_SCORE);
     }
 }
