@@ -209,13 +209,22 @@ public class HomeFragment extends Fragment {
         query.setLimit(QUERY_LIMIT);
         query.setSkip(page * QUERY_LIMIT);
 
-            query.findInBackground((project, e) -> {
+            query.findInBackground((projects, e) -> {
                 if (e == null) {
                     if (page == 0) {
                         mAdapter.clear();
                     }
 
-                    mAdapter.addAll(project);
+                    for(Project project : projects){
+
+
+                        if(mUser.probablyLikes(project)){
+                            mAdapter.add(project);
+                        } else {
+                            Log.d("Test", "Skipped "+project.getTitle());
+                        }
+
+                    }
 
                     mApp.swipeContainer.setRefreshing(false);
                     mApp.progressBar.setVisibility(View.GONE);

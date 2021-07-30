@@ -364,7 +364,9 @@ public class User implements Parcelable {
      * Learn scores setter
      */
     public void setPredictScores(JSONObject scores) {
-        mHandler.put(KEY_PREDICT_SCORES, scores);
+        if(scores != null) {
+            mHandler.put(KEY_PREDICT_SCORES, scores);
+        }
         update();
     }
 
@@ -431,13 +433,10 @@ public class User implements Parcelable {
     }
 
     public void addScores(Project project, int score) {
-        Set<String> scoreKeys = new HashSet<>();
+        Set<String> tags = new HashSet<>();
 
         if(project.getTags() != null)
-            scoreKeys.addAll(project.getTags());
-
-        if(project.getLanguages() != null)
-            scoreKeys.addAll(project.getLanguages());
+            tags.addAll(project.getTags());
 
         JSONObject scores = getLearnScores();
 
@@ -445,14 +444,14 @@ public class User implements Parcelable {
             scores = new JSONObject();
         }
 
-        for(String key : scoreKeys){
+        for(String tag : tags){
 
-            if(!key.isEmpty()) {
+            if(!tag.isEmpty()) {
                 try {
-                    scores.put(key, scores.getInt(key) + score);
+                    scores.put(tag, scores.getInt(tag) + score);
                 } catch (JSONException e) {
                     try {
-                        scores.put(key, score);
+                        scores.put(tag, score);
                     } catch (JSONException jsonException) {
                         jsonException.printStackTrace();
                     }
@@ -500,5 +499,49 @@ public class User implements Parcelable {
     public void startConversation(Project project) {
         project.startConversation();
         addScores(project, CONVERSATION_SCORE);
+    }
+
+    public int calculateScore(Project project) {
+        Set<String> scoreKeys = new HashSet<>();
+
+        if(project.getTags() != null)
+            scoreKeys.addAll(project.getTags());
+
+        JSONObject userScores = getPredictScores();
+
+        if (scoreKeys.size() > 0 && userScores != null) {
+
+            int totalScore = 0;
+
+            for (String key : scoreKeys){
+                try {
+                    totalScore += Integer.compare(userScores.getInt(key), 0);
+                    Log.d("Test",key+" "+Integer.compare(userScores.getInt(key), 0));
+                } catch (JSONException ignored) {
+
+                }
+            }
+
+            return totalScore;
+
+        } else {
+            return 0;
+        }
+    }
+
+    public boolean includesLanguages(Project project){
+        List<String> languages = getLanguages();
+
+        for(String language : getLanguages()){
+            if(project.getLanguages().contains(language)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean probablyLikes(Project project) {
+        return includesLanguages(project) && calculateScore(project) >= 0;
     }
 }
