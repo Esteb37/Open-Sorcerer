@@ -21,6 +21,7 @@ public class Project extends ParseObject implements Parcelable {
     //Database keys
     private static final String KEY_BANNER_IMAGE = "bannerImage";
     private static final String KEY_DESCRIPTION = "description";
+    private static final String KEY_SWIPE_COUNT = "swipeCount";
     private static final String KEY_CLICK_COUNT = "clickCount";
     private static final String KEY_GITHUB_NAME = "githubName";
     private static final String KEY_REPOSITORY = "repository";
@@ -35,6 +36,7 @@ public class Project extends ParseObject implements Parcelable {
     private static final String KEY_TITLE = "title";
     private static final String KEY_TAGS = "tags";
 
+
     /**
      * If this project has been liked by the user
      */
@@ -44,6 +46,7 @@ public class Project extends ParseObject implements Parcelable {
      * GitHub repository object linked to this project
      */
     private GHRepository mRepoObject;
+
 
     /**
      * Description getter
@@ -187,6 +190,14 @@ public class Project extends ParseObject implements Parcelable {
     }
 
     /**
+     * View count setter
+     */
+    public void setViewCount(long viewCount) {
+        put(KEY_VIEW_COUNT, viewCount);
+        update();
+    }
+
+    /**
      * Languages list getter
      */
     public List<String> getLanguages() {
@@ -228,13 +239,36 @@ public class Project extends ParseObject implements Parcelable {
         put(KEY_WEBSITE, website);
     }
 
+    /**
+     * Github name getter
+     */
     public String getGithubName(){
         return getString(KEY_GITHUB_NAME);
     }
 
+    /**
+     * Github name setter
+     */
     public void setGithubName(String name){
         put(KEY_GITHUB_NAME,name);
     }
+
+    /**
+     * Swipe count getter
+     */
+    public long getSwipeCount(){
+        return getLong(KEY_SWIPE_COUNT);
+    }
+
+    /**
+     * Swipe count setter
+     */
+    public void setSwipeCount(long swipeCount){
+        put(KEY_SWIPE_COUNT,swipeCount);
+        update();
+    }
+
+
     /**
      * Determines if the user has liked this project
      */
@@ -283,5 +317,13 @@ public class Project extends ParseObject implements Parcelable {
                 e.printStackTrace();
             }
         });
+    }
+
+    public void addSwipe() {
+        setSwipeCount(getSwipeCount()+1);
+    }
+
+    public void addView() {
+        setViewCount(getViewCount()+1);
     }
 }

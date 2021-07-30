@@ -74,5 +74,7 @@ public class MainPagerAdapter extends FragmentStateAdapter {
         return mDetailsFragment != null && mDetailsFragment.isInformationFragmentVisible();
     }
 
-
+    public void addSwipeToProject() {
+        getCurrentProject().addSwipe();
+    }
 }

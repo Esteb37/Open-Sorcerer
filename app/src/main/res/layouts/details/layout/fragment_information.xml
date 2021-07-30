@@ -155,9 +155,19 @@
                     app:tint="@color/darker_blue" />
 
                 <ImageButton
+                    android:id="@+id/imageButton3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#00FFFFFF"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/swipe"
+                    app:tint="@color/darker_blue" />
+
+                <ImageButton
                     android:id="@+id/imageButton5"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
                     android:scaleType="fitCenter"
@@ -187,6 +197,16 @@
 
                 <TextView
                     android:id="@+id/textViewViews"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="120" />
+
+                <TextView
+                    android:id="@+id/textViewSwipes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

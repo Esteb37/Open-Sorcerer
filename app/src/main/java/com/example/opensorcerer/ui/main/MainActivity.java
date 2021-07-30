@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final double MIN_SCROLL_OFFSET = 0.1;
 
+    private final double MIN_SWIPE_OFFSET = 0.9;
+
     /**
      * Sets up the activity's methods
      */
@@ -76,10 +78,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                Log.d("Test",""+positionOffset);
                 if(positionOffset > MIN_SCROLL_OFFSET) {
                     mPagerAdapter.updateProject();
                 }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+                if (position == 1) {
+                    mPagerAdapter.addSwipeToProject();
+                }
+
+                super.onPageSelected(position);
             }
         });
     }

@@ -172,9 +172,25 @@ public class HomeFragment extends Fragment {
 
         //Sets up the endless scroller listener
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+
+            private Project lastProject = new Project();
+
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 queryProjects(page);
+            }
+
+            @Override
+            public void onScrolled(@NotNull RecyclerView view, int dx, int dy) {
+
+                Project currentProject = getCurrentProject();
+
+                if(lastProject != currentProject){
+                    lastProject = currentProject;
+                    currentProject.addView();
+                }
+
+                super.onScrolled(view, dx, dy);
             }
         };
 

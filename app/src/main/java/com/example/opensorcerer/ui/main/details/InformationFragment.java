@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,6 +134,7 @@ public class InformationFragment extends Fragment {
             mApp.textViewTitle.setMaxLines(mProject.getTitle().split(" ").length);
             mApp.textViewViews.setText(String.valueOf(mProject.getViewCount()));
             mApp.textViewLikes.setText(String.valueOf(mProject.getLikeCount()));
+            mApp.textViewSwipes.setText(String.valueOf(mProject.getSwipeCount()));
 
             mApp.textViewTags.setText(Tools.listToString(mProject.getTags()));
             mApp.textViewTags.post(() -> mApp.textViewTags.setMoreMessage(mApp.textViewMoreTags));

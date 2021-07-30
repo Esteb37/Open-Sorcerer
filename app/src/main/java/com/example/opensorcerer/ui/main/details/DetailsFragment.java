@@ -155,4 +155,5 @@ public class DetailsFragment extends Fragment {
         assert tag != null;
         return tag.equals("InformationFragment");
     }
+
 }
