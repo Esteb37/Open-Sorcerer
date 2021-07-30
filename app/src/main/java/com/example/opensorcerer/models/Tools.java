@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
-import android.util.Log;
 
 import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView;
 import androidx.fragment.app.Fragment;
@@ -21,9 +20,11 @@ import com.parse.ParseFile;
 
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.util.Date;
 import java.util.List;
@@ -249,5 +250,28 @@ public abstract class Tools {
         }
 
         return "";
+    }
+
+    public static String getFileContents(Context context, String fileName) throws IOException {
+        final InputStream inputStream = context.getAssets().open(fileName);
+        final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+        final StringBuilder stringBuilder = new StringBuilder();
+
+        boolean done = false;
+
+        while (!done) {
+            final String line = reader.readLine();
+            done = (line == null);
+
+            if (line != null) {
+                stringBuilder.append(line);
+            }
+        }
+
+        reader.close();
+        inputStream.close();
+
+        return stringBuilder.toString();
     }
 }
