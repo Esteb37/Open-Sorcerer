@@ -28,13 +28,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Main fragment for displaying most of the app's windows
+ */
 public class MainFragment extends Fragment {
-
-    /**
-     * Tag for logging
-     */
-    private static final String TAG = "MainFragment";
-
 
     /**
      * Binder object for ViewBinding
@@ -50,7 +47,7 @@ public class MainFragment extends Fragment {
      * Current logged in user
      */
     private User mUser;
-    
+
     private Fragment mFragment;
 
     private int mLastPosition = 0;
@@ -64,6 +61,9 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Inflates the fragment and sets up view binding
+     */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -115,7 +115,7 @@ public class MainFragment extends Fragment {
         final int actionChats = R.id.actionMessage;
         final int actionCreate = R.id.actionCreate;
 
-        List<Integer> itemOrder = Arrays.asList(actionHome,actionProjects,actionCreate,actionChats,actionProfile);
+        List<Integer> itemOrder = Arrays.asList(actionHome, actionProjects, actionCreate, actionChats, actionProfile);
         ((MainActivity) requireActivity()).hideDetailsFragment();
 
 
@@ -157,8 +157,8 @@ public class MainFragment extends Fragment {
                     int itemPosition = itemOrder.indexOf(item.getItemId());
 
                     // Open the selected fragment
-                    if(itemPosition > mLastPosition) {
-                        Tools.navigateToFragment(mContext, mFragment, mApp.flContainer.getId(),"right_to_left");
+                    if (itemPosition > mLastPosition) {
+                        Tools.navigateToFragment(mContext, mFragment, mApp.flContainer.getId(), "right_to_left");
                     } else if (itemPosition < mLastPosition) {
                         Tools.navigateToFragment(mContext, mFragment, mApp.flContainer.getId(), "left_to_right");
                     } else {
@@ -173,9 +173,10 @@ public class MainFragment extends Fragment {
         mApp.bottomNav.setSelectedItemId(R.id.actionHome);
     }
 
+    /**
+     * Gets the project currently being displayed to the user
+     */
     public Project getCurrentProject() {
         return ((HomeFragment) mFragment).getCurrentProject();
     }
-
-
 }

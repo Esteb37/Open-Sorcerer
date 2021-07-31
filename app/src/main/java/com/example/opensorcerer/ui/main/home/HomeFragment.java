@@ -15,16 +15,14 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.adapters.ProjectsCardAdapter;
-import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentHomeBinding;
+import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
-import org.kohsuke.github.GitHub;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +30,6 @@ import java.util.List;
 /**
  * Fragment for displaying the user's timeline of projects
  */
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class HomeFragment extends Fragment {
 
     /**
@@ -60,10 +57,6 @@ public class HomeFragment extends Fragment {
      */
     private User mUser;
 
-    /**
-     * GitHub API handler
-     */
-    private GitHub mGitHub;
 
     /**
      * Adapter for the Recycler View
@@ -141,8 +134,6 @@ public class HomeFragment extends Fragment {
         mContext = getContext();
 
         mUser = User.getCurrentUser();
-
-        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }
 
     /**
@@ -183,8 +174,8 @@ public class HomeFragment extends Fragment {
 
                 Project currentProject = getCurrentProject();
 
-                if(lastProject != currentProject){
-                    mUser.scrolledProject(lastProject);
+                if (lastProject != currentProject) {
+                    mUser.registerScrolledProject(lastProject);
                     lastProject = currentProject;
                     currentProject.ignoredByUser(false);
                     currentProject.addView();
@@ -199,7 +190,7 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * Gets the list of projects from the developer's timeline
+     * Gets the list of projects from the developer's timeline and filters it by the developer's behavior
      */
     private void queryProjects(int page) {
 
@@ -209,29 +200,22 @@ public class HomeFragment extends Fragment {
         query.setLimit(QUERY_LIMIT);
         query.setSkip(page * QUERY_LIMIT);
 
-            query.findInBackground((projects, e) -> {
-                if (e == null) {
-                    if (page == 0) {
-                        mAdapter.clear();
-                    }
-
-                    for(Project project : projects){
-
-
-                        if(mUser.probablyLikes(project)){
-                            mAdapter.add(project);
-                        } else {
-                            Log.d("Test", "Skipped "+project.getTitle());
-                        }
-
-                    }
-
-                    mApp.swipeContainer.setRefreshing(false);
-                    mApp.progressBar.setVisibility(View.GONE);
-                } else {
-                    Log.d(TAG, "Unable to load projects.");
+        query.findInBackground((projects, e) -> {
+            if (e == null) {
+                if (page == 0) {
+                    mAdapter.clear();
                 }
-            });
+                for (Project project : projects) {
+                    if (mUser.probablyLikes(project)) {
+                        mAdapter.add(project);
+                    }
+                }
+                mApp.swipeContainer.setRefreshing(false);
+                mApp.progressBar.setVisibility(View.GONE);
+            } else {
+                Log.d(TAG, "Unable to load projects.");
+            }
+        });
 
     }
 

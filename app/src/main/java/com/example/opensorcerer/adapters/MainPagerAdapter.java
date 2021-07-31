@@ -9,8 +9,6 @@ import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.MainFragment;
 import com.example.opensorcerer.ui.main.details.DetailsFragment;
-import com.example.opensorcerer.ui.main.projects.CreatedProjectsFragment;
-import com.example.opensorcerer.ui.main.projects.FavoriteProjectsFragment;
 
 public class MainPagerAdapter extends FragmentStateAdapter {
 
@@ -19,18 +17,22 @@ public class MainPagerAdapter extends FragmentStateAdapter {
      */
     private static int PAGE_COUNT = 2;
 
+    /**
+     * Fragment that holds home timeline
+     */
     private MainFragment mMainFragment;
 
+    /**
+     * Fragment that displays project details
+     */
     private DetailsFragment mDetailsFragment;
-
-    private Project mProject;
 
     public MainPagerAdapter(FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 
     /**
-     * Returns a Grid fragment as first page and a Linear fragment as second page
+     * Returns a Main fragment as first page and Details Fragment as second page
      */
     @NonNull
     @Override
@@ -54,29 +56,51 @@ public class MainPagerAdapter extends FragmentStateAdapter {
         return PAGE_COUNT;
     }
 
-    private Project getCurrentProject(){
+    /**
+     * Gets the project currently displayed to the user
+     */
+    private Project getCurrentProject() {
         return mMainFragment.getCurrentProject();
     }
 
+    /**
+     * Updates the project being displayed in the details fragment
+     */
     public void updateProject() {
         mDetailsFragment.updateProject(getCurrentProject());
     }
 
-    public void hideDetailsFragment(){
+    /**
+     * Hides the Details page to prevent scrolling when outside the home fragment
+     */
+    public void hideDetailsFragment() {
         PAGE_COUNT = 1;
     }
 
-    public void showDetailsFragment(){
+    /**
+     * Shows the Details page again
+     */
+    public void showDetailsFragment() {
         PAGE_COUNT = 2;
     }
 
+    /**
+     * Determines if the fragment currently being displayed in the Details fragment is the Information
+     */
     public boolean isInformationFragmentVisible() {
         return mDetailsFragment != null && mDetailsFragment.isInformationFragmentVisible();
     }
 
+    /**
+     * Adds one to the current project's count of user swipes to view details
+     */
     public void addSwipeToProject() {
         Project currentProject = getCurrentProject();
-        User.getCurrentUser().swipedProject(currentProject);
+
+        //Update the user's behavior
+        User.getCurrentUser().registerSwipedProject(currentProject);
+
+        //Add one to the project's swipe count
         currentProject.addSwipe();
     }
 }

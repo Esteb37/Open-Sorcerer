@@ -16,7 +16,6 @@ import java.util.Objects;
 /**
  * Class for handling Conversation objects for user chats
  */
-@SuppressWarnings("unused")
 @ParseClassName("Conversation")
 public class Conversation extends ParseObject implements Parcelable {
 
@@ -27,25 +26,30 @@ public class Conversation extends ParseObject implements Parcelable {
     /**
      * Gets an active conversation between the current user and another, if it exists
      */
-    private static Conversation findActiveConversation(User opposite){
+    private static Conversation findActiveConversation(User opposite) {
 
         User current = User.getCurrentUser();
 
+        //Create a query for projects that contain both users
         ParseQuery<Conversation> query = ParseQuery.getQuery(Conversation.class)
-                .whereContainsAll("participants", Arrays.asList(current.getHandler(),opposite.getHandler()));
+                .whereContainsAll("participants", Arrays.asList(current.getHandler(), opposite.getHandler()));
+
+        //Check if there exists an active conversation
         try {
             return query.getFirst();
         } catch (ParseException e) {
-            e.printStackTrace();
             return null;
         }
     }
 
-    public static Conversation getConversationWithUser(User opposite){
+    /**
+     * Gets an active conversation with another user, or creates one if there aren't any
+     */
+    public static Conversation getConversationWithUser(User opposite) {
         Conversation conversation = findActiveConversation(opposite);
-        if (conversation == null){
+        if (conversation == null) {
             conversation = new Conversation();
-            conversation.setParticipants(Arrays.asList(User.getCurrentUser(),opposite));
+            conversation.setParticipants(Arrays.asList(User.getCurrentUser(), opposite));
         }
         return conversation;
     }
@@ -76,7 +80,7 @@ public class Conversation extends ParseObject implements Parcelable {
      * Participants setter
      */
     public void setParticipants(List<User> participants) {
-        put(KEY_PARTICIPANTS,User.toParseUserArray(participants));
+        put(KEY_PARTICIPANTS, User.toParseUserArray(participants));
     }
 
     /**
@@ -93,9 +97,9 @@ public class Conversation extends ParseObject implements Parcelable {
     /**
      * Adds a single message to the conversation
      */
-    public void addMessage(Message message){
+    public void addMessage(Message message) {
         List<String> messages = getMessages();
-        if(messages == null){
+        if (messages == null) {
             messages = new ArrayList<>();
         }
         messages.add(message.getObjectId());

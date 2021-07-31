@@ -12,32 +12,43 @@ import com.parse.ParseUser;
 @ParseClassName("Message")
 public class Message extends ParseObject implements Parcelable {
 
-    private static String KEY_CONVERSATION = "conversation";
-    private static String KEY_AUTHOR = "author";
-    private static String KEY_CONTENT = "content";
+    //Database keys
+    private static final String KEY_CONVERSATION = "conversation";
+    private static final String KEY_AUTHOR = "author";
+    private static final String KEY_CONTENT = "content";
 
-
-    public String getContent(){
+    /**
+     * Content getter
+     */
+    public String getContent() {
         return getString(KEY_CONTENT);
     }
 
-    public void setContent(String content){
-        put(KEY_CONTENT,content);
+    /**
+     * Content setter
+     */
+    public void setContent(String content) {
+        put(KEY_CONTENT, content);
     }
 
-    public Conversation getConversation(){
-        return (Conversation) getParseObject(KEY_CONVERSATION);
+    /**
+     * Conversation setter
+     */
+    public void setConversation(Conversation conversation) {
+        put(KEY_CONVERSATION, conversation);
     }
 
-    public void setConversation(Conversation conversation){
-        put(KEY_CONVERSATION,conversation);
-    }
-
+    /**
+     * Author getter
+     */
     public ParseUser getAuthor() {
         return getParseUser(KEY_AUTHOR);
     }
 
-    public void setAuthor(ParseUser author){
+    /**
+     * Author setter
+     */
+    public void setAuthor(ParseUser author) {
         put(KEY_AUTHOR, author);
     }
 }

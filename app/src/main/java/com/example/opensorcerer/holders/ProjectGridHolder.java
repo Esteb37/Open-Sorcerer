@@ -16,7 +16,6 @@ import com.parse.ParseFile;
 /**
  * ViewHolder class for Projects in Grid format
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ProjectGridHolder extends RecyclerView.ViewHolder {
 
     /**
@@ -55,15 +54,14 @@ public class ProjectGridHolder extends RecyclerView.ViewHolder {
         ParseFile imageFile = project.getLogoImage();
         if (imageURL != null) {
             Glide.with(mContext)
-                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl() )
+                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl())
                     .transform(new RoundedCorners(1000))
                     .into(mApp.imageViewLogo);
-        } else if (imageFile != null){
+        } else if (imageFile != null) {
             Glide.with(mContext)
-                    .load(imageFile.getUrl() )
+                    .load(imageFile.getUrl())
                     .transform(new RoundedCorners(1000))
                     .into(mApp.imageViewLogo);
         }
-
     }
 }

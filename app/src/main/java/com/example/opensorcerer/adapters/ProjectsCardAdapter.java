@@ -19,7 +19,6 @@ import java.util.List;
 /**
  * RecyclerView Adapter class for Projects in linear Card format
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder> {
 
     /**
@@ -37,16 +36,6 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
      */
     private final OnDoubleTapListener mDoubleTapListener;
 
-    /**
-     * Binder object for ViewBinding
-     */
-    private ItemCardProjectBinding mApp;
-
-    /**
-     * The ViewHolder for the project items
-     */
-    private ProjectCardHolder mHolder;
-
     public ProjectsCardAdapter(List<Project> projects, Context context, OnDoubleTapListener doubleTapListener) {
         mProjects = projects;
         mContext = context;
@@ -62,7 +51,7 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
     @NotNull
     @Override
     public ProjectCardHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        mApp = ItemCardProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        com.example.opensorcerer.databinding.ItemCardProjectBinding mApp = ItemCardProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = mApp.getRoot();
         return new ProjectCardHolder(view, mContext, mApp, mDoubleTapListener);
     }
@@ -72,8 +61,7 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
      */
     @Override
     public void onBindViewHolder(@NonNull @NotNull ProjectCardHolder holder, int position) {
-        mHolder = holder;
-        mHolder.bind(mProjects.get(position));
+        holder.bind(mProjects.get(position));
     }
 
     /**
@@ -100,15 +88,6 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
     public void addAll(List<Project> list) {
         mProjects.addAll(list);
         notifyDataSetChanged();
-    }
-
-    /**
-     * Gets the project that is currently on the user's screen
-     *
-     * @return The currently viewed project
-     */
-    public Project getCurrentProject() {
-        return mHolder.getAdapterPosition() > 0 ? mProjects.get(mHolder.getAdapterPosition() - 1) : mProjects.get(0);
     }
 
     public void add(Project project) {

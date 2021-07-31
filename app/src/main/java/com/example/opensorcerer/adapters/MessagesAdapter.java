@@ -20,7 +20,6 @@ import java.util.List;
 /**
  * RecyclerView Adapter class for messages
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class MessagesAdapter extends RecyclerView.Adapter<MessageHolder> {
 
     /**
@@ -65,10 +64,10 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessageHolder> {
     public MessageHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         if (viewType == MESSAGE_INCOMING) {
             ItemMessageIncommingBinding app = ItemMessageIncommingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new MessageHolder(app.getRoot(), mContext, app, viewType);
+            return new MessageHolder(app.getRoot(), app, viewType);
         } else if (viewType == MESSAGE_OUTGOING) {
             ItemMessageOutgoingBinding app = ItemMessageOutgoingBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-            return new MessageHolder(app.getRoot(), mContext, app, viewType);
+            return new MessageHolder(app.getRoot(), app, viewType);
         } else {
             throw new IllegalArgumentException("Unknown view type");
         }

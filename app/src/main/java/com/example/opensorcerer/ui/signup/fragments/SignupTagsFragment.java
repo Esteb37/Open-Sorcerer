@@ -30,13 +30,7 @@ import java.util.List;
 /**
  * Fragment for adding interested categories and languages
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupTagsFragment extends Fragment {
-
-    /**
-     * Tag for logging
-     */
-    private static final String TAG = "SignupTagsFragment";
 
     /**
      * Binder for View Binding
@@ -54,10 +48,13 @@ public class SignupTagsFragment extends Fragment {
     private User mNewUser;
 
     /**
-     * User's selected profile picture
+     * Spanned length of the languages text view
      */
-    private Bitmap mProfilePicture;
     private int spannedLengthLanguages = 0;
+
+    /**
+     * Spanned length of the tags text view
+     */
     private int spannedLengthTags = 0;
 
     /**

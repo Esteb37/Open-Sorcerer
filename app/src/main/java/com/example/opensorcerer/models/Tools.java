@@ -3,7 +3,6 @@ package com.example.opensorcerer.models;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
@@ -25,20 +24,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Abstract class for general use static methods
  */
-@SuppressWarnings("SpellCheckingInspection")
 public abstract class Tools {
 
     /**
      * List of all recognized programming languages
      */
+    @SuppressWarnings("SpellCheckingInspection")
     private static final String[] languages = {"(Visual) FoxPro: FoxPro, " +
             "Fox Pro, VFP", "1C:Enterprise script", "4th Dimension/4D: 4D, 4th " +
             "Dimension", "ABAP", "ABC: ABC (exceptions: -tv -channel)", "ActionScript: ActionScript, AS1, AS2, AS3",
@@ -81,7 +78,7 @@ public abstract class Tools {
         }
 
         //Remove the trailing comma
-        return str.length() > 1 ? str.substring(0,str.length() - 2) : str.toString();
+        return str.length() > 1 ? str.substring(0, str.length() - 2) : str.toString();
     }
 
     /**
@@ -115,7 +112,7 @@ public abstract class Tools {
     }
 
     /**
-     * Creates a new chip token from the last inputed item in an editable
+     * Creates a new chip token from the last imputed item in an editable
      */
     public static Editable addChip(Context context, Editable editable, int spannedLength) {
 
@@ -129,7 +126,7 @@ public abstract class Tools {
     }
 
     /**
-     * Creates a new chip token from the last inputed item in an editable
+     * Creates a new chip token from the last imputed item in an editable
      */
     public static void addChip(Context context, String item, AppCompatMultiAutoCompleteTextView chipInput) {
 
@@ -164,40 +161,15 @@ public abstract class Tools {
         final FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        if(direction.equals("right_to_left")) {
+        if (direction.equals("right_to_left")) {
             transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
         } else if (direction.equals("left_to_right")) {
             transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
-    }
+        }
 
         transaction.replace(containerId, fragment, fragment.getClass().getName());
         transaction.addToBackStack(fragment.getClass().getSimpleName());
         transaction.commit();
-    }
-
-    /**
-     * Fetches an image from a URL source and turns it to bitmap
-     */
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            //Setup the request for the image
-            java.net.URL url = new java.net.URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            //Get the image as an input stream
-            InputStream input = connection.getInputStream();
-            //Get the bipmap from the input stream
-            return BitmapFactory.decodeStream(input);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static ParseFile getParseImageFromUrl(String url){
-        return bitmapToParseFile(Objects.requireNonNull(getBitmapFromURL(url)));
     }
 
     /**
@@ -212,7 +184,7 @@ public abstract class Tools {
      */
     @SuppressWarnings("deprecation")
     public static String formatTitle(String title) {
-        return WordUtils.capitalizeFully(title.replace("-"," "));
+        return WordUtils.capitalizeFully(title.replace("-", " "));
     }
 
     /**
@@ -252,14 +224,21 @@ public abstract class Tools {
         return "";
     }
 
+    /**
+     * Gets the contents of a file as a string
+     */
     public static String getFileContents(Context context, String fileName) throws IOException {
+
+        //Get the file
         final InputStream inputStream = context.getAssets().open(fileName);
         final BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
+        //Setup the string
         final StringBuilder stringBuilder = new StringBuilder();
 
         boolean done = false;
 
+        //Read each line from the file and add it to the string
         while (!done) {
             final String line = reader.readLine();
             done = (line == null);
@@ -269,6 +248,7 @@ public abstract class Tools {
             }
         }
 
+        //Close the file
         reader.close();
         inputStream.close();
 

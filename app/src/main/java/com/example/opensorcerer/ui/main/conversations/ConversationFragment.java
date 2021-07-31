@@ -18,10 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.adapters.MessagesAdapter;
 import com.example.opensorcerer.databinding.FragmentConversationBinding;
 import com.example.opensorcerer.models.Conversation;
+import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.models.Message;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
@@ -42,7 +42,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * Fragment for displaying a single one-on-one conversation
  */
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class ConversationFragment extends Fragment {
 
     /**
@@ -59,6 +58,11 @@ public class ConversationFragment extends Fragment {
      * The handler for the fetching messages loop
      */
     private static final Handler myHandler = new Handler(Looper.getMainLooper());
+
+    /**
+     * A greeting message for when the user creates a conversation about a specific project
+     */
+    private static final String PROJECT_GREETING_MESSAGE = "Hello! I'm interested in your project %s. Do you have a moment to speak about it?";
 
     /**
      * The current conversation
@@ -86,11 +90,6 @@ public class ConversationFragment extends Fragment {
     private User mUser;
 
     /**
-     * The other user in this conversation
-     */
-    private User mOpposite;
-
-    /**
      * The project the user wants to speak about
      */
     private Project mProject;
@@ -110,19 +109,23 @@ public class ConversationFragment extends Fragment {
      */
     private LinearLayoutManager mLayoutManager;
 
-    private static final String PROJECT_GREETING_MESSAGE = "Hello! I'm interested in your project %s. Do you have a moment to speak about it?";
-
     /**
-     * Sets the specified conversation
+     * Constructor for opening a specific conversation
      */
     public ConversationFragment(Conversation conversation) {
         mConversation = conversation;
     }
 
+    /**
+     * Constructor for opening an active conversation with a specific user
+     */
     public ConversationFragment(User oppositeUser) {
         mConversation = Conversation.getConversationWithUser(oppositeUser);
     }
 
+    /**
+     * Constructor for creating or opening a conversation about a specific project
+     */
     public ConversationFragment(Project project) {
         mConversation = Conversation.getConversationWithUser(project.getManager());
         mProject = project;
@@ -180,19 +183,19 @@ public class ConversationFragment extends Fragment {
      */
     private void setupConversation() {
         try {
-            mOpposite = mConversation.getOpposite().fetchIfNeeded();
+            User opposite = mConversation.getOpposite().fetchIfNeeded();
 
-            mApp.textViewUsername.setText(mOpposite.getUsername());
+            mApp.textViewUsername.setText(opposite.getUsername());
 
-            ParseFile oppositeProfilePicture = mOpposite.getProfilePicture();
+            ParseFile oppositeProfilePicture = opposite.getProfilePicture();
             if (oppositeProfilePicture != null) {
                 Glide.with(mContext)
                         .load(oppositeProfilePicture.getUrl())
                         .into(mApp.imageViewProfilePicture);
             }
 
-            if(mProject != null){
-                mApp.editTextCompose.setText(String.format(PROJECT_GREETING_MESSAGE,mProject.getTitle()));
+            if (mProject != null) {
+                mApp.editTextCompose.setText(String.format(PROJECT_GREETING_MESSAGE, mProject.getTitle()));
             }
 
         } catch (ParseException e) {
@@ -259,8 +262,8 @@ public class ConversationFragment extends Fragment {
                     }
                 });
 
-                if(mProject != null && ! mProject.isConversationStarted()) {
-                    mUser.startConversation(mProject);
+                if (mProject != null && !mProject.isConversationStarted()) {
+                    mUser.registerCreatedConversation(mProject);
                 }
             }
         });
@@ -275,7 +278,7 @@ public class ConversationFragment extends Fragment {
         String websocketUrl = "wss://opensorcerer.b4a.io/";
         ParseLiveQueryClient parseLiveQueryClient = null;
         try {
-            parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient(new URI("wss://opensorcerer.b4a.io/"));
+            parseLiveQueryClient = ParseLiveQueryClient.Factory.getClient(new URI(websocketUrl));
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -320,7 +323,7 @@ public class ConversationFragment extends Fragment {
 
         List<String> messages = mConversation.getMessages();
 
-        if(messages != null){
+        if (messages != null) {
             //Get a query in descending order
             ParseQuery<Message> query = ParseQuery.getQuery(Message.class)
                     .whereContainedIn("objectId", messages);

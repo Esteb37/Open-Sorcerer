@@ -3,8 +3,6 @@ package com.example.opensorcerer.holders;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -36,7 +34,6 @@ import java.util.List;
 /**
  * ViewHolder class for Projects in linear Card format.
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal", "FieldMayBeFinal"})
 public class ProjectCardHolder extends RecyclerView.ViewHolder {
 
     /**
@@ -47,6 +44,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
     /**
      * The duration for the like animations.
      */
+    @SuppressWarnings("FieldCanBeLocal")
     private final int LIKE_ANIMATION_DURATION = 500;
 
     /**
@@ -55,11 +53,6 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
     private final Context mContext;
 
     private final ProjectsCardAdapter.OnDoubleTapListener mDoubleTapListener;
-
-    /**
-     * Current user.
-     */
-    private User mUser;
 
     /**
      * Current Project.
@@ -76,8 +69,6 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
         mApp = binder;
 
         mContext = context;
-
-        mUser = User.getCurrentUser();
 
         mDoubleTapListener = doubleTapListener;
 
@@ -164,45 +155,14 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
         ParseFile imageFile = mProject.getLogoImage();
         if (imageURL != null) {
             Glide.with(mContext)
-                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl() )
+                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl())
                     .transform(new RoundedCorners(1000))
                     .into(mApp.imageViewLogo);
-        } else if (imageFile != null){
+        } else if (imageFile != null) {
             Glide.with(mContext)
-                    .load(imageFile.getUrl() )
+                    .load(imageFile.getUrl())
                     .transform(new RoundedCorners(1000))
                     .into(mApp.imageViewLogo);
-        }
-    }
-
-    class SimpleGestureListener extends GestureDetector.SimpleOnGestureListener{
-
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            mDoubleTapListener.onItemDoubleTap(getAdapterPosition());
-            setLikeButton();
-            showLikeAnimation();
-            return super.onDoubleTap(e);
-        }
-
-        @Override
-        public boolean onDown(MotionEvent event) {
-            // triggers first for both single tap and long press
-            return true;
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent event) {
-            // triggers after onDown only for single tap
-            return true;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-            mDoubleTapListener.onItemDoubleTap(getAdapterPosition());
-            setLikeButton();
-            showLikeAnimation();
-            super.onLongPress(e);
         }
     }
 

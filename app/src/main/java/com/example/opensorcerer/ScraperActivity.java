@@ -26,11 +26,9 @@ import java.util.ArrayList;
  */
 public class ScraperActivity extends AppCompatActivity {
 
+    private final String[] mCategories = {"featured", "cloud", "analytics-visualization", "databases", "developer-tools", "education", "enterprise", "games", "graphics-video-audio",
+            "i18n", "iot", "mobile", "machine-learning", "geo", "networking", "programming", "samples", "security", "testing", "utilities", "web"};
     private WebView mWebView = null;
-
-    private final String[] mCategories = {"featured","cloud","analytics-visualization","databases","developer-tools","education","enterprise","games","graphics-video-audio",
-            "i18n","iot","mobile","machine-learning","geo","networking","programming","samples","security","testing","utilities","web"};
-
     private String[] mProjectLinks;
 
     private int mCurrentCategory = 0;
@@ -89,22 +87,21 @@ public class ScraperActivity extends AppCompatActivity {
     /**
      * Gets the projects from the next category
      */
-    private void loadNextCategory(){
-        runOnUiThread(() ->{
+    private void loadNextCategory() {
+        runOnUiThread(() -> {
 
             //Reset web view
             mWebView.clearCache(true);
-            try{
+            try {
 
                 //Load the catalogue page
-                Log.d("Scraper","-----"+ mCategories[mCurrentCategory]+"-----");
-                mWebView.loadUrl("https://opensource.google/projects/list/"+ mCategories[mCurrentCategory++]);
+                Log.d("Scraper", "-----" + mCategories[mCurrentCategory] + "-----");
+                mWebView.loadUrl("https://opensource.google/projects/list/" + mCategories[mCurrentCategory++]);
 
                 //Get the projects from this catalogue page
                 injectGetProjectLinks();
-            }
-            catch(IndexOutOfBoundsException e){
-                Log.d("Test","End of file");
+            } catch (IndexOutOfBoundsException e) {
+                Log.d("Test", "End of file");
             }
         });
     }
@@ -112,11 +109,11 @@ public class ScraperActivity extends AppCompatActivity {
     /**
      * Retrieves the links from all project cards in the catalogue
      */
-    private void injectGetProjectLinks(){
+    private void injectGetProjectLinks() {
         runOnUiThread(() -> {
             try {
                 String getProjectLinksJS = Tools.getFileContents(this, "getProjectLinks.js");
-                mWebView.loadUrl("javascript:window.HTMLOUT.getProjectLinks("+getProjectLinksJS+");");
+                mWebView.loadUrl("javascript:window.HTMLOUT.getProjectLinks(" + getProjectLinksJS + ");");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -126,7 +123,7 @@ public class ScraperActivity extends AppCompatActivity {
     /**
      * Loads the next project page from the catalogue
      */
-    private void loadNextProject(){
+    private void loadNextProject() {
 
         runOnUiThread(() -> {
 
@@ -140,8 +137,8 @@ public class ScraperActivity extends AppCompatActivity {
                 //Find the repository link and the logo
                 injectGetProjectInformation();
 
-            //If all the projects have been scraped
-            } catch (IndexOutOfBoundsException e){
+                //If all the projects have been scraped
+            } catch (IndexOutOfBoundsException e) {
 
                 //Go to the next category
                 mCurrentProject = 0;
@@ -154,14 +151,14 @@ public class ScraperActivity extends AppCompatActivity {
      * Scrapes the site to find the first GitHub repository link and the logo
      */
     private void injectGetProjectInformation() {
-            runOnUiThread(() -> {
-                try {
-                    String getProjectInfoJS = Tools.getFileContents(this, "getProjectInfo.js");
-                    mWebView.loadUrl("javascript:window.HTMLOUT.getProjectInformation("+getProjectInfoJS+");");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
+        runOnUiThread(() -> {
+            try {
+                String getProjectInfoJS = Tools.getFileContents(this, "getProjectInfo.js");
+                mWebView.loadUrl("javascript:window.HTMLOUT.getProjectInformation(" + getProjectInfoJS + ");");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -218,7 +215,7 @@ public class ScraperActivity extends AppCompatActivity {
                 project.setManager(manager);
                 project.update();
 
-                Log.d("Scraper","Created "+project.getTitle());
+                Log.d("Scraper", "Created " + project.getTitle());
             } catch (IOException | IllegalArgumentException e) {
                 e.printStackTrace();
             }
@@ -230,17 +227,16 @@ public class ScraperActivity extends AppCompatActivity {
      * Listener interface for when the web view has loaded fully
      */
     @SuppressWarnings("unused")
-    public class LoadListener{
+    public class LoadListener {
 
         /**
          * Interface for getting all links for the projects in the catalogue page
          */
         @JavascriptInterface
-        public void getProjectLinks(String result)
-        {
+        public void getProjectLinks(String result) {
 
             //Recursively scrape until a new link is found correctly
-            if(result.equals("TypeError") || result.equals(mLastCategory)){
+            if (result.equals("TypeError") || result.equals(mLastCategory)) {
                 injectGetProjectLinks();
             } else {
                 mLastCategory = result;
@@ -257,23 +253,23 @@ public class ScraperActivity extends AppCompatActivity {
          * Interface for getting the GitHub repo link from a project's page
          */
         @JavascriptInterface
-        public void getProjectInformation(String[] result){
+        public void getProjectInformation(String[] result) {
 
             //Split the result into link and image
             String repoLink = result[0];
             String projectImage = result[1];
 
             //Recursively scrape until the correct link is found
-            if(repoLink.equals("TypeError") || repoLink.equals(mLastRepo)){
+            if (repoLink.equals("TypeError") || repoLink.equals(mLastRepo)) {
                 injectGetProjectInformation();
             } else {
-                if(repoLink.contains("github.com")){
+                if (repoLink.contains("github.com")) {
                     try {
 
                         //Create a project from the repo link
                         String repoName = Tools.getRepositoryName(repoLink);
 
-                        ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereEqualTo("githubName",repoName);
+                        ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereEqualTo("githubName", repoName);
 
                         query.findInBackground((projects, e) -> {
                             if (e == null) {

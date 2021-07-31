@@ -14,13 +14,7 @@ import org.jetbrains.annotations.NotNull;
  * Author: CodePath
  * Availability: https://guides.codepath.org/android/Endless-Scrolling-with-AdapterViews-and-RecyclerView
  */
-@SuppressWarnings("unused")
 public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnScrollListener {
-
-    /**
-     * Sets the starting page index.
-     */
-    private final int startingPageIndex = 0;
 
     /**
      * Layout manager of the listened recyclerview.
@@ -68,16 +62,6 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
     }
 
     /**
-     * Constructor for RecyclerViews with Staggered Grid Layouts
-     *
-     * @param layoutManager The recyclerview's staggered grid layout manager
-     */
-    public EndlessRecyclerViewScrollListener(StaggeredGridLayoutManager layoutManager) {
-        this.mLayoutManager = layoutManager;
-        visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
-    }
-
-    /**
      * Returns the last item visible to the user
      */
     public int getLastVisibleItem(int[] lastVisibleItemPositions) {
@@ -110,7 +94,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         // If the total item count is zero and the previous isn't, assume the
         // list is invalidated and should be reset back to initial state
         if (totalItemCount < previousTotalItemCount) {
-            this.currentPage = this.startingPageIndex;
+            this.currentPage = 0;
             this.previousTotalItemCount = totalItemCount;
             if (totalItemCount == 0) {
                 this.loading = true;
@@ -134,15 +118,6 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
             onLoadMore(currentPage, totalItemCount, view);
             loading = true;
         }
-    }
-
-    /**
-     * Resets the state of the endless scroll listener
-     */
-    public void resetState() {
-        this.currentPage = this.startingPageIndex;
-        this.previousTotalItemCount = 0;
-        this.loading = true;
     }
 
     /**

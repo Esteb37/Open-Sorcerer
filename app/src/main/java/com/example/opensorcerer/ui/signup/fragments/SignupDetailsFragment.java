@@ -36,13 +36,7 @@ import java.util.Objects;
 /**
  * Fragment for adding details to a user's profile
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupDetailsFragment extends Fragment {
-
-    /**
-     * Tag for logging
-     */
-    private static final String TAG = "SignupDetailsFragment";
 
     /**
      * Binder for View Binding
@@ -63,6 +57,7 @@ public class SignupDetailsFragment extends Fragment {
      * User's selected profile picture
      */
     private Bitmap mProfilePicture;
+
     /**
      * Activity launcher for choosing a picture from the user's files
      */

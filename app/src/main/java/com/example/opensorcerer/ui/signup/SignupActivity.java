@@ -1,6 +1,5 @@
 package com.example.opensorcerer.ui.signup;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,23 +15,7 @@ import com.parse.ParseUser;
 /**
  * Activity for signing a new user in
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupActivity extends AppCompatActivity {
-
-    /**
-     * Tag for logging
-     */
-    private static final String TAG = "SignupActivity";
-
-    /**
-     * Binder for ViewBinding
-     */
-    private ActivitySignupBinding mApp;
-
-    /**
-     * Activity's context
-     */
-    private Context mContext;
 
     /**
      * Configuration for the Navigation Graph
@@ -46,8 +29,6 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mContext = this;
-
         //Make sure no user is logged in
         ParseUser.logOut();
 
@@ -60,8 +41,8 @@ public class SignupActivity extends AppCompatActivity {
      * Sets up the fragment's layout
      */
     private void setupViewBinding() {
-        mApp = ActivitySignupBinding.inflate(getLayoutInflater());
-        setContentView(mApp.getRoot());
+        ActivitySignupBinding app = ActivitySignupBinding.inflate(getLayoutInflater());
+        setContentView(app.getRoot());
     }
 
     /**

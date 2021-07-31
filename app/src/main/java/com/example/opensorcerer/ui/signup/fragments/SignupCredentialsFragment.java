@@ -1,6 +1,5 @@
 package com.example.opensorcerer.ui.signup.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,23 +21,12 @@ import java.util.Objects;
 /**
  * Fragment for choosing email and password when signing up.
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupCredentialsFragment extends Fragment {
-
-    /**
-     * Tag for logging
-     */
-    private static final String TAG = "SignupCredentialsFragment";
 
     /**
      * Binder for View Binding
      */
     private FragmentSignupCredentialsBinding mApp;
-
-    /**
-     * Fragment's context
-     */
-    private Context mContext;
 
     /**
      * Newly created user for signup
@@ -60,8 +48,6 @@ public class SignupCredentialsFragment extends Fragment {
      */
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mContext = getContext();
 
         //Get the user created in the Role fragment
         mNewUser = SignupCredentialsFragmentArgs.fromBundle(getArguments()).getUser();
@@ -132,6 +118,4 @@ public class SignupCredentialsFragment extends Fragment {
         super.onDestroyView();
         mApp = null;
     }
-
-
 }

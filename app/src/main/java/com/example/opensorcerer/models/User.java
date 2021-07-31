@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,9 +21,11 @@ import java.util.Set;
 /**
  * Custom class for handling ParseUser objects without Parse subclass restrictions
  */
-@SuppressWarnings("unused")
 public class User implements Parcelable {
 
+    /**
+     * Class needed for the Parcelable implementation
+     */
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel in) {
@@ -38,14 +41,14 @@ public class User implements Parcelable {
     //Database keys
     private static final String KEY_PROFILE_PICTURE = "profilePicture";
     private static final String KEY_PREDICT_SCORES = "predictScores";
-    private static final String KEY_CONVERSATIONS = "conversations";
     private static final String KEY_LEARN_SCORES = "learnScores";
+    private static final String KEY_LOAD_BEFORE = "loadBefore";
     private static final String KEY_EXPERIENCE = "experience";
     private static final String KEY_GITHUB_TOKEN = "ghToken";
+    private static final String KEY_LOAD_AFTER = "loadAfter";
     private static final String KEY_INTERESTS = "interests";
     private static final String KEY_LANGUAGES = "languages";
     private static final String KEY_FAVORITES = "favorites";
-    private static final String KEY_PASSWORD = "password";
     private static final String KEY_PROJECTS = "projects";
     private static final String KEY_GITHUB = "github";
     private static final String KEY_ROLE = "role";
@@ -156,20 +159,6 @@ public class User implements Parcelable {
     }
 
     /**
-     * Email getter
-     */
-    public String getEmail() {
-        return mHandler.getEmail();
-    }
-
-    /**
-     * Email setter
-     */
-    public void setEmail(String email) {
-        mHandler.setEmail(email);
-    }
-
-    /**
      * Password setter
      */
     public void setPassword(String password) {
@@ -189,13 +178,6 @@ public class User implements Parcelable {
     public void setProfilePicture(ParseFile profilePicture) {
         mHandler.put(KEY_PROFILE_PICTURE, profilePicture);
         update();
-    }
-
-    /**
-     * Experience getter
-     */
-    public String getExperience() {
-        return mHandler.getString(KEY_EXPERIENCE);
     }
 
     /**
@@ -364,10 +346,38 @@ public class User implements Parcelable {
      * Learn scores setter
      */
     public void setPredictScores(JSONObject scores) {
-        if(scores != null) {
+        if (scores != null) {
             mHandler.put(KEY_PREDICT_SCORES, scores);
         }
         update();
+    }
+
+    /**
+     * Load before getter
+     */
+    public Date getLoadBefore() {
+        return mHandler.getDate(KEY_LOAD_BEFORE);
+    }
+
+    /**
+     * Load before setter
+     */
+    public void setLoadBefore(Date date) {
+        mHandler.put(KEY_LOAD_BEFORE, date);
+    }
+
+    /**
+     * Load after getter
+     */
+    public Date getLoadAfter() {
+        return mHandler.getDate(KEY_LOAD_AFTER);
+    }
+
+    /**
+     * Load after setter
+     */
+    public void setLoadAfter(Date date) {
+        mHandler.put(KEY_LOAD_AFTER, date);
     }
 
     /**
@@ -408,34 +418,51 @@ public class User implements Parcelable {
         if (favorites == null) favorites = new ArrayList<>();
         favorites.remove(project.getObjectId());
         setFavorites(favorites);
-        addScores(project, - FAVORITE_SCORE);
+        addScores(project, -FAVORITE_SCORE);
     }
 
-    public void swipedProject(Project project){
-        if(! project.isSwipedByUser()) {
+    /**
+     * Registers the user's swiping behavior on a project
+     */
+    public void registerSwipedProject(Project project) {
+        if (!project.isSwipedByUser()) {
             addScores(project, SWIPE_SCORE);
         }
 
     }
 
-    public void scrolledProject(Project project){
-        if(! (project.isLikedByUser() || project.isSwipedByUser()) && ! project.isIgnoredByUser()) {
-            ignoredProject(project);
+    /**
+     * Registers that the user has scrolled past a project and determines if they ignored it
+     */
+    public void registerScrolledProject(Project project) {
+        if (!(project.isLikedByUser() || project.isSwipedByUser()) && !project.isIgnoredByUser()) {
+            registerIgnoredProject(project);
         }
     }
-    public void ignoredProject(Project project){
+
+    /**
+     * Registers that the user ignored a project without interacting
+     */
+    public void registerIgnoredProject(Project project) {
         addScores(project, IGNORE_SCORE);
         project.ignoredByUser(true);
     }
 
-    public void createdConversation(Project project){
+    /**
+     * Registers that the user has created a conversation about a project
+     */
+    public void registerCreatedConversation(Project project) {
+        project.startConversation();
         addScores(project, CONVERSATION_SCORE);
     }
 
+    /**
+     * Adds the specified score to all the project's categories for this user
+     */
     public void addScores(Project project, int score) {
         Set<String> tags = new HashSet<>();
 
-        if(project.getTags() != null)
+        if (project.getTags() != null)
             tags.addAll(project.getTags());
 
         JSONObject scores = getLearnScores();
@@ -444,9 +471,8 @@ public class User implements Parcelable {
             scores = new JSONObject();
         }
 
-        for(String tag : tags){
-
-            if(!tag.isEmpty()) {
+        for (String tag : tags) {
+            if (!tag.isEmpty()) {
                 try {
                     scores.put(tag, scores.getInt(tag) + score);
                 } catch (JSONException e) {
@@ -458,9 +484,54 @@ public class User implements Parcelable {
                 }
             }
         }
-
         setLearnScores(scores);
     }
+
+    /**
+     * Calculates the overall score for the project given by the user's previous response to its categories
+     */
+    public int calculateScore(Project project) {
+        Set<String> scoreKeys = new HashSet<>();
+
+        if (project.getTags() != null)
+            scoreKeys.addAll(project.getTags());
+
+        JSONObject userScores = getPredictScores();
+
+        if (scoreKeys.size() > 0 && userScores != null) {
+            int totalScore = 0;
+            for (String key : scoreKeys) {
+                try {
+                    totalScore += Integer.compare(userScores.getInt(key), 0);
+                } catch (JSONException ignored) {
+
+                }
+            }
+            return totalScore;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Determines if the project includes at least one language that the user knows
+     */
+    public boolean includesLanguages(Project project) {
+        for (String language : getLanguages()) {
+            if (project.getLanguages().contains(language)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Determines if the user will likely not ignore a project
+     */
+    public boolean probablyLikes(Project project) {
+        return includesLanguages(project) && calculateScore(project) >= 0;
+    }
+
 
     /**
      * Fetches the user handler in the background
@@ -496,52 +567,4 @@ public class User implements Parcelable {
         dest.writeParcelable(mHandler, flags);
     }
 
-    public void startConversation(Project project) {
-        project.startConversation();
-        addScores(project, CONVERSATION_SCORE);
-    }
-
-    public int calculateScore(Project project) {
-        Set<String> scoreKeys = new HashSet<>();
-
-        if(project.getTags() != null)
-            scoreKeys.addAll(project.getTags());
-
-        JSONObject userScores = getPredictScores();
-
-        if (scoreKeys.size() > 0 && userScores != null) {
-
-            int totalScore = 0;
-
-            for (String key : scoreKeys){
-                try {
-                    totalScore += Integer.compare(userScores.getInt(key), 0);
-                    Log.d("Test",key+" "+Integer.compare(userScores.getInt(key), 0));
-                } catch (JSONException ignored) {
-
-                }
-            }
-
-            return totalScore;
-
-        } else {
-            return 0;
-        }
-    }
-
-    public boolean includesLanguages(Project project){
-        List<String> languages = getLanguages();
-
-        for(String language : getLanguages()){
-            if(project.getLanguages().contains(language)){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean probablyLikes(Project project) {
-        return includesLanguages(project) && calculateScore(project) >= 0;
-    }
 }

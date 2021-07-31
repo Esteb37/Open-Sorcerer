@@ -12,30 +12,17 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProfileBinding;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
-import org.kohsuke.github.GitHub;
 
 /**
  * Fragment for displaying a user's profile.
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ProfileFragment extends androidx.fragment.app.Fragment {
-
-    /**
-     * Tag for logging
-     */
-    private static final String TAG = "ProfileFragment";
-
-    /**
-     * Fragment for the menu drawer
-     */
-    private final Fragment profileDrawerFragment = null;
 
     /**
      * Binder object for ViewBinding
@@ -51,11 +38,6 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
         public void openDrawer() {
             mApp.drawerLy.openDrawer(GravityCompat.END);
         }
-
-        @Override
-        public void closeDrawer() {
-            mApp.drawerLy.closeDrawers();
-        }
     };
 
     /**
@@ -64,24 +46,9 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     private Context mContext;
 
     /**
-     * Current logged in user
-     */
-    private User mUser;
-
-    /**
      * User to view profile
      */
     private User mProfileUser;
-
-    /**
-     * GitHub API handler
-     */
-    private GitHub mGitHub;
-
-    /**
-     * Fragment for the profile details
-     */
-    private Fragment profileContentFragment = null;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -123,10 +90,7 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     private void getState() {
         mContext = getContext();
 
-        mUser = User.getCurrentUser();
-
-        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
-
+        assert mContext != null;
         ((MainActivity) mContext).hideDetailsFragment();
     }
 
@@ -134,7 +98,7 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
      * Sets up the profile's details content fragment
      */
     private void setupProfileContent() {
-        profileContentFragment = new ProfileContentFragment(mDrawerListener, mProfileUser);
+        Fragment profileContentFragment = new ProfileContentFragment(mDrawerListener, mProfileUser);
         Tools.loadFragment(mContext, profileContentFragment, R.id.content_frame);
     }
 

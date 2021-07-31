@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.opensorcerer.databinding.ItemGridProjectBinding;
-import com.example.opensorcerer.holders.ProjectCardHolder;
 import com.example.opensorcerer.holders.ProjectGridHolder;
 import com.example.opensorcerer.models.Project;
 
@@ -20,7 +19,6 @@ import java.util.List;
 /**
  * RecyclerView Adapter class for Projects in Grid format
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder> {
 
     /**
@@ -32,16 +30,6 @@ public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder>
      * The list of projects to display
      */
     private final List<Project> mProjects;
-
-    /**
-     * Binder object for ViewBinding
-     */
-    private ItemGridProjectBinding mApp;
-
-    /**
-     * The ViewHolder for the project items
-     */
-    private ProjectCardHolder mHolder;
 
     /**
      * Click listener
@@ -63,9 +51,9 @@ public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder>
     @NotNull
     @Override
     public ProjectGridHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        mApp = ItemGridProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        com.example.opensorcerer.databinding.ItemGridProjectBinding mApp = ItemGridProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = mApp.getRoot();
-        return new ProjectGridHolder(view, mContext, mApp ,mClickListener);
+        return new ProjectGridHolder(view, mContext, mApp, mClickListener);
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.example.opensorcerer.ui.signup.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,23 +19,12 @@ import java.util.Objects;
 /**
  * Fragment for linking a user to their GitHub account
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SignupGithubFragment extends Fragment {
-
-    /**
-     * Tag for logging
-     */
-    private static final String TAG = "SignupGithubFragment";
 
     /**
      * Binder for ViewBinding
      */
     private FragmentSignupGithubBinding mApp;
-
-    /**
-     * Fragment's context
-     */
-    private Context mContext;
 
     /**
      * Newly created user for signup
@@ -57,8 +45,6 @@ public class SignupGithubFragment extends Fragment {
      */
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mContext = getContext();
 
         //Get the user created in the credentials signup fragment
         mNewUser = SignupGithubFragmentArgs.fromBundle(getArguments()).getUser();

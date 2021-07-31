@@ -22,7 +22,6 @@ import java.util.List;
 /**
  * ViewHolder class for conversation objects
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ConversationHolder extends RecyclerView.ViewHolder {
 
     /**

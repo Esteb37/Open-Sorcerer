@@ -14,10 +14,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.adapters.ProjectsGridAdapter;
-import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreatedProjectsBinding;
+import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
@@ -26,7 +25,6 @@ import com.example.opensorcerer.ui.main.home.HomeFragment;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
-import org.kohsuke.github.GitHub;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,6 @@ import java.util.List;
 /**
  * Fragment to display a user's created projects
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class CreatedProjectsFragment extends Fragment {
 
     /**
@@ -61,16 +58,6 @@ public class CreatedProjectsFragment extends Fragment {
      * Fragment's context
      */
     private Context mContext;
-
-    /**
-     * Current logged in user
-     */
-    private User mUser;
-
-    /**
-     * GitHub API handler
-     */
-    private GitHub mGitHub;
 
     /**
      * Adapter for the RecyclerView
@@ -125,10 +112,6 @@ public class CreatedProjectsFragment extends Fragment {
      */
     private void getState() {
         mContext = getContext();
-
-        mUser = User.getCurrentUser();
-
-        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }
 
     /**

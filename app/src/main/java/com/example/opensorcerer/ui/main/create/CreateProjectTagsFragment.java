@@ -43,7 +43,12 @@ public class CreateProjectTagsFragment extends Fragment {
     /**
      * Tag for logging
      */
-    private static final String TAG = "CreateProjectTagsFragment";
+    private static final String TAG = "CreateProjectFragment";
+
+    /**
+     * The newly created project
+     */
+    private final Project mNewProject;
 
     /**
      * Binder object for ViewBinding
@@ -71,10 +76,13 @@ public class CreateProjectTagsFragment extends Fragment {
     private GHRepository mRepo;
 
     /**
-     * The newly created project
+     * Spanned length of the languages text edit
      */
-    private final Project mNewProject;
     private int spannedLengthLanguages = 0;
+
+    /**
+     * Spanned length of the tags text edit
+     */
     private int spannedLengthTags = 0;
 
     public CreateProjectTagsFragment(Project project) {

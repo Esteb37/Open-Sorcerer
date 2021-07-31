@@ -1,6 +1,5 @@
 package com.example.opensorcerer.holders;
 
-import android.content.Context;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +13,6 @@ import com.example.opensorcerer.models.Tools;
 /**
  * ViewHolder class for conversation objects
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class MessageHolder extends RecyclerView.ViewHolder {
 
     /**
@@ -28,22 +26,16 @@ public class MessageHolder extends RecyclerView.ViewHolder {
     private ItemMessageOutgoingBinding mAppOutgoing;
 
     private final int mViewType;
-    /**
-     * The Holder's context
-     */
-    private final Context mContext;
 
-    public MessageHolder(View view, Context context, ItemMessageIncommingBinding binder, int viewType) {
+    public MessageHolder(View view, ItemMessageIncommingBinding binder, int viewType) {
         super(view);
         mAppIncoming = binder;
-        mContext = context;
         mViewType = viewType;
     }
 
-    public MessageHolder(View view, Context context, ItemMessageOutgoingBinding binder, int viewType) {
+    public MessageHolder(View view, ItemMessageOutgoingBinding binder, int viewType) {
         super(view);
         mAppOutgoing = binder;
-        mContext = context;
         mViewType = viewType;
     }
 

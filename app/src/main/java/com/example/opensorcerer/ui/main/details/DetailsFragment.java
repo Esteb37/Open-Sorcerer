@@ -2,7 +2,6 @@ package com.example.opensorcerer.ui.main.details;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,28 +12,17 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentDetailsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
-import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.conversations.ConversationFragment;
 
 import org.jetbrains.annotations.NotNull;
-import org.kohsuke.github.GitHub;
-
-import java.util.Objects;
 
 /**
  * Fragment for displaying a project's details
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class DetailsFragment extends Fragment {
-
-    /**
-     * Tag for logging
-     */
-    private static final String TAG = "DetailsFragment";
 
     /**
      * Project being displayed
@@ -50,16 +38,6 @@ public class DetailsFragment extends Fragment {
      * Fragment's context
      */
     private Context mContext;
-
-    /**
-     * Current logged in user
-     */
-    private User mUser;
-
-    /**
-     * GitHub API handler
-     */
-    private GitHub mGitHub;
 
     public DetailsFragment(Project project) {
         mProject = project;
@@ -96,17 +74,13 @@ public class DetailsFragment extends Fragment {
      * Gets the current state for the member variables.
      */
     private void getState() {
-
         mContext = getContext();
-
-        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }
 
     /**
      * Sets up the bottom navigation bar
      */
     private void setupBottomNavigation() {
-
 
 
         //Ensure that the id's of the navigation items are final for the switch
@@ -143,11 +117,17 @@ public class DetailsFragment extends Fragment {
         mApp.bottomNavDetails.setSelectedItemId(R.id.actionDetails);
     }
 
+    /**
+     * Updates which project is currently being displayed
+     */
     public void updateProject(Project project) {
         mProject = project;
         Tools.loadFragment(mContext, new DetailsFragment(mProject), mApp.flContainerDetailsInternal.getId());
     }
 
+    /**
+     * Determines if the current page in the details fragment is the Information page
+     */
     public boolean isInformationFragmentVisible() {
         int index = requireActivity().getSupportFragmentManager().getBackStackEntryCount() - 1;
         FragmentManager.BackStackEntry backEntry = requireActivity().getSupportFragmentManager().getBackStackEntryAt(index);

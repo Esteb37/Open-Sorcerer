@@ -14,10 +14,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.adapters.ProjectsGridAdapter;
-import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentFavoriteProjectsBinding;
+import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
@@ -26,7 +25,6 @@ import com.example.opensorcerer.ui.main.home.HomeFragment;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
-import org.kohsuke.github.GitHub;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +32,7 @@ import java.util.List;
 /**
  * Fragment for displaying the user's liked projects in grid format
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class FavoriteProjectsFragment extends Fragment {
-
 
     /**
      * Tag for logging
@@ -49,6 +45,11 @@ public class FavoriteProjectsFragment extends Fragment {
     private static final int QUERY_LIMIT = 20;
 
     /**
+     * The user whose projects to show
+     */
+    public final User mProfileUser;
+
+    /**
      * Binder object for ViewBinding
      */
     private FragmentFavoriteProjectsBinding mApp;
@@ -57,16 +58,6 @@ public class FavoriteProjectsFragment extends Fragment {
      * Fragment's context
      */
     private Context mContext;
-
-    /**
-     * Current logged in user
-     */
-    private User mUser;
-
-    /**
-     * GitHub API handler
-     */
-    private GitHub mGitHub;
 
     /**
      * Adapter for the RecyclerView
@@ -82,11 +73,6 @@ public class FavoriteProjectsFragment extends Fragment {
      * The user's created project list to display
      */
     private List<Project> mProjects;
-
-    /**
-     * The user whose projects to show
-     */
-    public final User mProfileUser;
 
     public FavoriteProjectsFragment(User profileUser) {
         mProfileUser = profileUser;
@@ -126,10 +112,6 @@ public class FavoriteProjectsFragment extends Fragment {
      */
     private void getState() {
         mContext = getContext();
-
-        mUser = User.getCurrentUser();
-
-        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }
 
     /**
@@ -162,7 +144,6 @@ public class FavoriteProjectsFragment extends Fragment {
         // Adds the scroll listener to RecyclerView
         mApp.recyclerViewFavorites.addOnScrollListener(scrollListener);
     }
-
 
     /**
      * Gets the list of projects liked by the user

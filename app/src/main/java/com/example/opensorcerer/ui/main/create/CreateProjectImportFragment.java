@@ -17,7 +17,6 @@ import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreateImportBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
-import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.MainActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -30,13 +29,7 @@ import java.util.Objects;
 /**
  * Fragment for importing a project from github
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class CreateProjectImportFragment extends Fragment {
-
-    /**
-     * Tag for logging
-     */
-    private static final String TAG = "CreateProjectImportFragment";
 
     /**
      * Binder object for ViewBinding
@@ -47,11 +40,6 @@ public class CreateProjectImportFragment extends Fragment {
      * Fragment's context
      */
     private Context mContext;
-
-    /**
-     * Current logged in user
-     */
-    private User mUser;
 
     /**
      * GitHub API handler
@@ -144,8 +132,6 @@ public class CreateProjectImportFragment extends Fragment {
      */
     private void getState() {
         mContext = getContext();
-
-        mUser = User.getCurrentUser();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
 

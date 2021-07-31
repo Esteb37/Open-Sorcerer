@@ -14,9 +14,6 @@ import org.kohsuke.github.GitHubBuilder;
 
 import java.io.IOException;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-
 /**
  * Class for hosting the application and handling the Parse database and the GitHub API
  */
@@ -26,7 +23,7 @@ public class OSApplication extends Application {
     /**
      * The GitHub API handler
      */
-    GitHub mGitHub;
+    private GitHub mGitHub;
 
     @Override
     public void onCreate() {
@@ -84,5 +81,4 @@ public class OSApplication extends Application {
 
         return mGitHub;
     }
-
 }

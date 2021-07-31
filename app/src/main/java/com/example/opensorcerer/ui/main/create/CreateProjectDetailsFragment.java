@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.example.opensorcerer.R;
-import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentCreateDetailsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
@@ -30,7 +29,6 @@ import com.parse.SaveCallback;
 
 import org.jetbrains.annotations.NotNull;
 import org.kohsuke.github.GHRepository;
-import org.kohsuke.github.GitHub;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -38,13 +36,12 @@ import java.io.InputStream;
 /**
  * Fragment for adding primary details to the created project
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class CreateProjectDetailsFragment extends Fragment {
 
     /**
-     * Tag for logging
+     * The newly created project
      */
-    private static final String TAG = "CreateProjectDetailsFragment";
+    private final Project mNewProject;
 
     /**
      * Binder object for ViewBinding
@@ -60,21 +57,6 @@ public class CreateProjectDetailsFragment extends Fragment {
      * Current logged in user
      */
     private User mUser;
-
-    /**
-     * GitHub API handler
-     */
-    private GitHub mGitHub;
-
-    /**
-     * The new project's repo object
-     */
-    private GHRepository mRepo;
-
-    /**
-     * The newly created project
-     */
-    private final Project mNewProject;
 
     /**
      * New project's logo image
@@ -151,8 +133,6 @@ public class CreateProjectDetailsFragment extends Fragment {
         mContext = getContext();
 
         mUser = User.getCurrentUser();
-
-        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }
 
     /**
@@ -161,7 +141,7 @@ public class CreateProjectDetailsFragment extends Fragment {
     private void loadRepoDetails() {
 
         //Get the repo object
-        mRepo = mNewProject.getRepoObject();
+        GHRepository mRepo = mNewProject.getRepoObject();
 
         //Get the repo's information
         String name = mRepo.getName();

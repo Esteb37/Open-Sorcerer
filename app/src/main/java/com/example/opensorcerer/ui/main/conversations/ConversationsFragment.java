@@ -18,25 +18,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.ConversationsAdapter;
-import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
-import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentConversationsBinding;
 import com.example.opensorcerer.models.Conversation;
+import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
-import org.kohsuke.github.GitHub;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 
 /**
  * Fragment for displaying the user's list of active conversations
  */
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class ConversationsFragment extends Fragment {
 
     /**
@@ -63,11 +60,6 @@ public class ConversationsFragment extends Fragment {
      * Current logged in user
      */
     private User mUser;
-
-    /**
-     * GitHub API handler
-     */
-    private GitHub mGitHub;
 
     /**
      * List of user's active conversations
@@ -137,8 +129,6 @@ public class ConversationsFragment extends Fragment {
         mContext = getContext();
 
         mUser = User.getCurrentUser();
-
-        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }
 
     /**
@@ -181,7 +171,7 @@ public class ConversationsFragment extends Fragment {
 
         //Get a query in descending order
         ParseQuery<Conversation> query = ParseQuery.getQuery(Conversation.class)
-                .whereContainsAll("participants", Arrays.asList(mUser.getHandler()));
+                .whereContainsAll("participants", Collections.singletonList(mUser.getHandler()));
 
         query.addDescendingOrder("createdAt");
 

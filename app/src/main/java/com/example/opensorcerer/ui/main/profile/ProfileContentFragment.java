@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.ProjectsPagerAdapter;
-import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProfileContentBinding;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
@@ -20,18 +19,11 @@ import com.example.opensorcerer.ui.main.conversations.ConversationFragment;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.jetbrains.annotations.NotNull;
-import org.kohsuke.github.GitHub;
 
 /**
  * Fragment for displaying a user's profile.
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ProfileContentFragment extends androidx.fragment.app.Fragment {
-
-    /**
-     * Tag for logging
-     */
-    private static final String TAG = "ProfileContentFragment";
 
     /**
      * Listener for the drawer
@@ -42,11 +34,6 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
      * User to show in profile
      */
     private final User mProfileUser;
-
-    /**
-     * Fragment pager adapter
-     */
-    private ProjectsPagerAdapter mPagerAdapter;
 
     /**
      * Binder object for ViewBinding
@@ -64,24 +51,11 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
     private User mUser;
 
     /**
-     * GitHub API handler
-     */
-    private GitHub mGitHub;
-
-    /**
      * Sets up the listener for the drawer and the user to show
      */
     public ProfileContentFragment(OnFragmentInteractionListener listener, User profileUser) {
         mListener = listener;
         mProfileUser = profileUser;
-    }
-
-    /**
-     * Sets up the listener for the drawer and the user to show
-     */
-    public ProfileContentFragment(OnFragmentInteractionListener listener) {
-        mListener = listener;
-        mProfileUser = User.getCurrentUser();
     }
 
     /**
@@ -119,8 +93,6 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
         mContext = getContext();
 
         mUser = User.getCurrentUser();
-
-        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }
 
     /**
@@ -162,8 +134,8 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
     private void setupPagerView() {
 
         //Set the adapter
-        mPagerAdapter = new ProjectsPagerAdapter(this, mProfileUser);
-        mApp.viewPager.setAdapter(mPagerAdapter);
+        ProjectsPagerAdapter pagerAdapter = new ProjectsPagerAdapter(this, mProfileUser);
+        mApp.viewPager.setAdapter(pagerAdapter);
 
         //Set the tab icons
         new TabLayoutMediator(mApp.tabLayout, mApp.viewPager,
@@ -183,7 +155,7 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
     /**
      * Sets up the listener for the "Send message" button
      */
-    private void setupMessageButtonListener(){
+    private void setupMessageButtonListener() {
         mApp.buttonMessage.setOnClickListener(v ->
                 Tools.navigateToFragment(mContext, new ConversationFragment(mProfileUser), R.id.flContainer, "right_to_left"));
     }
@@ -193,8 +165,6 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
      */
     public interface OnFragmentInteractionListener {
         void openDrawer();
-
-        void closeDrawer();
     }
 
 }

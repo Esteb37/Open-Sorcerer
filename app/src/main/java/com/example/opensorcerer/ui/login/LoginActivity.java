@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.ActivityLoginBinding;
-import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.MainActivity;
 import com.example.opensorcerer.ui.signup.SignupActivity;
 import com.parse.ParseUser;
@@ -20,7 +19,6 @@ import java.util.Objects;
 /**
  * Activity for logging a user in
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class LoginActivity extends AppCompatActivity {
 
     /**
@@ -64,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void checkUserLogin() {
         if (ParseUser.getCurrentUser() != null) {
-            String role = User.fromParseUser(ParseUser.getCurrentUser()).getRole();
             navigateToMain();
         }
     }
@@ -94,9 +91,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 //If the login is successful
                 if (e == null) {
-
-                    //Go to their according home activity
-                    String role = User.fromParseUser(ParseUser.getCurrentUser()).getRole();
                     navigateToMain();
                 } else {
                     Log.d(TAG, "Issue with login", e);

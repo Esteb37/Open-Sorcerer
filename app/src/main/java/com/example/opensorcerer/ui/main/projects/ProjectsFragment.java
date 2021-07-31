@@ -1,6 +1,5 @@
 package com.example.opensorcerer.ui.main.projects;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,32 +11,17 @@ import androidx.fragment.app.Fragment;
 
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.ProjectsPagerAdapter;
-import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentProjectsBinding;
-import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.MainActivity;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.jetbrains.annotations.NotNull;
-import org.kohsuke.github.GitHub;
-
 
 /**
  * Fragment for displaying a user's liked and created projects.
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ProjectsFragment extends Fragment {
-
-    /**
-     * Tag for logging
-     */
-    private static final String TAG = "ProjectsFragment";
-
-    /**
-     * Fragment pager adapter
-     */
-    private ProjectsPagerAdapter mPagerAdapter;
 
     /**
      * Binder object for ViewBinding
@@ -45,19 +29,9 @@ public class ProjectsFragment extends Fragment {
     private FragmentProjectsBinding mApp;
 
     /**
-     * Fragment's context
-     */
-    private Context mContext;
-
-    /**
      * Current logged in user
      */
     private User mUser;
-
-    /**
-     * GitHub API handler
-     */
-    private GitHub mGitHub;
 
 
     public ProjectsFragment() {
@@ -95,13 +69,10 @@ public class ProjectsFragment extends Fragment {
      * Gets the current state for the member variables.
      */
     private void getState() {
-        mContext = getContext();
 
         mUser = User.getCurrentUser();
 
-        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
-
-        ((MainActivity) mContext).hideDetailsFragment();
+        ((MainActivity) requireContext()).hideDetailsFragment();
     }
 
     /**
@@ -110,8 +81,8 @@ public class ProjectsFragment extends Fragment {
     private void setupPagerView() {
 
         //Set the adapter
-        mPagerAdapter = new ProjectsPagerAdapter(this, mUser);
-        mApp.viewPager.setAdapter(mPagerAdapter);
+        ProjectsPagerAdapter pagerAdapter = new ProjectsPagerAdapter(this, mUser);
+        mApp.viewPager.setAdapter(pagerAdapter);
 
         //Set the tab icons
         new TabLayoutMediator(mApp.tabLayout, mApp.viewPager,

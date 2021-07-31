@@ -19,7 +19,6 @@ import java.util.List;
 /**
  * RecyclerView Adapter class for conversations
  */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class ConversationsAdapter extends RecyclerView.Adapter<ConversationHolder> {
 
     /**
@@ -31,11 +30,6 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationHolde
      * The list of conversations to display
      */
     private final List<Conversation> mConversations;
-
-    /**
-     * Binder object for ViewBinding
-     */
-    private ItemConversationBinding mApp;
 
     /**
      * Click listener
@@ -57,9 +51,9 @@ public class ConversationsAdapter extends RecyclerView.Adapter<ConversationHolde
     @NotNull
     @Override
     public ConversationHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        mApp = ItemConversationBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ItemConversationBinding mApp = ItemConversationBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = mApp.getRoot();
-        return new ConversationHolder(view, mContext, mApp ,mClickListener);
+        return new ConversationHolder(view, mContext, mApp, mClickListener);
     }
 
     /**

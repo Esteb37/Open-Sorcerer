@@ -14,15 +14,12 @@ import java.util.List;
 /**
  * Class for handling Project objects from the Parse database
  */
-@SuppressWarnings("unused")
 @ParseClassName("Project")
 public class Project extends ParseObject implements Parcelable {
 
     //Database keys
-    private static final String KEY_BANNER_IMAGE = "bannerImage";
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_SWIPE_COUNT = "swipeCount";
-    private static final String KEY_CLICK_COUNT = "clickCount";
     private static final String KEY_GITHUB_NAME = "githubName";
     private static final String KEY_REPOSITORY = "repository";
     private static final String KEY_LOGO_IMAGE = "logoImage";
@@ -41,17 +38,25 @@ public class Project extends ParseObject implements Parcelable {
      */
     private String mLikedByUser = null;
 
+    /**
+     * If this project has been swiped left by user
+     */
     private boolean mSwipedByUser = false;
 
+    /**
+     * If this project has been ignored by user
+     */
     private boolean mIgnoredByUser = false;
 
+    /**
+     * If the user has created a conversation about this project with its manager
+     */
     private boolean mConversationStarted = false;
 
     /**
      * GitHub repository object linked to this project
      */
     private GHRepository mRepoObject;
-
 
     /**
      * Description getter
@@ -65,13 +70,6 @@ public class Project extends ParseObject implements Parcelable {
      **/
     public void setDescription(String description) {
         put(KEY_DESCRIPTION, description);
-    }
-
-    /**
-     * README link getter
-     **/
-    public String getReadme() {
-        return getString(KEY_README);
     }
 
     /**
@@ -98,15 +96,15 @@ public class Project extends ParseObject implements Parcelable {
     /**
      * Logo image url getter
      */
-    public String getLogoImageUrl(){
+    public String getLogoImageUrl() {
         return getString(KEY_LOGO_URL);
     }
 
     /**
      * Logo image url setter
      */
-    public void setLogoImageUrl(String url){
-        put(KEY_LOGO_URL,url);
+    public void setLogoImageUrl(String url) {
+        put(KEY_LOGO_URL, url);
     }
 
     /**
@@ -163,13 +161,6 @@ public class Project extends ParseObject implements Parcelable {
      */
     public void setRepoObject(GHRepository repoObject) {
         mRepoObject = repoObject;
-    }
-
-    /**
-     * Click count getter
-     */
-    public long getClickCount() {
-        return getLong(KEY_CLICK_COUNT);
     }
 
     /**
@@ -245,34 +236,26 @@ public class Project extends ParseObject implements Parcelable {
     }
 
     /**
-     * Github name getter
-     */
-    public String getGithubName(){
-        return getString(KEY_GITHUB_NAME);
-    }
-
-    /**
      * Github name setter
      */
-    public void setGithubName(String name){
-        put(KEY_GITHUB_NAME,name);
+    public void setGithubName(String name) {
+        put(KEY_GITHUB_NAME, name);
     }
 
     /**
      * Swipe count getter
      */
-    public long getSwipeCount(){
+    public long getSwipeCount() {
         return getLong(KEY_SWIPE_COUNT);
     }
 
     /**
      * Swipe count setter
      */
-    public void setSwipeCount(long swipeCount){
-        put(KEY_SWIPE_COUNT,swipeCount);
+    public void setSwipeCount(long swipeCount) {
+        put(KEY_SWIPE_COUNT, swipeCount);
         update();
     }
-
 
     /**
      * Determines if the user has liked this project
@@ -324,33 +307,53 @@ public class Project extends ParseObject implements Parcelable {
         });
     }
 
+    /**
+     * Adds one to the project's swipe count
+     */
     public void addSwipe() {
         mSwipedByUser = true;
-        setSwipeCount(getSwipeCount()+1);
+        setSwipeCount(getSwipeCount() + 1);
     }
 
+    /**
+     * Adds one to the project's view count
+     */
     public void addView() {
-        setViewCount(getViewCount()+1);
+        setViewCount(getViewCount() + 1);
     }
 
-    public boolean isSwipedByUser(){
+    /**
+     * If the project has been swiped by the user
+     */
+    public boolean isSwipedByUser() {
         return mSwipedByUser;
     }
 
+    /**
+     * If the project has been ignored by the user
+     */
     public boolean isIgnoredByUser() {
         return mIgnoredByUser;
     }
 
-
+    /**
+     * Set if the project has been ignored
+     */
     public void ignoredByUser(boolean ignoredByUser) {
         mIgnoredByUser = ignoredByUser;
     }
 
+    /**
+     * If the user has started a conversation about this project
+     */
     public boolean isConversationStarted() {
         return mConversationStarted;
     }
 
-    public void startConversation(){
+    /**
+     * Indicates that the user has started a conversation about this project
+     */
+    public void startConversation() {
         mConversationStarted = true;
     }
 }

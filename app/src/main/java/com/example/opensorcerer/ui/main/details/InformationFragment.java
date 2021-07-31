@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.opensorcerer.R;
@@ -30,7 +28,6 @@ import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentInformationBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
-import com.example.opensorcerer.models.User;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 
@@ -44,13 +41,13 @@ import java.io.IOException;
 /**
  * Fragment for displaying a project's general information
  */
-@SuppressWarnings("unused")
 public class InformationFragment extends Fragment {
 
+
     /**
-     * Tag for logging
+     * Project being displayed
      */
-    private static final String TAG = "InformationFragment";
+    private final Project mProject;
 
     /**
      * Binder object for ViewBinding
@@ -63,19 +60,9 @@ public class InformationFragment extends Fragment {
     private Context mContext;
 
     /**
-     * Current logged in user
-     */
-    private User mUser;
-
-    /**
      * GitHub API handler
      */
     private GitHub mGitHub;
-
-    /**
-     * Project being displayed
-     */
-    private final Project mProject;
 
     public InformationFragment(Project project) {
         mProject = project;
@@ -108,7 +95,6 @@ public class InformationFragment extends Fragment {
         loadProjectDetails();
     }
 
-
     /**
      * Gets the current state for the member variables.
      */
@@ -117,8 +103,6 @@ public class InformationFragment extends Fragment {
         mContext = getContext();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
-
-        mUser = User.getCurrentUser();
 
         requireActivity().findViewById(R.id.bottomNavDetails).setVisibility(View.VISIBLE);
     }
@@ -159,6 +143,9 @@ public class InformationFragment extends Fragment {
         }
     }
 
+    /**
+     * Loads the project's logo image
+     */
     private void loadProjectLogo() {
 
         RequestListener<Drawable> requestListener = new RequestListener<Drawable>() {
@@ -176,24 +163,23 @@ public class InformationFragment extends Fragment {
         };
 
 
-        // Load the project's logo from URL if any
+        // Load the project's logo from URL if any or the image file if no URL is provided
         String imageURL = mProject.getLogoImageUrl();
         ParseFile imageFile = mProject.getLogoImage();
         if (imageURL != null) {
             Glide.with(mContext)
-                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl() )
+                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl())
                     .listener(requestListener)
                     .into(mApp.imageViewLogo);
-        } else if (imageFile != null){
+        } else if (imageFile != null) {
             Glide.with(mContext)
-                    .load(imageFile.getUrl() )
+                    .load(imageFile.getUrl())
                     .listener(requestListener)
                     .into(mApp.imageViewLogo);
         }
     }
 
     /**
-     * Asynchronous background task for fetching the project's readme
      * Loads the project's ReadMe file and places it into the Markdown viewer
      */
     public void loadReadme() {
