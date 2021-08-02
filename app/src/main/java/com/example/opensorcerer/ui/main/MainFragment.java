@@ -178,6 +178,12 @@ public class MainFragment extends Fragment {
      * Gets the project currently being displayed to the user
      */
     public Project getCurrentProject() {
-        return ((HomeFragment) mFragment).getCurrentProject();
+        if(mFragment.getClass().getSimpleName().equals("HomeFragment")){
+            return ((HomeFragment) mFragment).getCurrentProject();
+        } else if (mFragment.getClass().getSimpleName().equals("ProjectsFragment")) {
+            return ((ProjectsFragment) mFragment).getCurrentProject();
+        } else {
+            return null;
+        }
     }
 }

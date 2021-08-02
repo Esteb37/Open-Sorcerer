@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.ProjectsPagerAdapter;
 import com.example.opensorcerer.databinding.FragmentProjectsBinding;
+import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.MainActivity;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -32,6 +33,8 @@ public class ProjectsFragment extends Fragment {
      * Current logged in user
      */
     private User mUser;
+
+    private ProjectsPagerAdapter mProjectsPagerAdapter;
 
 
     public ProjectsFragment() {
@@ -81,8 +84,8 @@ public class ProjectsFragment extends Fragment {
     private void setupPagerView() {
 
         //Set the adapter
-        ProjectsPagerAdapter pagerAdapter = new ProjectsPagerAdapter(this, mUser);
-        mApp.viewPager.setAdapter(pagerAdapter);
+        mProjectsPagerAdapter = new ProjectsPagerAdapter(this, mUser);
+        mApp.viewPager.setAdapter(mProjectsPagerAdapter);
 
         //Set the tab icons
         new TabLayoutMediator(mApp.tabLayout, mApp.viewPager,
@@ -96,5 +99,9 @@ public class ProjectsFragment extends Fragment {
                             : "Favorites");
                 }
         ).attach();
+    }
+
+    public Project getCurrentProject() {
+        return mProjectsPagerAdapter.getCurrentProject();
     }
 }

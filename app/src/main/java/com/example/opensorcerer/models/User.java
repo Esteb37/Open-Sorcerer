@@ -11,9 +11,7 @@ import com.parse.ParseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.kohsuke.github.GHRepository;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -216,13 +214,6 @@ public class User implements Parcelable {
      */
     public void setGithubToken(String token) {
         mHandler.put(KEY_GITHUB_TOKEN, token);
-    }
-
-    /**
-     * Role getter
-     */
-    public String getRole() {
-        return mHandler.getString(KEY_ROLE);
     }
 
     /**
@@ -430,7 +421,6 @@ public class User implements Parcelable {
         if (!project.isSwipedByUser()) {
             addScores(project, SWIPE_SCORE);
         }
-
     }
 
     /**

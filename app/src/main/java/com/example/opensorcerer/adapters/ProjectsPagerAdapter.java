@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.projects.CreatedProjectsFragment;
 import com.example.opensorcerer.ui.main.projects.FavoriteProjectsFragment;
@@ -46,5 +47,9 @@ public class ProjectsPagerAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return PAGE_COUNT;
+    }
+
+    public Project getCurrentProject() {
+        return null;
     }
 }

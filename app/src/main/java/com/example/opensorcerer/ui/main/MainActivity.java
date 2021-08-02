@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Minimum scroll distance to begin loading details information
      */
-    private final double MIN_SCROLL_OFFSET = 0.1;
+    private final double MIN_SCROLL_OFFSET = 0.01;
     /**
      * Binder object for ViewBinding
      */
@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
                 if (positionOffset > MIN_SCROLL_OFFSET) {
                     mPagerAdapter.updateProject();
+                } else if (position == 0 && positionOffset < MIN_SCROLL_OFFSET) {
+                    try {
+                        mPagerAdapter.cleanDetailsFragment();
+                    } catch (IllegalArgumentException ignored) {}
                 }
             }
 
@@ -91,7 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (position == 1) {
                     mPagerAdapter.addSwipeToProject();
-
+                } else {
+                    mPagerAdapter.cleanDetailsFragment();
                 }
                 super.onPageSelected(position);
             }

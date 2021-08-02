@@ -8,7 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.MainFragment;
-import com.example.opensorcerer.ui.main.details.DetailsFragment;
+import com.example.opensorcerer.ui.main.details.DetailsContainerFragment;
 
 public class MainPagerAdapter extends FragmentStateAdapter {
 
@@ -25,7 +25,7 @@ public class MainPagerAdapter extends FragmentStateAdapter {
     /**
      * Fragment that displays project details
      */
-    private DetailsFragment mDetailsFragment;
+    private DetailsContainerFragment mDetailsFragment;
 
     public MainPagerAdapter(FragmentActivity fragmentActivity) {
         super(fragmentActivity);
@@ -41,7 +41,7 @@ public class MainPagerAdapter extends FragmentStateAdapter {
         if (position == 0)
             mMainFragment = new MainFragment();
         else
-            mDetailsFragment = new DetailsFragment(null);
+            mDetailsFragment = new DetailsContainerFragment(null);
 
         return position == 0
                 ? mMainFragment
@@ -55,6 +55,8 @@ public class MainPagerAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return PAGE_COUNT;
     }
+
+
 
     /**
      * Gets the project currently displayed to the user
@@ -97,10 +99,18 @@ public class MainPagerAdapter extends FragmentStateAdapter {
     public void addSwipeToProject() {
         Project currentProject = getCurrentProject();
 
-        //Update the user's behavior
-        User.getCurrentUser().registerSwipedProject(currentProject);
+        if(currentProject != null) {
+            //Update the user's behavior
+            User.getCurrentUser().registerSwipedProject(currentProject);
 
-        //Add one to the project's swipe count
-        currentProject.addSwipe();
+            //Add one to the project's swipe count
+            currentProject.addSwipe();
+        }
+    }
+
+    public void cleanDetailsFragment() {
+        if(mDetailsFragment != null) {
+            mDetailsFragment.cleanLayout();
+        }
     }
 }
