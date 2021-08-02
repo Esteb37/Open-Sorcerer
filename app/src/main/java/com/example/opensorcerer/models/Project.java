@@ -356,4 +356,8 @@ public class Project extends ParseObject implements Parcelable {
     public void startConversation() {
         mConversationStarted = true;
     }
+
+    public String getRepositoryName() {
+        return Tools.getRepositoryName(getRepository());
+    }
 }

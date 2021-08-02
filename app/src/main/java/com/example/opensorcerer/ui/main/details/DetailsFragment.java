@@ -2,22 +2,31 @@ package com.example.opensorcerer.ui.main.details;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.opensorcerer.R;
+import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentDetailsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.ui.main.conversations.ConversationFragment;
 
 import org.jetbrains.annotations.NotNull;
+import org.kohsuke.github.GHRepository;
+import org.kohsuke.github.GitHub;
+
+import java.io.IOException;
 
 /**
  * Fragment for displaying a project's details
@@ -38,6 +47,21 @@ public class DetailsFragment extends Fragment {
      * Fragment's context
      */
     private Context mContext;
+
+    /**
+     * GitHub API client
+     */
+    private GitHub mGitHub;
+
+    /**
+     * Current project's repository object
+     */
+    private GHRepository mRepo;
+
+    /**
+     * Amount of forks this project has
+     */
+    private int mForkCount;
 
     public DetailsFragment(Project project) {
         mProject = project;
@@ -75,6 +99,8 @@ public class DetailsFragment extends Fragment {
      */
     private void getState() {
         mContext = getContext();
+
+        mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
     }
 
     /**
@@ -87,14 +113,16 @@ public class DetailsFragment extends Fragment {
         final int actionDetails = R.id.actionDetails;
         final int actionHomepage = R.id.actionHomepage;
         final int actionMessage = R.id.actionMessage;
+        final int actionFork = R.id.actionFork;
+        final int actionShare = R.id.actionShare;
 
         mApp.bottomNavDetails.setOnItemSelectedListener(item -> {
-            Fragment fragment;
+            Fragment fragment = null;
 
             // Navigate to a different fragment depending on the item selected
             switch (item.getItemId()) {
                 case actionDetails:
-                    fragment = new InformationFragment(mProject);
+                    fragment = new InformationFragment(mProject, mForkCount);
                     break;
 
                 case actionHomepage:
@@ -105,12 +133,21 @@ public class DetailsFragment extends Fragment {
                     fragment = new ConversationFragment(mProject);
                     break;
 
+                case actionFork:
+                    showForkPopup();
+                    break;
+
+                case actionShare:
+                    break;
+
                 default:
                     throw new IllegalStateException("Unexpected value: " + item.getItemId());
             }
 
             // Open the selected fragment
-            Tools.loadFragment(mContext, fragment, mApp.flContainerDetailsInternal.getId());
+            if (item.getItemId() != actionFork && item.getItemId() != actionShare) {
+                Tools.loadFragment(mContext, fragment, mApp.flContainerDetailsInternal.getId());
+            }
             return true;
         });
 
@@ -118,11 +155,152 @@ public class DetailsFragment extends Fragment {
     }
 
     /**
+     * Determines if the "Fork" or "Unfork" popup should be displayed and displays it
+     */
+    private void showForkPopup() {
+        new Thread(() -> {
+            if (userHasForkedProject()) {
+                requireActivity().runOnUiThread(() ->
+                        setupPopupWindow(R.layout.popup_unfork, true));
+            } else {
+                requireActivity().runOnUiThread(() ->
+                        setupPopupWindow(R.layout.popup_fork, false));
+            }
+        }).start();
+    }
+
+    /**
+     * Sets up the fork project popup window with the selected layout
+     */
+    private void setupPopupWindow(int layoutId, boolean hasForked) {
+
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(layoutId, null);
+
+        // create the popup window
+        int width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+        int height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
+        popupWindow.setElevation(10);
+        popupWindow.setAnimationStyle(R.style.popup_animation);
+
+        // show the popup window
+        // which view you pass in doesn't matter, it is only used for the window
+        popupWindow.showAtLocation(mApp.getRoot(), Gravity.BOTTOM, 0, 300);
+
+        // dismiss the popup window when touched
+        popupView.setOnTouchListener((v, event) -> {
+            popupView.performClick();
+            popupWindow.dismiss();
+            return true;
+        });
+
+        if (hasForked) {
+            setupUnforkButtonListener(popupView, popupWindow);
+        } else {
+            setupForkButtonListener(popupView, popupWindow);
+        }
+
+        setupCancelButtonListener(popupView, popupWindow);
+    }
+
+    /**
+     * Removes a forked project from the user's account
+     */
+    private void setupUnforkButtonListener(View popupView, PopupWindow popupWindow) {
+        popupView.findViewById(R.id.buttonUnfork).setOnClickListener(v ->
+                new Thread(() -> {
+                    try {
+
+                        //Get this project's fork from the user's account
+                        GHRepository repo = mGitHub.getMyself().getRepository(mRepo.getName());
+
+                        //Delete the repo
+                        repo.delete();
+                        mForkCount--;
+
+                        //Close the popup
+                        requireActivity().runOnUiThread(() -> {
+                            Toast.makeText(mContext, "Project fork removed successfully from your account.", Toast.LENGTH_SHORT).show();
+                            popupWindow.dismiss();
+                            mApp.bottomNavDetails.setSelectedItemId(R.id.actionDetails);
+                        });
+                    } catch (IOException e) {
+                        requireActivity().runOnUiThread(() ->
+                                Toast.makeText(mContext, "There was an error removing this project from your account.", Toast.LENGTH_SHORT).show());
+                        e.printStackTrace();
+                    }
+                }).start()
+        );
+    }
+
+    /**
+     * Sets up the fork button listener
+     */
+    private void setupForkButtonListener(View popupView, PopupWindow popupWindow) {
+        popupView.findViewById(R.id.buttonFork).setOnClickListener(v ->
+                new Thread(() -> {
+                    try {
+
+                        //Fork this project repo
+                        mRepo.fork();
+                        mForkCount++;
+                        //Close the popup
+                        requireActivity().runOnUiThread(() -> {
+                            Toast.makeText(mContext, "Project forked successfully!", Toast.LENGTH_SHORT).show();
+                            popupWindow.dismiss();
+                            mApp.bottomNavDetails.setSelectedItemId(R.id.actionDetails);
+                        });
+
+                    } catch (IOException e) {
+                        Toast.makeText(mContext, "There was an error forking this project.", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                }).start()
+        );
+    }
+
+    /**
+     * Sets up the fork popup cancel button
+     */
+    private void setupCancelButtonListener(View popupView, PopupWindow popupWindow) {
+        popupView.findViewById(R.id.buttonCancel).setOnClickListener(v -> {
+            popupWindow.dismiss();
+            mApp.bottomNavDetails.setSelectedItemId(R.id.actionDetails);
+        });
+    }
+
+    /**
      * Updates which project is currently being displayed
      */
     public void updateProject(Project project) {
         mProject = project;
-        Tools.loadFragment(mContext, new DetailsFragment(mProject), mApp.flContainerDetailsInternal.getId());
+
+        new Thread(() -> {
+            try {
+                mRepo = mGitHub.getRepository(mProject.getRepositoryName());
+                mForkCount = mRepo.getForksCount();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        Tools.loadFragment(mContext, new InformationFragment(mProject, mForkCount), mApp.flContainerDetailsInternal.getId());
+    }
+
+    /**
+     * Determines if the current project has already been forked by the user
+     */
+    private boolean userHasForkedProject() {
+        try {
+            GHRepository repository = mGitHub.getMyself().getRepository(mRepo.getName());
+            return repository != null && repository.isFork();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**

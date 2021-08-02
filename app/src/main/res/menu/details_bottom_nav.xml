@@ -25,13 +25,13 @@
     <item
         android:id="@+id/actionMessage"
         android:icon="@drawable/chat"
-        android:title="Contact Manager"
+        android:title="Contact"
         app:showAsAction="always" />
     <item
         android:id="@+id/actionShare"
         android:enabled="true"
         android:icon="@android:drawable/ic_menu_share"
         android:iconTint="#FFFFFF"
-        android:title="Profile"
+        android:title="Share"
         app:showAsAction="always" />
 </menu>

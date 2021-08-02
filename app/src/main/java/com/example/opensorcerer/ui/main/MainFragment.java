@@ -115,6 +115,7 @@ public class MainFragment extends Fragment {
         final int actionChats = R.id.actionMessage;
         final int actionCreate = R.id.actionCreate;
 
+
         List<Integer> itemOrder = Arrays.asList(actionHome, actionProjects, actionCreate, actionChats, actionProfile);
         ((MainActivity) requireActivity()).hideDetailsFragment();
 

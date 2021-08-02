@@ -171,7 +171,7 @@
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
                     android:scaleType="fitCenter"
-                    app:srcCompat="?attr/actionModeShareDrawable"
+                    app:srcCompat="@drawable/fork"
                     app:tint="@color/darker_blue" />
             </LinearLayout>
 
@@ -216,7 +216,7 @@
                     tools:text="120" />
 
                 <TextView
-                    android:id="@+id/textViewShares"
+                    android:id="@+id/textViewForks"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

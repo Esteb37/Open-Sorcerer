@@ -50,6 +50,11 @@ public class InformationFragment extends Fragment {
     private final Project mProject;
 
     /**
+     * Project's repo object
+     */
+    private GHRepository mRepo;
+
+    /**
      * Binder object for ViewBinding
      */
     private FragmentInformationBinding mApp;
@@ -64,8 +69,12 @@ public class InformationFragment extends Fragment {
      */
     private GitHub mGitHub;
 
-    public InformationFragment(Project project) {
+    private int mForkCount;
+
+    public InformationFragment(Project project, int forkCount) {
         mProject = project;
+
+        mForkCount = forkCount;
     }
 
     @Override
@@ -134,6 +143,8 @@ public class InformationFragment extends Fragment {
                 e.printStackTrace();
             }
 
+            mApp.textViewForks.setText(String.valueOf(mForkCount));
+
             loadProjectLogo();
 
             setLikeButton();
@@ -182,15 +193,14 @@ public class InformationFragment extends Fragment {
     /**
      * Loads the project's ReadMe file and places it into the Markdown viewer
      */
-    public void loadReadme() {
+    private void loadReadme() {
 
         new Thread(() -> {
             try {
                 Looper.prepare();
 
                 //Get repository
-                String repositoryName = Tools.getRepositoryName(mProject.getRepository());
-                GHRepository ghRepo = mGitHub.getRepository(repositoryName);
+                GHRepository ghRepo = mGitHub.getRepository(mProject.getRepositoryName());
 
                 //Get ReadMe content
                 GHContent readme = ghRepo.getReadme();
