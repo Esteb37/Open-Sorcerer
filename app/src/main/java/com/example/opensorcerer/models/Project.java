@@ -360,4 +360,8 @@ public class Project extends ParseObject implements Parcelable {
     public String getRepositoryName() {
         return Tools.getRepositoryName(getRepository());
     }
+
+    public boolean isByUser(User user) {
+        return getManager().getObjectId().equals(user.getObjectId());
+    }
 }

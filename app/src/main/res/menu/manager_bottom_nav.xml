@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/actionPreview"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_view"
+        android:iconTint="#FFFFFF"
+        android:title="Preview"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionEdit"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:iconTint="#FFFFFF"
+        android:title="Edit"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionLikes"
+        android:enabled="true"
+        android:icon="@drawable/ufi_heart_liked"
+        android:iconTint="#FFFFFF"
+        android:title="Developers"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionShare"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_share"
+        android:iconTint="#FFFFFF"
+        android:title="Share"
+        app:showAsAction="always" />
+</menu>

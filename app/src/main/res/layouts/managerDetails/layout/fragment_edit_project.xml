@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chipInputTags">
+
+        <Button
+            android:id="@+id/buttonRevert"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="10dp"
+            android:text="Back" />
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="0dp"
+            android:text="Save" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView
+        android:id="@+id/chipInputLanguages2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:height="100dp"
+        android:background="@drawable/edittext_bg"
+        android:elegantTextHeight="true"
+        android:gravity="top"
+        android:hint="Java, C++, Kotlin..."
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/chipInputTags"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/chipInputTags"
+        app:layout_constraintTop_toBottomOf="@+id/editTextHomepage" />
+
+    <androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView
+        android:id="@+id/chipInputTags"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:height="100dp"
+        android:background="@drawable/edittext_bg"
+        android:elegantTextHeight="true"
+        android:gravity="top"
+        android:hint="AI, Games,  Cloud..."
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextDescription"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/editTextDescription"
+        app:layout_constraintTop_toBottomOf="@+id/chipInputLanguages2" />
+
+    <TextView
+        android:id="@+id/textView25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Select a project logo"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewLogo"
+        app:layout_constraintStart_toStartOf="@+id/imageViewLogo"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewLogo" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/placeholder2"
+        app:border_color="@color/dark_blue"
+        app:border_width="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/placeholder2" />
+
+    <EditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/edittext_bg"
+        android:ems="10"
+        android:hint="Project title"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView25"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewLogo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageViewLogo" />
+
+    <EditText
+        android:id="@+id/editTextRepo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edittext_bg"
+        android:ems="10"
+        android:hint="Repository link"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextDescription"
+        app:layout_constraintStart_toStartOf="@+id/editTextDescription"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescription" />
+
+    <EditText
+        android:id="@+id/editTextHomepage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/edittext_bg"
+        android:ems="10"
+        android:hint="Homepage"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextDescription"
+        app:layout_constraintStart_toStartOf="@+id/editTextDescription"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRepo" />
+
+    <EditText
+        android:id="@+id/editTextDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/edittext_bg"
+        android:ems="10"
+        android:gravity="start"
+        android:hint="Description"
+        android:inputType="textMultiLine"
+        android:maxHeight="100dp"
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewLogo"
+        app:layout_constraintStart_toStartOf="@+id/editTextTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
