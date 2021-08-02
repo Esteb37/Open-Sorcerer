@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.main.details;
+package com.example.opensorcerer.ui.main.details.external;
 
 import android.app.Activity;
 import android.content.Context;
@@ -50,11 +50,6 @@ public class InformationFragment extends Fragment {
     private final Project mProject;
 
     /**
-     * Project's repo object
-     */
-    private GHRepository mRepo;
-
-    /**
      * Binder object for ViewBinding
      */
     private FragmentInformationBinding mApp;
@@ -75,6 +70,10 @@ public class InformationFragment extends Fragment {
         mProject = project;
 
         mForkCount = forkCount;
+    }
+
+    public InformationFragment(Project project) {
+        mProject = project;
     }
 
     @Override
@@ -232,5 +231,10 @@ public class InformationFragment extends Fragment {
                 : ContextCompat.getColor(mContext, R.color.darker_blue));
 
         mApp.buttonLike.setImageDrawable(wrappedDrawable);
+    }
+
+    public void setForkCount(int forkCount) {
+        mForkCount = forkCount;
+        mApp.textViewForks.setText(String.valueOf(mForkCount));
     }
 }

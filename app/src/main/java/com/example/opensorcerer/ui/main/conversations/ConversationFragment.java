@@ -25,6 +25,7 @@ import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.models.Message;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.MainActivity;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -176,6 +177,8 @@ public class ConversationFragment extends Fragment {
         mContext = getContext();
 
         mUser = User.getCurrentUser();
+
+        ((MainActivity) mContext).hideDetailsFragment();
     }
 
     /**

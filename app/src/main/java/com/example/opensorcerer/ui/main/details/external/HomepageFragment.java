@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.main.details;
+package com.example.opensorcerer.ui.main.details.external;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

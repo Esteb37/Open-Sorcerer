@@ -23,6 +23,7 @@ import com.example.opensorcerer.models.Conversation;
 import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
+import com.example.opensorcerer.ui.main.MainActivity;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
@@ -129,6 +130,8 @@ public class ConversationsFragment extends Fragment {
         mContext = getContext();
 
         mUser = User.getCurrentUser();
+
+        ((MainActivity) mContext).hideDetailsFragment();
     }
 
     /**

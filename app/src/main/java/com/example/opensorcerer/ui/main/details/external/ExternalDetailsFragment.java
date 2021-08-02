@@ -1,4 +1,4 @@
-package com.example.opensorcerer.ui.main.details;
+package com.example.opensorcerer.ui.main.details.external;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -31,7 +31,7 @@ import java.io.IOException;
 /**
  * Fragment for displaying a project's details
  */
-public class DetailsFragment extends Fragment {
+public class ExternalDetailsFragment extends Fragment {
 
     /**
      * Project being displayed
@@ -63,7 +63,9 @@ public class DetailsFragment extends Fragment {
      */
     private int mForkCount;
 
-    public DetailsFragment(Project project) {
+    private Fragment mFragment;
+
+    public ExternalDetailsFragment(Project project) {
         mProject = project;
     }
 
@@ -101,6 +103,18 @@ public class DetailsFragment extends Fragment {
         mContext = getContext();
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
+
+        new Thread(() -> {
+            try {
+                if(mProject != null){
+                    mRepo = mGitHub.getRepository(mProject.getRepositoryName());
+                    mForkCount = mRepo.getForksCount();
+                    ((InformationFragment) mFragment).setForkCount(mForkCount);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     /**
@@ -117,20 +131,20 @@ public class DetailsFragment extends Fragment {
         final int actionShare = R.id.actionShare;
 
         mApp.bottomNavDetails.setOnItemSelectedListener(item -> {
-            Fragment fragment = null;
+            mFragment = null;
 
             // Navigate to a different fragment depending on the item selected
             switch (item.getItemId()) {
                 case actionDetails:
-                    fragment = new InformationFragment(mProject, mForkCount);
+                    mFragment = new InformationFragment(mProject, mForkCount);
                     break;
 
                 case actionHomepage:
-                    fragment = new HomepageFragment(mProject);
+                    mFragment = new HomepageFragment(mProject);
                     break;
 
                 case actionMessage:
-                    fragment = new ConversationFragment(mProject);
+                    mFragment = new ConversationFragment(mProject);
                     break;
 
                 case actionFork:
@@ -146,7 +160,7 @@ public class DetailsFragment extends Fragment {
 
             // Open the selected fragment
             if (item.getItemId() != actionFork && item.getItemId() != actionShare) {
-                Tools.loadFragment(mContext, fragment, mApp.flContainerDetailsInternal.getId());
+                Tools.loadFragment(mContext, mFragment, mApp.flContainerDetailsInternal.getId());
             }
             return true;
         });
@@ -273,24 +287,6 @@ public class DetailsFragment extends Fragment {
     }
 
     /**
-     * Updates which project is currently being displayed
-     */
-    public void updateProject(Project project) {
-        mProject = project;
-
-        new Thread(() -> {
-            try {
-                mRepo = mGitHub.getRepository(mProject.getRepositoryName());
-                mForkCount = mRepo.getForksCount();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        Tools.loadFragment(mContext, new InformationFragment(mProject, mForkCount), mApp.flContainerDetailsInternal.getId());
-    }
-
-    /**
      * Determines if the current project has already been forked by the user
      */
     private boolean userHasForkedProject() {
@@ -313,5 +309,4 @@ public class DetailsFragment extends Fragment {
         assert tag != null;
         return tag.equals("InformationFragment");
     }
-
 }
