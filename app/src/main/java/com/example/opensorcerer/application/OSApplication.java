@@ -7,6 +7,7 @@ import com.example.opensorcerer.models.Conversation;
 import com.example.opensorcerer.models.Message;
 import com.example.opensorcerer.models.Project;
 import com.parse.Parse;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 
 import org.kohsuke.github.GitHub;
@@ -50,6 +51,10 @@ public class OSApplication extends Application {
                 .clientKey(getString(R.string.back4app_client_key))
                 .server(getString(R.string.back4app_server_url))
                 .build());
+
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("GCMSenderId", getString(R.string.sender_id));
+        installation.saveInBackground();
     }
 
     /**

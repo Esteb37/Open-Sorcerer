@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "715033266068",
+    "project_id": "open-sorcerer",
+    "storage_bucket": "open-sorcerer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715033266068:android:daebfc11275d59b038f181",
+        "android_client_info": {
+          "package_name": "com.example.opensorcerer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715033266068-k1i40m8t8cskn073qrm464229dpn24qh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8GOYyqh-9IHWcU9tSPLK842VwlJNhCZo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715033266068-k1i40m8t8cskn073qrm464229dpn24qh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
