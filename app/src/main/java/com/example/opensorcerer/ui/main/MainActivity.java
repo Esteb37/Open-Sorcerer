@@ -1,7 +1,6 @@
 package com.example.opensorcerer.ui.main;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
@@ -81,13 +80,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                Log.d("Test",""+position+" "+positionOffset);
                 if (mApp.viewPagerMain.getCurrentItem() == 0 && positionOffset > MIN_SCROLL_OFFSET) {
                     mPagerAdapter.updateProject();
                 } else if (mApp.viewPagerMain.getCurrentItem() == 0 && positionOffset < MIN_SCROLL_OFFSET) {
                     try {
                         mPagerAdapter.cleanDetailsFragment();
-                    } catch (IllegalArgumentException ignored) {}
+                    } catch (IllegalArgumentException ignored) {
+                    }
                 }
             }
 

@@ -157,8 +157,6 @@ public class EditProjectFragment extends Fragment {
         //Add a new chip to the input
         Editable editable = Tools.addChip(mContext, chipInput.getEditableText(), spannedLength);
 
-        Log.d("Test", String.valueOf(spannedLength));
-
         //Update the current length of the selected input
         if (chipInput == mApp.chipInputLanguages) {
             spannedLengthLanguages = editable.length();

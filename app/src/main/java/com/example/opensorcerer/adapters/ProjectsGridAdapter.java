@@ -51,7 +51,7 @@ public class ProjectsGridAdapter extends RecyclerView.Adapter<ProjectGridHolder>
     @NotNull
     @Override
     public ProjectGridHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        com.example.opensorcerer.databinding.ItemGridProjectBinding mApp = ItemGridProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ItemGridProjectBinding mApp = ItemGridProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = mApp.getRoot();
         return new ProjectGridHolder(view, mContext, mApp, mClickListener);
     }

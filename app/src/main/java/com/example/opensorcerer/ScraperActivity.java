@@ -41,6 +41,8 @@ public class ScraperActivity extends AppCompatActivity {
 
     private GitHub mGitHub;
 
+    private final static String TAG = "ScraperActivity";
+
     /**
      * Sets up the activity's methods
      */
@@ -101,7 +103,7 @@ public class ScraperActivity extends AppCompatActivity {
                 //Get the projects from this catalogue page
                 injectGetProjectLinks();
             } catch (IndexOutOfBoundsException e) {
-                Log.d("Test", "End of file");
+                Log.d(TAG, "End of file");
             }
         });
     }

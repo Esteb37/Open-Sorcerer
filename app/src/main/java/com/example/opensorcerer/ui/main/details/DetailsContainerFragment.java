@@ -2,7 +2,6 @@ package com.example.opensorcerer.ui.main.details;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,9 +75,8 @@ public class DetailsContainerFragment extends Fragment {
         Tools.loadFragment(mContext, mDetailsFragment, R.id.flContainerDetails);
     }
 
-    public void cleanLayout(){
+    public void cleanLayout() {
         requireActivity().getSupportFragmentManager().beginTransaction().remove(mDetailsFragment).commit();
-        Log.d("Test","Cleaned layout");
     }
 
     /**
@@ -99,7 +97,7 @@ public class DetailsContainerFragment extends Fragment {
     public boolean isInformationFragmentVisible() {
         if (mProject != null && mProject.isByUser(mUser)) {
             return ((ManagerDetailsFragment) mDetailsFragment).isInformationFragmentVisible();
-        } else if (mProject != null){
+        } else if (mProject != null) {
             return ((ExternalDetailsFragment) mDetailsFragment).isInformationFragmentVisible();
         } else {
             return false;

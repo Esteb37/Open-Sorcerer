@@ -51,7 +51,7 @@ public class ProjectsCardAdapter extends RecyclerView.Adapter<ProjectCardHolder>
     @NotNull
     @Override
     public ProjectCardHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        com.example.opensorcerer.databinding.ItemCardProjectBinding mApp = ItemCardProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ItemCardProjectBinding mApp = ItemCardProjectBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         View view = mApp.getRoot();
         return new ProjectCardHolder(view, mContext, mApp, mDoubleTapListener);
     }
