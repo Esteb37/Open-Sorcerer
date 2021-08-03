@@ -9,6 +9,7 @@ import com.parse.ParseObject;
 
 import org.kohsuke.github.GHRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +23,7 @@ public class Project extends ParseObject implements Parcelable {
     private static final String KEY_SWIPE_COUNT = "swipeCount";
     private static final String KEY_GITHUB_NAME = "githubName";
     private static final String KEY_REPOSITORY = "repository";
+    private static final String KEY_USER_LIKES = "userLikes";
     private static final String KEY_LOGO_IMAGE = "logoImage";
     private static final String KEY_LIKE_COUNT = "likeCount";
     private static final String KEY_VIEW_COUNT = "viewCount";
@@ -258,6 +260,21 @@ public class Project extends ParseObject implements Parcelable {
     }
 
     /**
+     * User likes list getter
+     */
+    public List<String> getUserLikes() {
+        return getList(KEY_USER_LIKES);
+    }
+
+    /**
+     * User likes list setter
+     */
+    public void setUserLikes(List<String> userLikes) {
+        put(KEY_USER_LIKES, userLikes);
+        update();
+    }
+
+    /**
      * Determines if the user has liked this project
      */
     public boolean isLikedByUser() {
@@ -283,6 +300,7 @@ public class Project extends ParseObject implements Parcelable {
     public void addLike() {
         setLikeCount(getLikeCount() + 1);
         mLikedByUser = "true";
+        addUserLike(User.getCurrentUser());
     }
 
     /**
@@ -291,6 +309,28 @@ public class Project extends ParseObject implements Parcelable {
     public void removeLike() {
         setLikeCount(getLikeCount() - 1);
         mLikedByUser = "false";
+        removeUserLike(User.getCurrentUser());
+    }
+
+    /**
+     * Adds a user to the list of user likes
+     */
+    public void addUserLike(User user) {
+        List<String> userLikes = getUserLikes();
+        if (userLikes == null) {
+            userLikes = new ArrayList<>();
+        }
+        userLikes.add(user.getObjectId());
+        setUserLikes(userLikes);
+    }
+
+    /**
+     * Removes a user from the list of user likes
+     */
+    public void removeUserLike(User user) {
+        List<String> userLikes = getUserLikes();
+        userLikes.remove(user.getObjectId());
+        setUserLikes(userLikes);
     }
 
     /**

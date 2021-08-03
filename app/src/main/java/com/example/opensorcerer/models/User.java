@@ -100,6 +100,9 @@ public class User implements Parcelable {
      */
     public static List<User> toUserArray(List<ParseUser> parseUsers) {
         List<User> users = new ArrayList<>();
+        if (parseUsers == null) {
+            return users;
+        }
         for (ParseUser parseUser : parseUsers) {
             User user = new User();
             user.setHandler(parseUser);
@@ -113,6 +116,9 @@ public class User implements Parcelable {
      */
     public static Object toParseUserArray(List<User> users) {
         List<ParseUser> parseUsers = new ArrayList<>();
+        if (users == null) {
+            return parseUsers;
+        }
         for (User user : users) {
             parseUsers.add(user.getHandler());
         }
