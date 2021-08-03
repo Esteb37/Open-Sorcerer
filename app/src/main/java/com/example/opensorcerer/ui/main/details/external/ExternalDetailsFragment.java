@@ -20,6 +20,7 @@ import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentDetailsBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
+import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.conversations.ConversationFragment;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +37,7 @@ public class ExternalDetailsFragment extends Fragment {
     /**
      * Project being displayed
      */
-    private Project mProject;
+    private final Project mProject;
 
     /**
      * Binder object for ViewBinding
@@ -64,6 +65,8 @@ public class ExternalDetailsFragment extends Fragment {
     private int mForkCount;
 
     private Fragment mFragment;
+
+    private User mUser;
 
     public ExternalDetailsFragment(Project project) {
         mProject = project;
@@ -104,9 +107,11 @@ public class ExternalDetailsFragment extends Fragment {
 
         mGitHub = ((OSApplication) requireActivity().getApplication()).getGitHub();
 
+        mUser = User.getCurrentUser();
+
         new Thread(() -> {
             try {
-                if(mProject != null){
+                if (mProject != null) {
                     mRepo = mGitHub.getRepository(mProject.getRepositoryName());
                     mForkCount = mRepo.getForksCount();
                     ((InformationFragment) mFragment).setForkCount(mForkCount);
@@ -261,6 +266,11 @@ public class ExternalDetailsFragment extends Fragment {
                         //Fork this project repo
                         mRepo.fork();
                         mForkCount++;
+
+                        Tools.sendPushNotification(mProject.getManager(),
+                                mProject.getTitle(),
+                                mUser.getUsername() + " has forked your project!");
+
                         //Close the popup
                         requireActivity().runOnUiThread(() -> {
                             Toast.makeText(mContext, "Project forked successfully!", Toast.LENGTH_SHORT).show();

@@ -24,6 +24,7 @@ import com.example.opensorcerer.models.Conversation;
 import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.models.Message;
 import com.example.opensorcerer.models.Project;
+import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -264,8 +265,11 @@ public class ConversationFragment extends Fragment {
                     if (e == null) {
 
                         mConversation.addMessage(newMessage);
-
                         mApp.editTextCompose.setText("");
+
+                        Tools.sendPushNotification(mConversation.getOpposite()
+                                , mUser.getUsername(), content);
+
                     } else {
                         Toast.makeText(mContext, "Unable to send message", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();

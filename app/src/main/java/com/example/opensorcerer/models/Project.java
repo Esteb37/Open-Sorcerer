@@ -322,6 +322,9 @@ public class Project extends ParseObject implements Parcelable {
         }
         userLikes.add(user.getObjectId());
         setUserLikes(userLikes);
+
+        Tools.sendPushNotification(getManager(),
+                getTitle(), user.getUsername() + " has liked your project!");
     }
 
     /**

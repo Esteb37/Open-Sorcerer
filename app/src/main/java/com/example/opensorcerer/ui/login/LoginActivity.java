@@ -12,6 +12,7 @@ import com.example.opensorcerer.R;
 import com.example.opensorcerer.databinding.ActivityLoginBinding;
 import com.example.opensorcerer.ui.main.MainActivity;
 import com.example.opensorcerer.ui.signup.SignupActivity;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 import java.util.Objects;
@@ -91,6 +92,12 @@ public class LoginActivity extends AppCompatActivity {
 
                 //If the login is successful
                 if (e == null) {
+
+                    //Register this device for push notifications
+                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                    installation.put("device_id", user.getObjectId());
+                    installation.saveInBackground();
+
                     navigateToMain();
                 } else {
                     Log.d(TAG, "Issue with login", e);

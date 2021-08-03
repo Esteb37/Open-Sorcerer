@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.opensorcerer.R;
 import com.google.android.material.chip.ChipDrawable;
+import com.parse.ParseCloud;
 import com.parse.ParseFile;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -253,5 +255,21 @@ public abstract class Tools {
         inputStream.close();
 
         return stringBuilder.toString();
+    }
+
+    /**
+     * Sends a push message to the specified user
+     */
+    public static void sendPushNotification(User user, String title, String message) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("deviceId", user.getObjectId());
+        params.put("message", message);
+        params.put("title", title);
+        ParseCloud.callFunctionInBackground("sendPush", params,
+                (result, e) -> {
+                    if (e != null) {
+                        e.printStackTrace();
+                    }
+                });
     }
 }
