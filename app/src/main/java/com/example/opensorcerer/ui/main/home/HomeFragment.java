@@ -205,9 +205,14 @@ public class HomeFragment extends Fragment {
                 if (page == 0) {
                     mAdapter.clear();
                 }
+                if(projects.size() == 0){
+                    queryProjects(page+1);
+                }
                 for (Project project : projects) {
                     if (mUser.probablyLikes(project)) {
                         mAdapter.add(project);
+                    } else {
+                        Log.d("Test","Skipped: "+project.getTitle());
                     }
                 }
                 mApp.swipeContainer.setRefreshing(false);
