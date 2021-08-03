@@ -24,7 +24,7 @@ public class ManagerDetailsFragment extends Fragment {
     /**
      * Project being displayed
      */
-    private Project mProject;
+    private final Project mProject;
 
     /**
      * Binder object for ViewBinding
@@ -96,7 +96,7 @@ public class ManagerDetailsFragment extends Fragment {
                     break;
 
                 case actionMessage:
-                    //fragment = new InterestedUsersFragment(mProject);
+                    mFragment = new InterestedUsersFragment(mProject);
                     break;
 
                 case actionShare:

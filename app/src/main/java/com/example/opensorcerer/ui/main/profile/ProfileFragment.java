@@ -80,8 +80,6 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
         setupProfileContent();
 
         setupDrawer();
-
-        requireActivity().findViewById(R.id.bottomNav).setVisibility(View.VISIBLE);
     }
 
     /**
@@ -90,8 +88,13 @@ public class ProfileFragment extends androidx.fragment.app.Fragment {
     private void getState() {
         mContext = getContext();
 
-        assert mContext != null;
-        ((MainActivity) mContext).hideDetailsFragment();
+        try {
+            requireActivity().findViewById(R.id.bottomNav).setVisibility(View.VISIBLE);
+            assert mContext != null;
+            ((MainActivity) mContext).hideDetailsFragment();
+        } catch (NullPointerException e){
+            requireActivity().findViewById(R.id.bottomNavDetails).setVisibility(View.VISIBLE);
+        }
     }
 
     /**

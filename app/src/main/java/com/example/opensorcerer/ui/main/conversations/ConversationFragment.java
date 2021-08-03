@@ -25,7 +25,6 @@ import com.example.opensorcerer.models.EndlessRecyclerViewScrollListener;
 import com.example.opensorcerer.models.Message;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.User;
-import com.example.opensorcerer.ui.main.MainActivity;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -63,7 +62,7 @@ public class ConversationFragment extends Fragment {
     /**
      * A greeting message for when the user creates a conversation about a specific project
      */
-    private static final String PROJECT_GREETING_MESSAGE = "Hello! I'm interested in your project %s. Do you have a moment to speak about it?";
+    private static String mGreetingMessage;
 
     /**
      * The current conversation
@@ -125,11 +124,21 @@ public class ConversationFragment extends Fragment {
     }
 
     /**
+     * Constructor for opening an active conversation with a specific user
+     */
+    public ConversationFragment(User oppositeUser, Project project) {
+        mConversation = Conversation.getConversationWithUser(oppositeUser);
+        mProject = project;
+        mGreetingMessage = "Hello! I see you're interested in my project %s. Do you have a moment to speak about it?";
+    }
+
+    /**
      * Constructor for creating or opening a conversation about a specific project
      */
     public ConversationFragment(Project project) {
         mConversation = Conversation.getConversationWithUser(project.getManager());
         mProject = project;
+        mGreetingMessage = "Hello! I'm interested in your project %s. Do you have a moment to speak about it?";
     }
 
     @Override
@@ -177,8 +186,6 @@ public class ConversationFragment extends Fragment {
         mContext = getContext();
 
         mUser = User.getCurrentUser();
-
-        ((MainActivity) mContext).hideDetailsFragment();
     }
 
     /**
@@ -198,7 +205,7 @@ public class ConversationFragment extends Fragment {
             }
 
             if (mProject != null) {
-                mApp.editTextCompose.setText(String.format(PROJECT_GREETING_MESSAGE, mProject.getTitle()));
+                mApp.editTextCompose.setText(String.format(mGreetingMessage, mProject.getTitle()));
             }
 
         } catch (ParseException e) {
