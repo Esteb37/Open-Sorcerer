@@ -1,5 +1,6 @@
 package com.example.opensorcerer.ui.main.home;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -139,6 +140,7 @@ public class HomeFragment extends Fragment {
     /**
      * Sets up the timeline's Recycler View
      */
+    @SuppressLint("ClickableViewAccessibility")
     private void setupRecyclerView() {
 
         if (mProjects == null) {
@@ -205,14 +207,14 @@ public class HomeFragment extends Fragment {
                 if (page == 0) {
                     mAdapter.clear();
                 }
-                if(projects.size() == 0){
-                    queryProjects(page+1);
+                if (projects.size() == 0) {
+                    queryProjects(page + 1);
                 }
                 for (Project project : projects) {
                     if (mUser.probablyLikes(project)) {
                         mAdapter.add(project);
                     } else {
-                        Log.d("Test","Skipped: "+project.getTitle());
+                        Log.d("Test", "Skipped: " + project.getTitle());
                     }
                 }
                 mApp.swipeContainer.setRefreshing(false);

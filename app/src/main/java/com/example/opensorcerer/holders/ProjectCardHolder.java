@@ -3,6 +3,9 @@ package com.example.opensorcerer.holders;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -72,33 +75,35 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
 
         mDoubleTapListener = doubleTapListener;
 
-        // Set the listener for double tapping on the card
-        /*view.setOnTouchListener(new View.OnTouchListener() {
-            private GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
+        view.setOnTouchListener(new View.OnTouchListener() {
+            private final GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onDoubleTap(MotionEvent e) {
-                    mDoubleTapListener.onItemDoubleTap(getAdapterPosition());
+                    doubleTapListener.onItemDoubleTap(getAdapterPosition());
                     setLikeButton();
                     showLikeAnimation();
                     return super.onDoubleTap(e);
                 }
+
 
             });
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 gestureDetector.onTouchEvent(event);
+                v.performClick();
                 return true;
             }
-        });*/
+        });
 
+        /*
         //TODO Solve double tap listener issue
         view.setOnLongClickListener(v -> {
             mDoubleTapListener.onItemDoubleTap(getAdapterPosition());
             setLikeButton();
             showLikeAnimation();
             return false;
-        });
+        });*/
     }
 
     /**
