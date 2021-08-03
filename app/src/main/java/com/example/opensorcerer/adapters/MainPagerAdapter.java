@@ -56,8 +56,6 @@ public class MainPagerAdapter extends FragmentStateAdapter {
         return PAGE_COUNT;
     }
 
-
-
     /**
      * Gets the project currently displayed to the user
      */

@@ -77,7 +77,7 @@ public class ManagerDetailsFragment extends Fragment {
 
 
         //Ensure that the id's of the navigation items are final for the switch
-        final int actionDetails = R.id.actionPreview;
+        final int actionPreview = R.id.actionPreview;
         final int actionHomepage = R.id.actionEdit;
         final int actionMessage = R.id.actionLikes;
         final int actionShare = R.id.actionShare;
@@ -87,7 +87,7 @@ public class ManagerDetailsFragment extends Fragment {
 
             // Navigate to a different fragment depending on the item selected
             switch (item.getItemId()) {
-                case actionDetails:
+                case actionPreview:
                     mFragment = new InformationFragment(mProject);
                     break;
 
@@ -113,7 +113,7 @@ public class ManagerDetailsFragment extends Fragment {
             return true;
         });
 
-        mApp.bottomNavDetails.setSelectedItemId(R.id.actionDetails);
+        mApp.bottomNavDetails.setSelectedItemId(R.id.actionPreview);
     }
 
     /**
