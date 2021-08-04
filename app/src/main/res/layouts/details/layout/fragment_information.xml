@@ -16,7 +16,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/main.collapsing"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginEnd="64dp"
@@ -34,7 +34,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageViewLogo"
@@ -51,7 +51,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:srcCompat="@drawable/placeholder2" />
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/linearLayout3"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -68,17 +68,17 @@
                         android:id="@+id/textViewTitle"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        android:layout_marginStart="0dp"
-                        android:layout_marginEnd="0dp"
-                        android:layout_marginBottom="10dp"
                         android:autoSizeMaxTextSize="34sp"
                         android:autoSizeMinTextSize="12sp"
                         android:autoSizeStepGranularity="2sp"
                         android:autoSizeTextType="uniform"
                         android:gravity="center"
                         android:maxLines="1"
-                        android:textColor="#000000"
+                        android:textColor="@color/darker_blue"
                         android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:text="Open Sorcerer" />
 
                     <TextView
@@ -86,10 +86,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:textColor="#000000"
+                        android:textColor="@color/darker_blue"
                         android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
                         tools:text="by Esteb37" />
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -138,21 +141,22 @@
                 <ImageButton
                     android:id="@+id/buttonLike"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="30dp"
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ufi_heart_active" />
+                    app:srcCompat="@drawable/ufi_heart_active"
+                    app:tint="@color/dark_blue" />
 
                 <ImageButton
                     android:id="@+id/imageButton4"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="#00FFFFFF"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@android:drawable/ic_menu_view"
-                    app:tint="@color/darker_blue" />
+                    app:srcCompat="@drawable/view"
+                    app:tint="@color/dark_blue" />
 
                 <ImageButton
                     android:id="@+id/imageButton3"
@@ -162,7 +166,7 @@
                     android:background="#00FFFFFF"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/swipe"
-                    app:tint="@color/darker_blue" />
+                    app:tint="@color/dark_blue" />
 
                 <ImageButton
                     android:id="@+id/imageButton5"
@@ -172,7 +176,7 @@
                     android:background="#00FFFFFF"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/fork"
-                    app:tint="@color/darker_blue" />
+                    app:tint="@color/dark_blue" />
             </LinearLayout>
 
             <LinearLayout
@@ -226,33 +230,73 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupTags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="divider3,textView37,textViewTags,textViewMoreTags"
+                tools:layout_editor_absoluteY="20dp" />
+
             <View
                 android:id="@+id/divider3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="50dp"
-                android:background="?android:attr/listDivider"
+                android:background="@color/light_blue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/rounded_edit"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+
+            <TextView
+                android:id="@+id/textView37"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="Tags"
+                android:textColor="@color/darker_blue"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/textViewTags"
+                app:layout_constraintHorizontal_bias="0.107"
+                app:layout_constraintStart_toStartOf="@+id/textViewTags"
+                app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
             <com.example.opensorcerer.ui.views.ExpandableTextView
                 android:id="@+id/textViewTags"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/rounded_edit"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:padding="10dp"
                 android:scrollHorizontally="true"
                 android:textSize="16sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider3" />
+                app:layout_constraintTop_toBottomOf="@+id/textView37" />
 
             <TextView
                 android:id="@+id/textViewMoreTags"
@@ -265,31 +309,58 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewTags"
                 tools:visibility="visible" />
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/groupLanguages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                app:constraint_referenced_ids="divider5,textView36,textViewLanguages,textViewMoreLanguages"
+                tools:layout_editor_absoluteY="20dp" />
+
             <View
                 android:id="@+id/divider5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="50dp"
-                android:background="?android:attr/listDivider"
+                android:background="@color/light_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewTags" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewMoreTags" />
+
+            <TextView
+                android:id="@+id/textView36"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="Languages"
+                android:textColor="@color/darker_blue"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/textViewLanguages"
+                app:layout_constraintHorizontal_bias="0.107"
+                app:layout_constraintStart_toStartOf="@+id/textViewLanguages"
+                app:layout_constraintTop_toBottomOf="@+id/divider5" />
 
             <com.example.opensorcerer.ui.views.ExpandableTextView
                 android:id="@+id/textViewLanguages"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/rounded_edit"
                 android:ellipsize="end"
                 android:maxLines="1"
+                android:padding="10dp"
                 android:scrollHorizontally="true"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/textViewTags"
-                app:layout_constraintStart_toStartOf="@+id/textViewTags"
-                app:layout_constraintTop_toBottomOf="@+id/divider5" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView36" />
 
             <TextView
                 android:id="@+id/textViewMoreLanguages"
@@ -306,19 +377,21 @@
                 android:id="@+id/textView4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 android:text="README"
+                android:textColor="@color/darker_blue"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/textViewLanguages"
-                app:layout_constraintTop_toBottomOf="@+id/textViewLanguages" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewMoreLanguages" />
 
             <com.mukesh.MarkdownView
                 android:id="@+id/markdownViewReadme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="#FFFFFF"
+                android:background="@color/grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

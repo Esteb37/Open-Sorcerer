@@ -160,6 +160,12 @@
                     app:layout_constraintStart_toStartOf="@+id/textViewBio"
                     app:layout_constraintTop_toBottomOf="@+id/textViewBio" />
 
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/groupLanguages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="textViewLanguages,textViewMoreLanguages,textView22,divider4" />
+
                 <TextView
                     android:id="@+id/textView22"
                     android:layout_width="wrap_content"
@@ -170,17 +176,6 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/textViewBio"
                     app:layout_constraintTop_toBottomOf="@id/divider4" />
-
-                <TextView
-                    android:id="@+id/textView23"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Interests"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/textViewBio"
-                    app:layout_constraintTop_toBottomOf="@id/divider7" />
 
                 <com.example.opensorcerer.ui.views.ExpandableTextView
                     android:id="@+id/textViewLanguages"
@@ -204,6 +199,12 @@
                     app:layout_constraintEnd_toEndOf="@+id/textViewLanguages"
                     app:layout_constraintTop_toBottomOf="@+id/textViewLanguages" />
 
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/groupInterests"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="divider7,textView23,textViewInterests,textViewMoreInterests" />
+
                 <View
                     android:id="@+id/divider7"
                     android:layout_width="0dp"
@@ -214,6 +215,17 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/textViewBio"
                     app:layout_constraintTop_toBottomOf="@+id/textViewMoreLanguages" />
+
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Interests"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/textViewBio"
+                    app:layout_constraintTop_toBottomOf="@id/divider7" />
 
                 <com.example.opensorcerer.ui.views.ExpandableTextView
                     android:id="@+id/textViewInterests"

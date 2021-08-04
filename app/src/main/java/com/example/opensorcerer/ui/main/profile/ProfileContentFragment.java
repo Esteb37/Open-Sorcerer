@@ -20,6 +20,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 /**
  * Fragment for displaying a user's profile.
  */
@@ -105,13 +107,25 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
         mApp.textViewUsername.setText(String.format("@%s", mProfileUser.getUsername()));
         mApp.textViewBio.setText(mProfileUser.getBio());
 
+
         //Load the list of languages to an expandable view
-        mApp.textViewLanguages.setText(Tools.listToString(mProfileUser.getLanguages()));
-        mApp.textViewLanguages.post(() -> mApp.textViewLanguages.setMoreMessage(mApp.textViewMoreLanguages));
+        List<String> languages = mProfileUser.getLanguages();
+        if(languages == null || languages.size() == 0){
+            mApp.groupLanguages.setVisibility(View.GONE);
+        } else {
+            mApp.textViewLanguages.setText(Tools.listToString(languages));
+            mApp.textViewLanguages.post(() -> mApp.textViewLanguages.setMoreMessage(mApp.textViewMoreLanguages));
+        }
+
 
         //Load the list of tags to an expandable view
-        mApp.textViewInterests.setText(Tools.listToString(mProfileUser.getInterests()));
-        mApp.textViewInterests.post(() -> mApp.textViewInterests.setMoreMessage(mApp.textViewMoreInterests));
+        List<String> interests = mProfileUser.getInterests();
+        if(interests == null || interests.size() == 0){
+            mApp.groupInterests.setVisibility(View.GONE);
+        } else {
+            mApp.textViewInterests.setText(Tools.listToString(interests));
+            mApp.textViewInterests.post(() -> mApp.textViewInterests.setMoreMessage(mApp.textViewMoreInterests));
+        }
 
         //Load the user's profile picture
         Glide.with(mContext)

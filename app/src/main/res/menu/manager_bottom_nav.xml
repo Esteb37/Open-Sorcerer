@@ -4,7 +4,7 @@
     <item
         android:id="@+id/actionPreview"
         android:enabled="true"
-        android:icon="@android:drawable/ic_menu_view"
+        android:icon="@drawable/view"
         android:iconTint="#FFFFFF"
         android:title="Preview"
         app:showAsAction="always" />

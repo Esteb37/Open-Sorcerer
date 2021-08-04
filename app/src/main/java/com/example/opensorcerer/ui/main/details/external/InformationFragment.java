@@ -37,6 +37,7 @@ import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.GitHub;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Fragment for displaying a project's general information
@@ -127,13 +128,28 @@ public class InformationFragment extends Fragment {
             mApp.textViewViews.setText(String.valueOf(mProject.getViewCount()));
             mApp.textViewLikes.setText(String.valueOf(mProject.getLikeCount()));
             mApp.textViewSwipes.setText(String.valueOf(mProject.getSwipeCount()));
+            mApp.textViewDescription.setText(mProject.getDescription());
 
-            mApp.textViewTags.setText(Tools.listToString(mProject.getTags()));
-            mApp.textViewTags.post(() -> mApp.textViewTags.setMoreMessage(mApp.textViewMoreTags));
+            List<String> tags = mProject.getTags();
+            if (tags == null || tags.size() == 0) {
+                mApp.groupTags.setVisibility(View.GONE);
+            } else {
+                mApp.groupTags.setVisibility(View.VISIBLE);
+                mApp.textViewTags.setText(Tools.listToString(tags));
+                mApp.textViewTags.post(() -> mApp.textViewTags.setMoreMessage(mApp.textViewMoreTags));
+            }
+
 
             //Load the list of languages to an expandable view
-            mApp.textViewLanguages.setText(Tools.listToString(mProject.getLanguages()));
-            mApp.textViewLanguages.post(() -> mApp.textViewLanguages.setMoreMessage(mApp.textViewMoreLanguages));
+            List<String> languages = mProject.getLanguages();
+            if (languages == null || languages.size() == 0) {
+                mApp.groupLanguages.setVisibility(View.GONE);
+            } else {
+                mApp.groupLanguages.setVisibility(View.VISIBLE);
+                mApp.textViewLanguages.setText(Tools.listToString(languages));
+                mApp.textViewLanguages.post(() -> mApp.textViewLanguages.setMoreMessage(mApp.textViewMoreLanguages));
+            }
+
 
             //Load Manager's name
             try {
