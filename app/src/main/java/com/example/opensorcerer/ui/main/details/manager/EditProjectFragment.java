@@ -3,12 +3,10 @@ package com.example.opensorcerer.ui.main.details.manager;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.URLUtil;
 import android.widget.ArrayAdapter;
 import android.widget.MultiAutoCompleteTextView;
 
@@ -18,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
 import com.example.opensorcerer.databinding.FragmentEditProjectBinding;
 import com.example.opensorcerer.models.Project;
 import com.example.opensorcerer.models.Tools;
@@ -35,7 +32,7 @@ public class EditProjectFragment extends Fragment {
     /**
      * Project being displayed
      */
-    private Project mProject;
+    private final Project mProject;
 
     /**
      * Binder object for ViewBinding
@@ -104,20 +101,16 @@ public class EditProjectFragment extends Fragment {
         mApp.editTextHomepage.setText(mProject.getWebsite());
         mApp.editTextRepo.setText(mProject.getRepository());
 
-        loadChips(mApp.chipInputLanguages,mProject.getLanguages());
-        loadChips(mApp.chipInputTags,mProject.getTags());
+        loadChips(mApp.chipInputLanguages, mProject.getLanguages());
+        loadChips(mApp.chipInputTags, mProject.getTags());
 
         // Load the project's logo from URL if any or the image file if no URL is provided
         String imageURL = mProject.getLogoImageUrl();
         ParseFile imageFile = mProject.getLogoImage();
         if (imageURL != null) {
-            Glide.with(mContext)
-                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl())
-                    .into(mApp.imageViewLogo);
+            Tools.loadImageFromURL(mContext, imageURL, mApp.imageViewLogo);
         } else if (imageFile != null) {
-            Glide.with(mContext)
-                    .load(imageFile.getUrl())
-                    .into(mApp.imageViewLogo);
+            Tools.loadImageFromFile(mContext, imageFile, mApp.imageViewLogo);
         }
     }
 

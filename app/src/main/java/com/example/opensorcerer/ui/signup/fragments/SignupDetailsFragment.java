@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.bumptech.glide.Glide;
 import com.example.opensorcerer.databinding.FragmentSignupDetailsBinding;
 import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
@@ -75,9 +74,7 @@ public class SignupDetailsFragment extends Fragment {
                             mProfilePicture = BitmapFactory.decodeStream(inputStream);
 
                             //Load the profile picture into the placeholder
-                            Glide.with(mContext)
-                                    .load(mProfilePicture)
-                                    .into(mApp.imageViewProfilePicture);
+                            Tools.loadImageFromBitmap(mContext, mProfilePicture, mApp.imageViewProfilePicture);
 
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();

@@ -3,7 +3,6 @@ package com.example.opensorcerer.holders;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.ScaleAnimation;
-import android.webkit.URLUtil;
 import android.widget.TextView;
 
 import androidx.appcompat.content.res.AppCompatResources;
@@ -20,8 +18,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.ProjectsCardAdapter;
 import com.example.opensorcerer.databinding.ItemCardProjectBinding;
@@ -79,7 +75,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
             private final GestureDetector gestureDetector = new GestureDetector(mContext, new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onDoubleTap(MotionEvent e) {
-                    doubleTapListener.onItemDoubleTap(getAdapterPosition());
+                    mDoubleTapListener.onItemDoubleTap(getAdapterPosition());
                     setLikeButton();
                     showLikeAnimation();
                     return super.onDoubleTap(e);
@@ -158,16 +154,11 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
         // Load the project's logo from URL if any
         String imageURL = mProject.getLogoImageUrl();
         ParseFile imageFile = mProject.getLogoImage();
+
         if (imageURL != null) {
-            Glide.with(mContext)
-                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl())
-                    .transform(new RoundedCorners(1000))
-                    .into(mApp.imageViewLogo);
+            Tools.loadImageFromURL(mContext, imageURL, mApp.imageViewLogo);
         } else if (imageFile != null) {
-            Glide.with(mContext)
-                    .load(imageFile.getUrl())
-                    .transform(new RoundedCorners(1000))
-                    .into(mApp.imageViewLogo);
+            Tools.loadImageFromFile(mContext, imageFile, mApp.imageViewLogo);
         }
     }
 
@@ -190,9 +181,7 @@ public class ProjectCardHolder extends RecyclerView.ViewHolder {
             //Set the manager's profile picture
             ParseFile profilePicture = manager.getProfilePicture();
             if (profilePicture != null) {
-                Glide.with(mContext)
-                        .load(profilePicture.getUrl())
-                        .into(mApp.imageViewProfilePicture);
+                Tools.loadImageFromFile(mContext, profilePicture, mApp.imageViewProfilePicture);
             }
 
             //Set the listener to navigate to the user's profile

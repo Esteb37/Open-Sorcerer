@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.bumptech.glide.Glide;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.ProjectsPagerAdapter;
 import com.example.opensorcerer.databinding.FragmentProfileContentBinding;
@@ -17,6 +16,7 @@ import com.example.opensorcerer.models.Tools;
 import com.example.opensorcerer.models.User;
 import com.example.opensorcerer.ui.main.conversations.ConversationFragment;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.parse.ParseFile;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -110,7 +110,7 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
 
         //Load the list of languages to an expandable view
         List<String> languages = mProfileUser.getLanguages();
-        if(languages == null || languages.size() == 0){
+        if (languages == null || languages.size() == 0) {
             mApp.groupLanguages.setVisibility(View.GONE);
         } else {
             mApp.textViewLanguages.setText(Tools.listToString(languages));
@@ -120,7 +120,7 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
 
         //Load the list of tags to an expandable view
         List<String> interests = mProfileUser.getInterests();
-        if(interests == null || interests.size() == 0){
+        if (interests == null || interests.size() == 0) {
             mApp.groupInterests.setVisibility(View.GONE);
         } else {
             mApp.textViewInterests.setText(Tools.listToString(interests));
@@ -128,9 +128,11 @@ public class ProfileContentFragment extends androidx.fragment.app.Fragment {
         }
 
         //Load the user's profile picture
-        Glide.with(mContext)
-                .load(mProfileUser.getProfilePicture().getUrl())
-                .into(mApp.imageViewProfilePicture);
+        ParseFile profilePicture = mProfileUser.getProfilePicture();
+        if (profilePicture != null) {
+            Tools.loadImageFromFile(mContext, profilePicture, mApp.imageViewProfilePicture);
+        }
+
 
         if (!mProfileUser.getObjectId().equals(mUser.getObjectId())) {
             mApp.buttonDrawer.setVisibility(View.GONE);

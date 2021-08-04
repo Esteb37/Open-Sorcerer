@@ -2,15 +2,13 @@ package com.example.opensorcerer.holders;
 
 import android.content.Context;
 import android.view.View;
-import android.webkit.URLUtil;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.opensorcerer.adapters.ProjectsGridAdapter;
 import com.example.opensorcerer.databinding.ItemGridProjectBinding;
 import com.example.opensorcerer.models.Project;
+import com.example.opensorcerer.models.Tools;
 import com.parse.ParseFile;
 
 /**
@@ -53,15 +51,9 @@ public class ProjectGridHolder extends RecyclerView.ViewHolder {
         String imageURL = project.getLogoImageUrl();
         ParseFile imageFile = project.getLogoImage();
         if (imageURL != null) {
-            Glide.with(mContext)
-                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl())
-                    .transform(new RoundedCorners(1000))
-                    .into(mApp.imageViewLogo);
+            Tools.loadImageFromURL(mContext, imageURL, mApp.imageViewLogo);
         } else if (imageFile != null) {
-            Glide.with(mContext)
-                    .load(imageFile.getUrl())
-                    .transform(new RoundedCorners(1000))
-                    .into(mApp.imageViewLogo);
+            Tools.loadImageFromFile(mContext, imageFile, mApp.imageViewLogo);
         }
     }
 }

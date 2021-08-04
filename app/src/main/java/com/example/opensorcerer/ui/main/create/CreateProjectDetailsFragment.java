@@ -80,9 +80,7 @@ public class CreateProjectDetailsFragment extends Fragment {
                             mProjectLogo = BitmapFactory.decodeStream(inputStream);
 
                             //Load the profile picture into the placeholder
-                            Glide.with(mContext)
-                                    .load(mProjectLogo)
-                                    .into(mApp.imageViewProjectLogo);
+                            Tools.loadImageFromBitmap(mContext, mProjectLogo, mApp.imageViewProjectLogo);
 
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();

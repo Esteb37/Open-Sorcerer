@@ -3,9 +3,12 @@ package com.example.opensorcerer.models;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PictureDrawable;
 import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
+import android.widget.ImageView;
 
 import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView;
 import androidx.fragment.app.Fragment;
@@ -13,7 +16,11 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.request.RequestListener;
 import com.example.opensorcerer.R;
+import com.example.opensorcerer.SVG.SvgSoftwareLayerSetter;
 import com.google.android.material.chip.ChipDrawable;
 import com.parse.ParseCloud;
 import com.parse.ParseFile;
@@ -262,7 +269,7 @@ public abstract class Tools {
      */
     public static void sendPushNotification(User user, String title, String message) {
 
-        if (user.getObjectId().equals(User.getCurrentUser().getObjectId())){
+        if (user.getObjectId().equals(User.getCurrentUser().getObjectId())) {
             return;
         }
 
@@ -276,5 +283,61 @@ public abstract class Tools {
                         e.printStackTrace();
                     }
                 });
+    }
+
+    /**
+     * Loads an image from an URL, choosing the appropriate method depending on the type of image
+     */
+    public static void loadImageFromURL(Context context, String imageURL, ImageView imageView) {
+
+        if (imageURL.contains(".svg")) {
+            RequestBuilder<PictureDrawable> requestBuilder = Glide.with(context)
+                    .as(PictureDrawable.class)
+                    .placeholder(R.drawable.placeholder2)
+                    .error(R.drawable.placeholder2)
+                    .listener(new SvgSoftwareLayerSetter());
+            requestBuilder.load(imageURL).into(imageView);
+        } else {
+            Glide.with(context)
+                    .load(imageURL)
+                    .placeholder(R.drawable.placeholder2)
+                    .error(R.drawable.placeholder2)
+                    .into(imageView);
+        }
+
+    }
+
+    /**
+     * Loads an image from a file into the view
+     */
+    public static void loadImageFromFile(Context context, ParseFile imageFile, ImageView imageView) {
+        Glide.with(context)
+                .load(imageFile.getUrl())
+                .placeholder(R.drawable.placeholder2)
+                .error(R.drawable.placeholder2)
+                .into(imageView);
+    }
+
+    /**
+     * Loads an image from a file into the view
+     */
+    public static void loadImageFromFile(Context context, ParseFile imageFile, ImageView imageView, RequestListener<Drawable> requestListener) {
+        Glide.with(context)
+                .load(imageFile.getUrl())
+                .placeholder(R.drawable.placeholder2)
+                .error(R.drawable.placeholder2)
+                .listener(requestListener)
+                .into(imageView);
+    }
+
+    /**
+     * Loads an image from a bitmap into the view
+     */
+    public static void loadImageFromBitmap(Context context, Bitmap bitmap, ImageView imageView) {
+        Glide.with(context)
+                .load(bitmap)
+                .placeholder(R.drawable.placeholder2)
+                .error(R.drawable.placeholder2)
+                .into(imageView);
     }
 }

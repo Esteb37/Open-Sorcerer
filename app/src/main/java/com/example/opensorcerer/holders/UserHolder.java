@@ -6,7 +6,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.UsersAdapter;
 import com.example.opensorcerer.databinding.ItemUserBinding;
@@ -50,9 +49,7 @@ public class UserHolder extends RecyclerView.ViewHolder {
 
         ParseFile profilePicture = user.getProfilePicture();
         if (profilePicture != null) {
-            Glide.with(mContext)
-                    .load(profilePicture.getUrl())
-                    .into(mApp.imageViewProfilePicture);
+            Tools.loadImageFromFile(mContext, profilePicture, mApp.imageViewProfilePicture);
         }
 
         if (user.getObjectId().equals(User.getCurrentUser().getObjectId())) {

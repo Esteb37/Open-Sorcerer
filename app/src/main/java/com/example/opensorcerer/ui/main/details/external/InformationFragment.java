@@ -9,7 +9,6 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.URLUtil;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +17,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -193,15 +191,9 @@ public class InformationFragment extends Fragment {
         String imageURL = mProject.getLogoImageUrl();
         ParseFile imageFile = mProject.getLogoImage();
         if (imageURL != null) {
-            Glide.with(mContext)
-                    .load(URLUtil.isValidUrl(imageURL) ? imageURL : imageFile.getUrl())
-                    .listener(requestListener)
-                    .into(mApp.imageViewLogo);
+            Tools.loadImageFromURL(mContext, imageURL, mApp.imageViewLogo);
         } else if (imageFile != null) {
-            Glide.with(mContext)
-                    .load(imageFile.getUrl())
-                    .listener(requestListener)
-                    .into(mApp.imageViewLogo);
+            Tools.loadImageFromFile(mContext, imageFile, mApp.imageViewLogo, requestListener);
         }
     }
 

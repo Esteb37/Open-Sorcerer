@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.MessagesAdapter;
 import com.example.opensorcerer.databinding.FragmentConversationBinding;
@@ -200,9 +199,7 @@ public class ConversationFragment extends Fragment {
 
             ParseFile oppositeProfilePicture = opposite.getProfilePicture();
             if (oppositeProfilePicture != null) {
-                Glide.with(mContext)
-                        .load(oppositeProfilePicture.getUrl())
-                        .into(mApp.imageViewProfilePicture);
+                Tools.loadImageFromFile(mContext, oppositeProfilePicture, mApp.imageViewProfilePicture);
             }
 
             if (mProject != null) {

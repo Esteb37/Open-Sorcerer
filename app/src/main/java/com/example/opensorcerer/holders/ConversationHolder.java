@@ -82,11 +82,11 @@ public class ConversationHolder extends RecyclerView.ViewHolder {
 
             //Load the other user's profile picture
             ParseFile oppositeProfilePicture = opposite.getProfilePicture();
+
             if (oppositeProfilePicture != null) {
-                Glide.with(mContext)
-                        .load(oppositeProfilePicture.getUrl())
-                        .into(mApp.imageViewProfilePicture);
+                Tools.loadImageFromFile(mContext, oppositeProfilePicture, mApp.imageViewProfilePicture);
             }
+
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -94,4 +94,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:22.0.0'
     implementation "com.github.parse-community.Parse-SDK-Android:fcm:1.21.0"
     implementation 'com.parse.bolts:bolts-android:1.4.0'
+    implementation 'com.caverock:androidsvg-aar:1.4'
 }
