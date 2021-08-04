@@ -515,7 +515,13 @@ public class User implements Parcelable {
      * Determines if the project includes at least one language that the user knows
      */
     public boolean includesLanguages(Project project) {
-        for (String language : getLanguages()) {
+        List<String> languages = getLanguages();
+
+        if(languages == null){
+            return true;
+        }
+
+        for (String language : languages) {
             if (project.getLanguages().contains(language)) {
                 return true;
             }

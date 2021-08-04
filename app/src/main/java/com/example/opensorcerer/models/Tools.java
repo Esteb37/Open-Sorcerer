@@ -261,6 +261,11 @@ public abstract class Tools {
      * Sends a push message to the specified user
      */
     public static void sendPushNotification(User user, String title, String message) {
+
+        if (user.getObjectId().equals(User.getCurrentUser().getObjectId())){
+            return;
+        }
+
         HashMap<String, String> params = new HashMap<>();
         params.put("deviceId", user.getObjectId());
         params.put("message", message);
