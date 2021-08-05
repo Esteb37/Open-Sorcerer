@@ -3,7 +3,6 @@ package com.example.opensorcerer.models;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.PictureDrawable;
 import android.text.Editable;
 import android.text.Spanned;
@@ -18,7 +17,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.request.RequestListener;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.SVG.SvgSoftwareLayerSetter;
 import com.google.android.material.chip.ChipDrawable;
@@ -295,6 +293,7 @@ public abstract class Tools {
                     .as(PictureDrawable.class)
                     .placeholder(R.drawable.placeholder2)
                     .error(R.drawable.placeholder2)
+                    .listener(new SvgSoftwareLayerSetter())
                     .listener(new SvgSoftwareLayerSetter());
             requestBuilder.load(imageURL).into(imageView);
         } else {
@@ -304,8 +303,8 @@ public abstract class Tools {
                     .error(R.drawable.placeholder2)
                     .into(imageView);
         }
-
     }
+
 
     /**
      * Loads an image from a file into the view
@@ -315,18 +314,6 @@ public abstract class Tools {
                 .load(imageFile.getUrl())
                 .placeholder(R.drawable.placeholder2)
                 .error(R.drawable.placeholder2)
-                .into(imageView);
-    }
-
-    /**
-     * Loads an image from a file into the view
-     */
-    public static void loadImageFromFile(Context context, ParseFile imageFile, ImageView imageView, RequestListener<Drawable> requestListener) {
-        Glide.with(context)
-                .load(imageFile.getUrl())
-                .placeholder(R.drawable.placeholder2)
-                .error(R.drawable.placeholder2)
-                .listener(requestListener)
                 .into(imageView);
     }
 

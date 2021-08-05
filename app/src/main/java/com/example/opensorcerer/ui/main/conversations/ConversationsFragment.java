@@ -189,7 +189,10 @@ public class ConversationsFragment extends Fragment {
                 }
                 if (conversations.size() > 0) {
                     mAdapter.addAll(conversations);
+                } else {
+                    mApp.textViewNoConversations.setVisibility(View.VISIBLE);
                 }
+                mApp.progressBar.setVisibility(View.GONE);
             } else {
                 Log.d(TAG, "Unable to load conversations");
             }

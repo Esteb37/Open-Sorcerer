@@ -152,7 +152,7 @@ public class FavoriteProjectsFragment extends Fragment {
 
         mApp.progressBar.setVisibility(View.VISIBLE);
         List<String> favorites = mProfileUser.getFavorites();
-        if (favorites != null) {
+        if (favorites != null && favorites.size() > 0) {
 
             //Get a query from the user's favorites
             ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContainedIn("objectId", favorites);

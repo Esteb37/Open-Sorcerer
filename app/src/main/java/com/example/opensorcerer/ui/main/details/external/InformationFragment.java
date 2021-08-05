@@ -17,10 +17,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.application.OSApplication;
 import com.example.opensorcerer.databinding.FragmentInformationBinding;
@@ -172,29 +168,16 @@ public class InformationFragment extends Fragment {
      */
     private void loadProjectLogo() {
 
-        RequestListener<Drawable> requestListener = new RequestListener<Drawable>() {
-            @Override
-            public boolean onLoadFailed(@Nullable @org.jetbrains.annotations.Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                mApp.progressBar.setVisibility(View.GONE);
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                mApp.progressBar.setVisibility(View.GONE);
-                return false;
-            }
-        };
-
-
         // Load the project's logo from URL if any or the image file if no URL is provided
         String imageURL = mProject.getLogoImageUrl();
         ParseFile imageFile = mProject.getLogoImage();
         if (imageURL != null) {
             Tools.loadImageFromURL(mContext, imageURL, mApp.imageViewLogo);
         } else if (imageFile != null) {
-            Tools.loadImageFromFile(mContext, imageFile, mApp.imageViewLogo, requestListener);
+            Tools.loadImageFromFile(mContext, imageFile, mApp.imageViewLogo);
         }
+
+        mApp.progressBar.setVisibility(View.GONE);
     }
 
     /**
@@ -243,6 +226,9 @@ public class InformationFragment extends Fragment {
 
     public void setForkCount(int forkCount) {
         mForkCount = forkCount;
-        mApp.textViewForks.setText(String.valueOf(mForkCount));
+        try {
+            mApp.textViewForks.setText(String.valueOf(mForkCount));
+        } catch (NullPointerException ignored) {
+        }
     }
 }
