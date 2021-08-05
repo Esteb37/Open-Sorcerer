@@ -1,33 +1,46 @@
 package com.example.opensorcerer.ui.main;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.MainPagerAdapter;
 import com.example.opensorcerer.databinding.ActivityHomeBinding;
 import com.example.opensorcerer.models.User;
 import com.parse.ParseUser;
 
+import okhttp3.Headers;
+
 /**
  * Main activity
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
+
     /**
      * Minimum scroll distance to begin loading details information
      */
     private final double MIN_SCROLL_OFFSET = 0.01;
+
+    //Client for HTTP requests
+    private final AsyncHttpClient mClient = new AsyncHttpClient();
+
     /**
      * Binder object for ViewBinding
      */
     private ActivityHomeBinding mApp;
+
     /**
      * Current logged in user
      */
     private User mUser;
+
     /**
      * The pager adapter for the main activity
      */
@@ -39,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        startScraper();
 
         setupLayout();
 
@@ -136,5 +151,26 @@ public class MainActivity extends AppCompatActivity {
         } else {
             getSupportFragmentManager().popBackStack();
         }
+    }
+
+    /**
+     * Calls the Python backend server to begin the project scraping
+     */
+    public void startScraper() {
+        mClient.post(getString(R.string.backend_server_ip)+"scrape_projects", new JsonHttpResponseHandler() {
+
+            //If the request is successful
+            @Override
+            public void onSuccess(int i, Headers headers, JSON json) {
+                Log.d(TAG, "Scraper called successfully.");
+            }
+
+            //If the request is not successfully
+            @Override
+            public void onFailure(int i, Headers headers, String s, Throwable throwable) {
+                Log.d(TAG, "Failed to call scraper.");
+                throwable.printStackTrace();
+            }
+        });
     }
 }
