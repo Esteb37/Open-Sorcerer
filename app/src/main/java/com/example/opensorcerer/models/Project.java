@@ -6,6 +6,7 @@ import android.util.Log;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import org.kohsuke.github.GHRepository;
 
@@ -135,6 +136,10 @@ public class Project extends ParseObject implements Parcelable {
      */
     public void setManager(User manager) {
         put(KEY_MANAGER, manager.getHandler());
+    }
+
+    public void setManager(ParseUser manager) {
+        put(KEY_MANAGER, manager);
     }
 
     /**

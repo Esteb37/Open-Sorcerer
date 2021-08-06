@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.codepath.asynchttpclient.AsyncHttpClient;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.opensorcerer.R;
 import com.example.opensorcerer.adapters.ProjectsCardAdapter;
 import com.example.opensorcerer.databinding.FragmentHomeBinding;
@@ -24,9 +26,14 @@ import com.example.opensorcerer.models.User;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Headers;
 
 /**
  * Fragment for displaying the user's timeline of projects
@@ -39,46 +46,37 @@ public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
 
     /**
-     * Amount of items to query per call
+     * Client for HTTP requests
      */
-    private static final int QUERY_LIMIT = 5;
-
+    private final AsyncHttpClient mClient = new AsyncHttpClient();
     /**
      * Binder object for ViewBinding
      */
     private FragmentHomeBinding mApp;
-
     /**
      * Fragment's context
      */
     private Context mContext;
-
     /**
      * Current logged in user
      */
     private User mUser;
-
-
     /**
      * Adapter for the Recycler View
      */
     private ProjectsCardAdapter mAdapter;
-
     /**
      * Layout manager for the Recycler View
      */
     private LinearLayoutManager mLayoutManager;
-
     /**
      * Snap helper for the Recycler View
      */
     private PagerSnapHelper mSnapHelper;
-
     /**
      * The list of projects to display
      */
     private List<Project> mProjects;
-
     /**
      * The position to scroll to
      */
@@ -118,7 +116,7 @@ public class HomeFragment extends Fragment {
         setupRecyclerView();
 
         if (mPosition == -1) {
-            queryProjects(0);
+            getTimeline(true);
         } else {
             loadProjects();
         }
@@ -168,7 +166,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                queryProjects(page);
+                getTimeline(false);
             }
 
             @Override
@@ -192,41 +190,6 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * Gets the list of projects from the developer's timeline and filters it by the developer's behavior
-     */
-    private void queryProjects(int page) {
-
-        //Get a query in descending order
-        ParseQuery<Project> query = ParseQuery.getQuery(Project.class);
-        query.addDescendingOrder("createdAt");
-        query.setLimit(QUERY_LIMIT);
-        query.setSkip(page * QUERY_LIMIT);
-
-        query.findInBackground((projects, e) -> {
-            if (e == null) {
-                if (page == 0) {
-                    mAdapter.clear();
-                }
-                if (projects.size() == 0) {
-                    queryProjects(page + 1);
-                }
-                for (Project project : projects) {
-                    if (mUser.probablyLikes(project)) {
-                        mAdapter.add(project);
-                    } else {
-                        Log.d("Test", "Skipped: " + project.getTitle());
-                    }
-                }
-                mApp.swipeContainer.setRefreshing(false);
-                mApp.progressBar.setVisibility(View.GONE);
-            } else {
-                Log.d(TAG, "Unable to load projects.");
-            }
-        });
-
-    }
-
-    /**
      * Loads the selected list of projects
      */
     private void loadProjects() {
@@ -240,7 +203,7 @@ public class HomeFragment extends Fragment {
      * Sets up the swipe down to refresh interaction
      */
     private void setupSwipeRefresh() {
-        mApp.swipeContainer.setOnRefreshListener(() -> queryProjects(0));
+        mApp.swipeContainer.setOnRefreshListener(() -> getTimeline(true));
 
         mApp.swipeContainer.setColorSchemeResources(R.color.darker_blue,
                 R.color.dark_blue,
@@ -254,6 +217,57 @@ public class HomeFragment extends Fragment {
         View snapView = mSnapHelper.findSnapView(mLayoutManager);
         assert snapView != null;
         return mProjects.get(mLayoutManager.getPosition(snapView));
+    }
+
+    public void getTimeline(boolean reset) {
+        mClient.get(getString(R.string.backend_server_ip) + "timeline/" + mUser.getObjectId(), new JsonHttpResponseHandler() {
+
+            //If the request is successful
+            @SuppressLint("SimpleDateFormat")
+            @Override
+            public void onSuccess(int i, Headers headers, JSON json) {
+
+                JSONObject data = json.jsonObject;
+
+                try {
+                    JSONArray jsonArray = data.getJSONArray("timeline");
+                    List<String> projectIds = new ArrayList<>();
+                    for (int j = 0; j < jsonArray.length(); j++) {
+                        projectIds.add(jsonArray.getString(j));
+                    }
+
+                    ParseQuery<Project> query = ParseQuery.getQuery(Project.class).whereContainedIn("objectId", projectIds);
+
+                    query.findInBackground((projects, e) -> {
+                        if (reset) {
+                            mAdapter.clear();
+                        }
+                        if (projects.size() == 0) {
+                            getTimeline(reset);
+                        }
+                        mAdapter.addAll(projects);
+                    });
+
+                    mUser.setLoadBefore(data.getString("loadBefore"));
+                    mUser.setLoadAfter(data.getString("loadAfter"));
+
+                    mUser.update();
+
+                    mApp.swipeContainer.setRefreshing(false);
+                    mApp.progressBar.setVisibility(View.GONE);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            //If the request is not successfully
+            @Override
+            public void onFailure(int i, Headers headers, String s, Throwable throwable) {
+                Log.d(TAG, "Failed to call scraper.");
+                throwable.printStackTrace();
+            }
+        });
     }
 
 }

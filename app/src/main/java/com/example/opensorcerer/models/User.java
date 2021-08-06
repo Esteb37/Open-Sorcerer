@@ -1,5 +1,6 @@
 package com.example.opensorcerer.models;
 
+import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -12,11 +13,13 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TimeZone;
 
 /**
  * Custom class for handling ParseUser objects without Parse subclass restrictions
@@ -352,31 +355,29 @@ public class User implements Parcelable {
     }
 
     /**
-     * Load before getter
-     */
-    public Date getLoadBefore() {
-        return mHandler.getDate(KEY_LOAD_BEFORE);
-    }
-
-    /**
      * Load before setter
      */
-    public void setLoadBefore(Date date) {
-        mHandler.put(KEY_LOAD_BEFORE, date);
-    }
-
-    /**
-     * Load after getter
-     */
-    public Date getLoadAfter() {
-        return mHandler.getDate(KEY_LOAD_AFTER);
+    public void setLoadBefore(String loadBefore) {
+        mHandler.put(KEY_LOAD_BEFORE, getDateFromString(loadBefore));
     }
 
     /**
      * Load after setter
      */
-    public void setLoadAfter(Date date) {
-        mHandler.put(KEY_LOAD_AFTER, date);
+    public void setLoadAfter(String loadAfter) {
+        mHandler.put(KEY_LOAD_AFTER, getDateFromString(loadAfter));
+    }
+
+    private Date getDateFromString(String str) {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = null;
+        try {
+            date = sdf.parse(str.replace("T", " ").replace("Z", ""));
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
     /**
@@ -517,7 +518,7 @@ public class User implements Parcelable {
     public boolean includesLanguages(Project project) {
         List<String> languages = getLanguages();
 
-        if(languages == null){
+        if (languages == null) {
             return true;
         }
 

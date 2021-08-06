@@ -80,8 +80,6 @@ public class MainFragment extends Fragment {
 
         getState();
 
-        getState();
-
         gitHubLogin();
 
         setupBottomNavigation();

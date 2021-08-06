@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        startScraper();
+        //startScraper();
 
         setupLayout();
 
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
      * Calls the Python backend server to begin the project scraping
      */
     public void startScraper() {
-        mClient.post(getString(R.string.backend_server_ip)+"scrape_projects", new JsonHttpResponseHandler() {
+        mClient.post(getString(R.string.backend_server_ip) + "scrape_projects", new JsonHttpResponseHandler() {
 
             //If the request is successful
             @Override
