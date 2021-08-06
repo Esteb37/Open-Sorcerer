@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_restful import Api,Resource
+from flask_restful import Api,Resource, reqparse
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
@@ -26,6 +26,8 @@ githubHeaders = CaseInsensitiveDict()
 githubHeaders["Authorization"] = "Basic ZXN0ZWIzNzpnaHBfZmRYWnRodTV3c085emt6c2NDd3FTcDJpTWtBOGJZMmNwcW55"
 githubHeaders["Accept"] = "application/vnd.github.mercy-preview+json"
 githubAPI = "https://api.github.com/repos/"
+
+timeline_get_args = reqparse.RequestParser()
 
 scraperRecord = {}
 
@@ -213,7 +215,109 @@ def createProject(data, repo, image):
 
     print("Created project " + title)
 
+"""
+    Generates a tailored timeline for the user
+"""
+class Timeline(Resource):
+
+    def get(self, objectId):
+
+        # Get the user's information
+        params = urllib.urlencode({"where":json.dumps({
+            "objectId":objectId
+        })})
+        url = serverURL+"classes/_User/?"+params
+        user = requests.get(url, headers=parseHeaders).json()["results"][0]
+
+        # Get the user's category scores
+        scores = user["predictScores"]
+
+        # Get all projects that were created after the user last queried a timeline
+        params = urllib.urlencode({
+            "order": "-createdAt",
+            "limit": 50,
+            "where":json.dumps({
+                "createdAt": {
+                    "$gt": user["loadBefore"],
+                }
+
+            }),
+            "include":"manager"
+        })
+
+        url = serverURL + "classes/Project/?"+params
+        projects = requests.get(url, headers=parseHeaders).json()["results"]
+
+        timeline = []
+
+        try:
+            loadBefore = projects[0]["createdAt"]
+
+        except:
+            pass
+
+        # Add all the projects that don't have a bad score to the timeline
+        for project in projects:
+
+            if (calculateScore(project,scores) > -5):
+                timeline.append(project["objectId"])
+                if(len(timeline)>=10):
+                    loadAfter = project["createdAt"]
+                    break
+
+        # If there aren't enough projects, load projects from before the last queried timeline
+        if(len(timeline)<10):
+            params = urllib.urlencode({
+                "order": "-createdAt",
+                "limit": 50,
+                "where":json.dumps({
+                    "createdAt": {
+                        "$lt": user["loadAfter"],
+                    }
+                }),
+                "include":"manager"
+            })
+
+            url = serverURL + "classes/Project/?"+params
+            projects = requests.get(url, headers=parseHeaders).json()["results"]
+
+            try:
+                loadBefore
+            except NameError:
+                loadBefore = projects[0]["createdAt"]
+
+            # Add all the projects that don't have a bad score to the timeline
+            for project in projects:
+
+                if (calculateScore(project,scores) > -5):
+                    timeline.append(project["objectId"])
+                    if(len(timeline)>=10):
+                        loadAfter = project["createdAt"]
+                        break
+
+        # Return the timeline
+        return {"timeline":timeline,"loadBefore":loadBefore,"loadAfter":loadAfter}
+
+"""
+    Calculates the score for a project given a user's category scores and the project's categories
+"""
+def calculateScore(project, scores):
+
+    tags = project["tags"]
+
+    result = 0
+    for tag in tags:
+        try:
+            result+=scores[tag]
+        except:
+            pass
+
+    return result
+
+
+
 api.add_resource(ScrapeProjects, "/scrape_projects")
+api.add_resource(Timeline, "/timeline/<string:objectId>")
 
 if __name__ == "__main__":
     app.run(debug = False, host='0.0.0.0')
