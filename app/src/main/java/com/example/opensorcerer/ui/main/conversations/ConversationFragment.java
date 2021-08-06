@@ -224,6 +224,7 @@ public class ConversationFragment extends Fragment {
         mAdapter = new MessagesAdapter(mMessages, mContext);
         mApp.recyclerViewMessages.setAdapter(mAdapter);
 
+
         //Set layout manager
         mLayoutManager = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
         mApp.recyclerViewMessages.setLayoutManager(mLayoutManager);
@@ -342,6 +343,7 @@ public class ConversationFragment extends Fragment {
             //Setup pagination
             query.setLimit(QUERY_LIMIT);
             query.setSkip(page * QUERY_LIMIT);
+            query.addAscendingOrder("createdAt");
 
             query.findInBackground((newMessages, e) -> {
                 if (e == null) {
@@ -352,7 +354,6 @@ public class ConversationFragment extends Fragment {
                         mAdapter.addAll(newMessages);
                     }
 
-                    mApp.recyclerViewMessages.scrollToPosition(mMessages.size() - 1);
                 } else {
                     Log.d(TAG, "Unable to load messages.");
                 }

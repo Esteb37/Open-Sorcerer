@@ -3,7 +3,6 @@ package com.example.opensorcerer.ui.main.create;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -239,9 +238,13 @@ public class CreateProjectTagsFragment extends Fragment {
         String listText = "";
         if (list != null) {
             for (String item : list) {
-                listText += item + ",";
+                listText = chipInput.getText().toString();
+                listText += item;
                 chipInput.setText(listText);
-                Tools.addChip(mContext, item, chipInput);
+                chipInput.dispatchKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN,
+                        KeyEvent.KEYCODE_COMMA, 0));
+                chipInput.dispatchKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_UP,
+                        KeyEvent.KEYCODE_COMMA, 0));
             }
         }
     }

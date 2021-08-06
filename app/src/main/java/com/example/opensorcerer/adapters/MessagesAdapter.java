@@ -112,7 +112,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessageHolder> {
      */
     public void addMessage(Message message) {
         mMessages.add(message);
-        notifyItemInserted(mMessages.size() - 1);
+        notifyItemInserted(0);
     }
 
     /**

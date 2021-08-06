@@ -161,12 +161,15 @@ public class CreatedProjectsFragment extends Fragment {
             if (e == null) {
                 if (projects.size() > 0) {
                     mAdapter.addAll(projects);
-                } else {
-                    mApp.textViewNoProjects.setVisibility(View.VISIBLE);
-                }
-                mApp.progressBar.setVisibility(View.GONE);
+                }                 mApp.progressBar.setVisibility(View.GONE);
             } else {
                 Log.d(TAG, "Unable to load projects.");
+            }
+
+            if(mProjects.size() > 0){
+                mApp.textViewNoProjects.setVisibility(View.GONE);
+            } else {
+                mApp.textViewNoProjects.setVisibility(View.VISIBLE);
             }
         });
     }
